@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/wishlist.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <title>Wishlist</title>
+</head>
+
+<body>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueil.html">LEMS</a>
+
+      <div class="navbar-right">
+        <a href="accueil.html">Accueil</a>
+        <a href="offres.html">Offres</a>
+        <a href="entreprise.html">Entreprise</a>
+
+        <!-- ✅ Page “étudiant” -->
+        <a href="wishlist.html" class="active">Wishlist</a>
+
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="deconnexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="container">
+    <header class="page-head">
+      <div class="page-title">
+        <h1>Ma wishlist</h1>
+        <p class="page-subtitle">Retrouve toutes les offres que tu as ajoutées en favoris.</p>
+      </div>
+
+      <div class="page-meta" aria-label="Statistiques wishlist">
+        <div class="meta-card">
+          <span class="meta-label">Favoris</span>
+          <span class="meta-value">6</span>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Nouveaux</span>
+          <span class="meta-value">2</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== BARRE : recherche + tri ===== -->
+    <section class="results-bar" aria-label="Recherche et tri">
+      <div class="results-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Rechercher dans mes favoris…" aria-label="Rechercher dans la wishlist" />
+      </div>
+
+      <div class="results-sort">
+        <label class="sr-only" for="sort">Trier</label>
+        <i class="fa-solid fa-arrow-up-wide-short"></i>
+        <select id="sort">
+          <option value="recent">Plus récent</option>
+          <option value="pertinence">Pertinence</option>
+          <option value="remu">Rémunération</option>
+          <option value="az">A → Z</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- ===== GRILLE FAVORIS ===== -->
+    <section class="wishlist-grid" aria-label="Liste des favoris">
+
+      <!-- Favori 1 -->
+      <article class="offre-card">
+        <div class="offre-top">
+          <div class="offre-logo">
+            <i class="fa-solid fa-laptop-code"></i>
+          </div>
+
+          <div class="offre-title">
+            <h2 class="offre-poste">Développeur Web</h2>
+            <p class="offre-entreprise">Tech Solutions</p>
+          </div>
+
+          <!-- action favori -->
+          <label class="ui-bookmark">
+            <input type="checkbox" checked>
+            <div class="bookmark">
+                <svg viewBox="0 0 32 32">
+                <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                </svg>
+            </div>
+          </label>
+        </div>
+
+        <div class="offre-tags">
+          <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lyon</span>
+          <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+          <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+2/3</span>
+          <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 900€/mois</span>
+        </div>
+
+        <div class="offre-desc">
+          <strong>Description</strong>
+          <p class="truncate-3">Rejoignez notre équipe pour développer des applications web innovantes.</p>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-secondary" type="button">Retirer</button>
+          <button class="btn-voir" type="button">Voir plus</button>
+        </div>
+      </article>
+
+      <!-- Favori 2 -->
+      <article class="offre-card">
+        <div class="offre-top">
+          <div class="offre-logo">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+
+          <div class="offre-title">
+            <h2 class="offre-poste">Data Analyst</h2>
+            <p class="offre-entreprise">Data Insights</p>
+          </div>
+
+          <!-- action favori -->
+          <label class="ui-bookmark">
+            <input type="checkbox" checked>
+            <div class="bookmark">
+                <svg viewBox="0 0 32 32">
+                <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                </svg>
+            </div>
+          </label>
+        </div>
+
+        <div class="offre-tags">
+          <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Paris</span>
+          <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Alternance</span>
+          <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+3</span>
+          <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1200€/mois</span>
+        </div>
+
+        <div class="offre-desc">
+          <strong>Description</strong>
+          <p class="truncate-3">Analysez des données pour aider à la décision stratégique.</p>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-secondary" type="button">Retirer</button>
+          <button class="btn-voir" type="button">Voir plus</button>
+        </div>
+      </article>
+
+      <!-- Favori 3 -->
+      <article class="offre-card">
+        <div class="offre-top">
+          <div class="offre-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div class="offre-title">
+            <h2 class="offre-poste">Spécialiste Cybersécurité</h2>
+            <p class="offre-entreprise">SecureTech</p>
+          </div>
+
+          <!-- action favori -->
+          <label class="ui-bookmark">
+            <input type="checkbox" checked>
+            <div class="bookmark">
+                <svg viewBox="0 0 32 32">
+                <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                </svg>
+            </div>
+          </label>
+        </div>
+
+        <div class="offre-tags">
+          <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lille</span>
+          <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+          <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+4/5</span>
+          <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1100€/mois</span>
+        </div>
+
+        <div class="offre-desc">
+          <strong>Description</strong>
+          <p class="truncate-3">Protégez les systèmes d’information contre les menaces et attaques.</p>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-secondary" type="button">Retirer</button>
+          <button class="btn-voir" type="button">Voir plus</button>
+        </div>
+      </article>
+
+      <!-- Pagination -->
+      <nav class="pagination" aria-label="Pagination des favoris">
+        <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
+          <button class="page-number active" type="button" aria-current="page">1</button>
+          <button class="page-number" type="button">2</button>
+          <button class="page-number" type="button">3</button>
+          <span class="page-ellipsis" aria-hidden="true">…</span>
+          <button class="page-number" type="button">10</button>
+        </div>
+
+        <button class="page-arrow" type="button" aria-label="Page suivante">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </nav>
+
+      <!-- ===== ETAT VIDE ===== -->
+    <!--
+      <div class="empty-state" role="status" aria-live="polite">
+        <div class="empty-icon"><i class="fa-regular fa-heart"></i></div>
+        <h2>Aucun favori</h2>
+        <p>Tu n’as pas encore ajouté d’offres à ta wishlist.</p>
+        <a class="btn-voir" href="offres.html">Découvrir les offres</a>
+      </div>
+      -->
+
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Features</h4>
+          <a href="#">A propos</a>
+          <a href="#">Les offres</a>
+          <a href="#">F.A.Q</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Mentions légales</a>
+          <a href="#">Termes d'utilisations</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Socials</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-sep"></div>
+    <div class="footer-bottom">
+      <span>Copyright © L.E.M.S 2026</span>
+    </div>
+  </footer>
+</body>
+</html>
