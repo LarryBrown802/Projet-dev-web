@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Tableau de bord — Admin</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilAdmin.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="dashboardAdmin.html" class="active">Tableau de bord</a>
+        <a href="DashboardAGPilote.html">Pilotes</a>
+        <a href="DashboardAGOffre.html">Offres</a>
+        <a href="DashboardAGEntreprise.html">Entreprises</a>
+        <a href="DashboardAGEtudiant.html">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Tableau de bord Admin</h1>
+        <p class="page-subtitle">Vue d'ensemble globale de la plateforme LEMS.</p>
+      </div>
+      <div class="page-meta">
+        <div class="meta-card">
+          <span class="meta-label">Rôle</span>
+          <span class="meta-value" style="font-size:15px">Administrateur</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <section class="kpi-grid kpi-grid--5">
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-blue"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+        <div><p class="kpi-label">Pilotes</p><p class="kpi-value">8</p></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-green"><i class="fa-solid fa-user-graduate"></i></div>
+        <div><p class="kpi-label">Étudiants</p><p class="kpi-value">192</p></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-yellow"><i class="fa-solid fa-building"></i></div>
+        <div><p class="kpi-label">Entreprises</p><p class="kpi-value">34</p></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-purple"><i class="fa-solid fa-briefcase"></i></div>
+        <div><p class="kpi-label">Offres</p><p class="kpi-value">87</p></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-red"><i class="fa-solid fa-file-circle-check"></i></div>
+        <div><p class="kpi-label">Candidatures</p><p class="kpi-value">413</p></div>
+      </article>
+    </section>
+
+    <!-- Layout : aside activité + tableau principal -->
+    <div class="admin-layout">
+
+      <!-- Activité récente -->
+      <aside class="admin-aside">
+        <h2 class="section-title-dash">Activité récente</h2>
+        <div class="activity-list">
+
+          <article class="activity-item">
+            <div class="activity-icon ai-blue"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Nouvel étudiant inscrit</p>
+              <p class="activity-sub">Raphaël Linard - CPI A2 Informatique</p>
+              <span class="activity-time">Il y a 10 min</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-yellow"><i class="fa-solid fa-briefcase"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Nouvelle offre publiée</p>
+              <p class="activity-sub">Dev Web — Tech Solutions</p>
+              <span class="activity-time">Il y a 35 min</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-green"><i class="fa-solid fa-building"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Entreprise ajoutée</p>
+              <p class="activity-sub">AI Labs</p>
+              <span class="activity-time">Il y a 1h</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-purple"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Pilote créé</p>
+              <p class="activity-sub">M. Roussel — CPI A2 Informatique</p>
+              <span class="activity-time">Il y a 2h</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-red"><i class="fa-solid fa-trash"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Offre supprimée</p>
+              <p class="activity-sub">Stage Marketing — MKT Corp</p>
+              <span class="activity-time">Il y a 3h</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-blue"><i class="fa-solid fa-file-circle-check"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Candidature reçue</p>
+              <p class="activity-sub">Enzo Boucetta → DevOps</p>
+              <span class="activity-time">Il y a 4h</span>
+            </div>
+          </article>
+
+          <article class="activity-item">
+            <div class="activity-icon ai-yellow"><i class="fa-solid fa-star"></i></div>
+            <div class="activity-body">
+              <p class="activity-title">Entreprise évaluée</p>
+              <p class="activity-sub">SecureTech — 4/5 étoiles</p>
+              <span class="activity-time">Il y a 5h</span>
+            </div>
+          </article>
+
+        </div>
+      </aside>
+
+      <!-- Tableaux de droite -->
+      <section class="admin-main">
+
+        <div class="section-head-row">
+          <h2 class="section-title-dash">Vue d'ensemble des offres</h2>
+          <a href="DashboardAGOffre.html" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Entreprise</th>
+                <th>Type</th>
+                <th>Niveau</th>
+                <th>Lieu</th>
+                <th>Rémun.</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Développeur Web</strong></td>
+                <td>Tech Solutions</td>
+                <td><span class="tag-pill tag-stage">Stage</span></td>
+                <td><span class="tag-pill tag-bac">Bac+2/3</span></td>
+                <td><span class="tag-pill tag-lieu">Lyon</span></td>
+                <td>900 €</td>
+                <td><span class="badge badge--ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Data Analyst</strong></td>
+                <td>Data Insights</td>
+                <td><span class="tag-pill tag-alt">Alternance</span></td>
+                <td><span class="tag-pill tag-bac">Bac+3</span></td>
+                <td><span class="tag-pill tag-lieu">Paris</span></td>
+                <td>1 200 €</td>
+                <td><span class="badge badge--ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Spécialiste Cyber</strong></td>
+                <td>SecureTech</td>
+                <td><span class="tag-pill tag-stage">Stage</span></td>
+                <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+                <td><span class="tag-pill tag-lieu">Lille</span></td>
+                <td>1 100 €</td>
+                <td><span class="badge badge--wait">En pause</span></td>
+              </tr>
+              <tr>
+                <td><strong>Ingénieur DevOps</strong></td>
+                <td>Cloud Solutions</td>
+                <td><span class="tag-pill tag-stage">Stage</span></td>
+                <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+                <td><span class="tag-pill tag-lieu">Marseille</span></td>
+                <td>1 300 €</td>
+                <td><span class="badge badge--ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Ingénieur IA</strong></td>
+                <td>AI Labs</td>
+                <td><span class="tag-pill tag-alt">Alternance</span></td>
+                <td><span class="tag-pill tag-bac">Bac+5</span></td>
+                <td><span class="tag-pill tag-lieu">Bordeaux</span></td>
+                <td>1 500 €</td>
+                <td><span class="badge badge--no">Expirée</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-head-row" style="margin-top:22px">
+          <h2 class="section-title-dash">Pilotes enregistrés</h2>
+          <a href="DashboardAGPilote.html" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="table-wrap">
+          <table class="dash-table">
+            <thead>
+              <tr><th>Nom</th><th>Prénom</th><th>Promotion</th><th>Étudiants</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Roussel</strong></td><td>Antoine</td><td>CPI A2 Informatique</td><td>27</td></tr>
+              <tr><td><strong>Jeanne</strong></td><td>Benoît</td><td>CPI A2 Généraliste</td><td>24</td></tr>
+              <tr><td><strong>Tout</strong></td><td>Firas</td><td>CPI A2 BTP</td><td>24</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+</body>
+</html>

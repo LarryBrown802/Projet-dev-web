@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/offreDejaPostule.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <title>Offres déjà postulées</title>
+</head>
+
+<body>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueil.html">LEMS</a>
+
+      <div class="navbar-right">
+        <a href="accueil.html">Accueil</a>
+        <a href="offres.html">Offres</a>
+        <a href="entreprise.html">Entreprise</a>
+        <a href="wishlist.html">Wishlist</a>
+
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="deconnexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="container">
+    <div class="page-head">
+      <h1>Offres déjà postulées</h1>
+      <p class="page-subtitle">Retrouve ici les offres auxquelles tu as déjà candidaté.</p>
+    </div>
+
+    <!-- ===== SEARCH ===== -->
+    <section class="search-wrap" aria-label="Recherche">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input
+          type="search"
+          placeholder="Rechercher un poste, une entreprise…"
+          aria-label="Rechercher une offre postulée"
+        />
+      </div>
+    </section>
+
+    <!-- ===== GRID ===== -->
+    <section class="applied-grid" aria-label="Liste des offres postulées">
+      <!-- CARD 1 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>Développeur Web</h2>
+            <p>Tech Solutions</p>
+          </div>
+
+          <div class="applied-status" title="Candidature envoyée">
+            <i class="fa-solid fa-paper-plane"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars" aria-label="Note 4 sur 5">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">recrutement@techsolutions.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 6 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              Poste orienté front/back, équipe agile, bonnes pratiques, code review…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="Développeur Web"
+            data-entreprise="Tech Solutions"
+            data-lieu="Lyon"
+            data-type="Stage"
+            data-niveau="Bac+2/3"
+            data-duree="3 mois"
+            data-remu="900€/mois"
+            data-entreprisedesc="..."
+            data-missions="Développer des écrans (HTML/CSS/JS);Corriger des bugs;Participer aux revues de code;Écrire des tests;Collaborer avec le designer"
+            data-icon="fa-laptop-code"
+            >
+            Voir plus
+        </button>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>Data Analyst</h2>
+            <p>Data Insights</p>
+          </div>
+
+          <div class="applied-status status--ok" title="Réponse reçue">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">jobs@datainsights.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 1 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              Analyse KPI, dashboards, automatisation de rapports, restitution…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="Data Analyst"
+            data-entreprise="Data Insights"
+            data-lieu="Paris"
+            data-type="Alternance"
+            data-niveau="Bac+3"
+            data-duree="12 mois"
+            data-remu="1200€/mois"
+            data-entreprisedesc="..."
+            data-missions="Préparer et nettoyer les données;Créer des dashboards;Analyser des KPI;Présenter les résultats;Automatiser des rapports"
+            data-icon="fa-chart-line"
+        >
+        Voir plus</button>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>Cybersécurité</h2>
+            <p>SecureTech</p>
+          </div>
+
+          <div class="applied-status status--wait" title="En attente">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">contact@securetech.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 3 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              Participation à des audits, analyse de vulnérabilités, rédaction…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="Cybersécurité"
+            data-entreprise="SecureTech"
+            data-lieu="Lille"
+            data-type="Stage"
+            data-niveau="Bac+4/5"
+            data-duree="6 mois"
+            data-remu="1100€/mois"
+            data-entreprisedesc="..."
+            data-missions="Participer à des audits;Analyser des vulnérabilités;Mettre en place des recommandations;Rédiger des rapports;Suivre des incidents"
+            data-icon="fa-shield-halved"
+            >
+            Voir plus
+        </button>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>Dev Mobile</h2>
+            <p>App Innovate</p>
+          </div>
+
+          <div class="applied-status status--no" title="Refusée">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">hr@appinnovate.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 5 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              Développement features, tests sur devices, collaboration UI/UX…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="Dev Mobile"
+            data-entreprise="App Innovate"
+            data-lieu="Toulouse"
+            data-type="Stage"
+            data-niveau="Bac+3"
+            data-duree="4 mois"
+            data-remu="1000€/mois"
+            data-entreprisedesc="..."
+            data-missions="Développer des fonctionnalités mobiles;Corriger des bugs;Participer aux revues de code;Collaborer avec le designer;Tester les applications"
+            data-icon="fa-mobile-alt"
+            >
+            Voir plus
+        </button>
+      </article>
+
+      <!-- CARD 5 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>Ingénieur IA</h2>
+            <p>AI Labs</p>
+          </div>
+
+          <div class="applied-status" title="Candidature envoyée">
+            <i class="fa-solid fa-paper-plane"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">careers@ailabs.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 5 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              Entraînement modèles, expérimentations, mise en prod progressive…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="Ingénieur IA"
+            data-entreprise="AI Labs"
+            data-lieu="Bordeaux"
+            data-type="Alternance"
+            data-niveau="Bac+5"
+            data-duree="12 mois"
+            data-remu="1500€/mois"
+            data-entreprisedesc="..."
+            data-missions="Concevoir des modèles d’IA;Entraîner des réseaux de neurones;Analyser les performances;Collaborer avec les équipes produit;Rester à jour sur les avancées en IA"
+            data-icon="fa-robot"
+            >
+            Voir plus
+        </button>
+      </article>
+
+      <!-- CARD 6 -->
+      <article class="applied-card">
+        <div class="applied-top">
+          <div class="applied-title">
+            <h2>DevOps</h2>
+            <p>Cloud Solutions</p>
+          </div>
+
+          <div class="applied-status status--wait" title="En attente">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+        </div>
+
+        <div class="applied-body">
+          <div class="row">
+            <span class="label">Avis</span>
+            <span class="value stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Email</span>
+            <span class="value">devops@cloudsolutions.fr</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Tel</span>
+            <span class="value">+33 4 00 00 00 00</span>
+          </div>
+
+          <div class="desc">
+            <span class="label">Description</span>
+            <p class="truncate-3">
+              CI/CD, infra cloud, observabilité, sécurité, support déploiements…
+            </p>
+          </div>
+        </div>
+
+        <button 
+            class="btn-voir btn-full open-dialog" 
+            type="button"
+            data-poste="DevOps"
+            data-entreprise="Cloud Solutions"
+            data-lieu="Marseille"
+            data-type="Stage"
+            data-niveau="Bac+4/5"
+            data-duree="6 mois"
+            data-remu="1300€/mois"
+            data-entreprisedesc="..."
+            data-missions="Automatiser les déploiements;Gérer les infrastructures cloud;Surveiller les performances;Collaborer avec les équipes de développement;Assurer la sécurité des systèmes"
+            data-icon="fa-cloud"
+            >
+            Voir plus
+        </button>
+      </article>
+    </section>
+
+    <!-- ===== PAGINATION ===== -->
+    <nav class="pagination" aria-label="Pagination des offres postulées">
+      <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
+        <button class="page-number active" type="button" aria-current="page">1</button>
+        <button class="page-number" type="button">2</button>
+        <button class="page-number" type="button">3</button>
+        <span class="page-ellipsis" aria-hidden="true">…</span>
+        <button class="page-number" type="button">10</button>
+      </div>
+
+      <button class="page-arrow" type="button" aria-label="Page suivante">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </nav>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Features</h4>
+          <a href="#">A propos</a>
+          <a href="#">Les offres</a>
+          <a href="#">F.A.Q</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Mentions légales</a>
+          <a href="#">Termes d'utilisations</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Socials</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-sep"></div>
+    <div class="footer-bottom">
+      <span>Copyright © L.E.M.S 2026</span>
+    </div>
+  </footer>
+
+  <!-- ===== DIALOG (POPUP) ===== -->
+  <dialog class="dialog" id="offreDialog" aria-labelledby="dialogTitle">
+    <form method="dialog" class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo" id="dialogIcon">
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div>
+          <h2 id="dialogTitle">Titre du poste</h2>
+          <p class="dialog-company" id="dialogCompany">Entreprise</p>
+        </div>
+
+        <button class="dialog-close" value="cancel" aria-label="Fermer">✕</button>
+      </header>
+
+      <div class="dialog-grid">
+        <section class="dialog-box">
+          <h3>Détails</h3>
+          <ul>
+            <li><strong>Lieu :</strong> <span id="dialogLieu"></span></li>
+            <li><strong>Type :</strong> <span id="dialogType"></span></li>
+            <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
+            <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
+            <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
+          </ul>
+        </section>
+
+        <section class="dialog-box">
+          <h3>Missions</h3>
+          <ul id="dialogMissions"></ul>
+        </section>
+
+        <section class="dialog-box dialog-full">
+          <h3>À propos de l’entreprise</h3>
+          <p id="dialogEntrepriseDesc"></p>
+        </section>
+      </div>
+
+      <footer class="dialog-actions">
+        <button class="btn-voir btn-full" type="button">Postuler</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>

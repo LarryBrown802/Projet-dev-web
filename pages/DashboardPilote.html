@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/pilote.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Tableau de bord — Pilote</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilPilote.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="DashboardPilote.html" class="active">Tableau de bord</a>
+        <a href="DashboardPGEntreprise.html">Entreprises</a>
+        <a href="DashboardPGOffre.html">Offres</a>
+        <a href="DashboardPGEtudiant.html">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Tableau de bord</h1>
+        <p class="page-subtitle">Bienvenue, <strong>M. Dupont</strong> — Pilote de promotion CPI A2 Informatique</p>
+      </div>
+      <div class="page-meta">
+        <div class="meta-card">
+          <span class="meta-label">Promotion</span>
+          <span class="meta-value">CPI A2 Informatique</span>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Étudiants</span>
+          <span class="meta-value">27</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <section class="kpi-grid" aria-label="Indicateurs clés">
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-blue"><i class="fa-solid fa-file-circle-check"></i></div>
+        <div>
+          <p class="kpi-label">Candidatures totales</p>
+          <p class="kpi-value">87</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-green"><i class="fa-solid fa-user-graduate"></i></div>
+        <div>
+          <p class="kpi-label">Étudiants ayant postulé</p>
+          <p class="kpi-value">18</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-yellow"><i class="fa-solid fa-building"></i></div>
+        <div>
+          <p class="kpi-label">Entreprises partenaires</p>
+          <p class="kpi-value">12</p>
+        </div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-icon kpi-purple"><i class="fa-solid fa-briefcase"></i></div>
+        <div>
+          <p class="kpi-label">Offres disponibles</p>
+          <p class="kpi-value">4</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Raccourcis -->
+    <section class="dash-section">
+      <h2 class="section-title-dash">Accès rapides</h2>
+      <div class="shortcut-grid">
+        <a href="DashboardPGEntreprise.html" class="shortcut-card">
+          <div class="shortcut-icon"><i class="fa-solid fa-building"></i></div>
+          <span>Gérer les entreprises</span>
+        </a>
+        <a href="DashboardPGOffre.html" class="shortcut-card">
+          <div class="shortcut-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <span>Gérer les offres</span>
+        </a>
+        <a href="DashboardPGEtudiant.html" class="shortcut-card">
+          <div class="shortcut-icon"><i class="fa-solid fa-user-graduate"></i></div>
+          <span>Gérer les étudiants</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Dernières candidatures -->
+    <section class="dash-section">
+      <div class="section-head-row">
+        <h2 class="section-title-dash">Dernières candidatures de ma promotion</h2>
+        <a href="DashboardPGEtudiant.html" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="table-wrap">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Étudiant</th>
+              <th>Offre</th>
+              <th>Entreprise</th>
+              <th>Date</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Enzo boucetta</strong></td>
+              <td>Développeur Web</td>
+              <td>Tech Solutions</td>
+              <td>20/02/2026</td>
+              <td><span class="badge badge--wait">En attente</span></td>
+            </tr>
+            <tr>
+              <td><strong>Julien Voltz</strong></td>
+              <td>Data Analyst</td>
+              <td>Data Insights</td>
+              <td>19/02/2026</td>
+              <td><span class="badge badge--ok">Accepté</span></td>
+            </tr>
+            <tr>
+              <td><strong>Michel Battoktok</strong></td>
+              <td>Cybersécurité</td>
+              <td>SecureTech</td>
+              <td>18/02/2026</td>
+              <td><span class="badge badge--no">Refusé</span></td>
+            </tr>
+            <tr>
+              <td><strong>Samuel Verel</strong></td>
+              <td>DevOps</td>
+              <td>Cloud Solutions</td>
+              <td>17/02/2026</td>
+              <td><span class="badge badge--wait">En attente</span></td>
+            </tr>
+            <tr>
+              <td><strong>Larry Brown</strong></td>
+              <td>Ingénieur IA</td>
+              <td>AI Labs</td>
+              <td>16/02/2026</td>
+              <td><span class="badge badge--wait">En attente</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+</body>
+</html>
