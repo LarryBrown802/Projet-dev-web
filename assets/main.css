@@ -1,0 +1,32 @@
+@import url(../assets/components/navbar.css);
+@import url(../assets/components/footer.css);
+
+/* =========================
+   THEME
+========================= */
+:root{
+    --bg: #F6F8F8;
+    --primary: #5E92A6;
+    --primary-dark: #4A7A8C;
+    
+    --text: #0f172a;
+    --textnav:#ffffff;
+    --muted: #64748b;
+
+    --card: #ffffff;
+    --border: rgba(15, 23, 42, 0.10);
+
+    --shadow-soft: 0 10px 24px rgba(0,0,0,.08);
+    --shadow: 0 16px 40px rgba(0,0,0,.12);
+
+    --radius: 18px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  font-family: Arial, sans-serif;
+  color: var(--text);
+}
