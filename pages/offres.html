@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/offre.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <title>Offres</title>
+</head>
+
+<body>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueil.html">LEMS</a>
+
+      <div class="navbar-right">
+        <a href="accueil.html">Accueil</a>
+        <a href="offres.html" class="active">Offres</a>
+        <a href="entreprise.html">Entreprise</a>
+        <a href="connexion.html" class="btn-connexion">Connexion</a>
+
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="deconnexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="container">
+    <div class="page-head">
+      <h1>Offres de stage et d'emploi</h1>
+      <p class="page-subtitle">Filtre à gauche, recherche au-dessus, puis clique sur “Voir plus”.</p>
+    </div>
+
+    <!-- ===== STATS (FULL WIDTH) ===== -->
+    <section class="stats stats--full">
+      <div class="stats-head">
+        <h2>Statistiques des offres</h2>
+        <p>Un aperçu rapide avant de postuler.</p>
+      </div>
+
+      <div class="carousel">
+        <button class="carousel-btn prev" type="button" aria-label="Précédent">‹</button>
+
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+            <article class="stat-card">
+              <h3>Répartition par durée</h3>
+              <ul>
+                <li>1–2 mois : 18%</li>
+                <li>3–4 mois : 42%</li>
+                <li>5–6 mois : 40%</li>
+              </ul>
+            </article>
+
+            <article class="stat-card">
+              <h3>Top wish-list</h3>
+              <ol>
+                <li>Dev Web (32 ajouts)</li>
+                <li>Data Analyst (25 ajouts)</li>
+                <li>Cybersécurité (19 ajouts)</li>
+              </ol>
+            </article>
+
+            <article class="stat-card">
+              <h3>Total d’offres en base</h3>
+              <p class="big-number">4</p>
+              <p class="sub">offres disponibles</p>
+            </article>
+
+            <article class="stat-card">
+              <h3>Moyenne de candidatures</h3>
+              <p class="big-number">7,3</p>
+              <p class="sub">candidatures / offre</p>
+            </article>
+          </div>
+        </div>
+
+        <button class="carousel-btn next" type="button" aria-label="Suivant">›</button>
+      </div>
+
+      <div class="carousel-dots" aria-label="Pagination">
+        <button class="dot active" type="button" aria-label="Carte 1"></button>
+        <button class="dot" type="button" aria-label="Carte 2"></button>
+        <button class="dot" type="button" aria-label="Carte 3"></button>
+        <button class="dot" type="button" aria-label="Carte 4"></button>
+      </div>
+    </section>
+
+    <!-- ===== ZONE : SIDEBAR + RESULTATS ===== -->
+    <div class="layout">
+
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="filters" aria-label="Filtres des offres">
+        <div class="filters-head">
+          <h2>Filtres</h2>
+          <p>Affiner la liste</p>
+        </div>
+
+        <!-- Lieu -->
+        <div class="filter-block">
+          <label class="filter-label" for="lieu">Lieu</label>
+          <select id="lieu">
+            <option value="">Tous</option>
+            <option value="Lyon">Lyon</option>
+            <option value="Paris">Paris</option>
+            <option value="Lille">Lille</option>
+            <option value="Toulouse">Toulouse</option>
+            <option value="Bordeaux">Bordeaux</option>
+            <option value="Marseille">Marseille</option>
+          </select>
+        </div>
+
+        <!-- Type -->
+        <div class="filter-block">
+          <span class="filter-label">Type</span>
+          <label class="check"><input type="checkbox" /> <span>Stage</span></label>
+          <label class="check"><input type="checkbox" /> <span>Alternance</span></label>
+        </div>
+
+        <!-- Niveau -->
+        <div class="filter-block">
+          <span class="filter-label">Niveau</span>
+          <label class="check"><input type="checkbox" /> <span>Bac+2/3</span></label>
+          <label class="check"><input type="checkbox" /> <span>Bac+3</span></label>
+          <label class="check"><input type="checkbox" /> <span>Bac+4/5</span></label>
+          <label class="check"><input type="checkbox" /> <span>Bac+5</span></label>
+        </div>
+
+        <!-- Catégories / métiers -->
+        <div class="filter-block">
+          <span class="filter-label">Domaines & métiers</span>
+
+          <details class="facet" open>
+            <summary class="facet-title">
+              <span><i class="fa-solid fa-laptop-code"></i> Informatique</span>
+              <span class="facet-count">6</span>
+            </summary>
+
+            <div class="facet-body">
+              <label class="check"><input type="checkbox" /> <span>Développement</span></label>
+              <label class="check"><input type="checkbox" /> <span>Réseau / Systèmes</span></label>
+              <label class="check"><input type="checkbox" /> <span>Cybersécurité</span></label>
+              <label class="check"><input type="checkbox" /> <span>Data / BI</span></label>
+              <label class="check"><input type="checkbox" /> <span>DevOps / Cloud</span></label>
+              <label class="check"><input type="checkbox" /> <span>Support IT</span></label>
+            </div>
+          </details>
+
+          <details class="facet">
+            <summary class="facet-title">
+              <span><i class="fa-solid fa-briefcase"></i> Généraliste</span>
+              <span class="facet-count">5</span>
+            </summary>
+
+            <div class="facet-body">
+              <label class="check"><input type="checkbox" /> <span>Gestion de projet</span></label>
+              <label class="check"><input type="checkbox" /> <span>RH</span></label>
+              <label class="check"><input type="checkbox" /> <span>Marketing / Com</span></label>
+              <label class="check"><input type="checkbox" /> <span>Finance</span></label>
+              <label class="check"><input type="checkbox" /> <span>Commercial</span></label>
+            </div>
+          </details>
+
+          <details class="facet">
+            <summary class="facet-title">
+              <span><i class="fa-solid fa-person-digging"></i> BTP</span>
+              <span class="facet-count">4</span>
+            </summary>
+
+            <div class="facet-body">
+              <label class="check"><input type="checkbox" /> <span>Conduite de travaux</span></label>
+              <label class="check"><input type="checkbox" /> <span>Génie civil</span></label>
+              <label class="check"><input type="checkbox" /> <span>Topographie</span></label>
+              <label class="check"><input type="checkbox" /> <span>HSE / Sécurité</span></label>
+            </div>
+          </details>
+        </div>
+
+        <div class="filters-actions">
+          <button class="btn-secondary" type="button">Réinitialiser</button>
+          <button class="btn-voir" type="button">Appliquer</button>
+        </div>
+      </aside>
+
+      <!-- ===== RESULTATS ===== -->
+      <section class="results" aria-label="Résultats des offres">
+        <div class="results-bar">
+          <div class="results-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher" />
+          </div>
+
+          <div class="results-sort">
+            <label class="sr-only" for="sort">Trier</label>
+            <i class="fa-solid fa-arrow-up-wide-short"></i>
+            <select id="sort">
+              <option value="pertinence">Pertinence</option>
+              <option value="recent">Plus récent</option>
+              <option value="remu">Rémunération</option>
+              <option value="az">A → Z</option>
+            </select>
+          </div>
+        </div>
+
+        <section class="offres" aria-label="Liste des offres">
+
+          <!-- OFFRE 1 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-laptop-code"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Développeur Web</h2>
+                <p class="offre-entreprise">Tech Solutions</p>
+              </div>
+
+              <!-- BOOKMARK (si tu veux aussi sur l'offre 1) -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div> <!-- ✅ IMPORTANT : fermeture de offre-top -->
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lyon</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+2/3</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 900€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">
+                Rejoignez notre équipe pour développer des applications web innovantes.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit…
+              </p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Développeur Web"
+              data-entreprise="Tech Solutions"
+              data-lieu="Lyon"
+              data-type="Stage"
+              data-niveau="Bac+2/3"
+              data-duree="3 mois"
+              data-remu="900€/mois"
+              data-entreprisedesc="Tech Solutions développe des plateformes web pour le retail et l’industrie. Équipe agile, code review et bonnes pratiques."
+              data-missions="Développer des écrans (HTML/CSS/JS);Corriger des bugs;Participer aux revues de code;Écrire des tests;Collaborer avec le designer"
+              data-icon="fa-laptop-code"
+            >
+              Voir plus
+            </button>
+          </article>
+
+
+          <!-- OFFRE 2 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Data Analyst</h2>
+                <p class="offre-entreprise">Data Insights</p>
+              </div>
+
+              <!-- BOOKMARK -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Paris</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Alternance</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+3</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1200€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">Analysez des données pour aider à la décision stratégique.</p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Data Analyst"
+              data-entreprise="Data Insights"
+              data-lieu="Paris"
+              data-type="Alternance"
+              data-niveau="Bac+3"
+              data-duree="12 mois"
+              data-remu="1200€/mois"
+              data-entreprisedesc="Data Insights accompagne des PME et grands comptes avec des dashboards et analyses décisionnelles."
+              data-missions="Préparer et nettoyer les données;Créer des dashboards;Analyser des KPI;Présenter les résultats;Automatiser des rapports"
+              data-icon="fa-chart-line"
+            >
+              Voir plus
+            </button>
+          </article>
+
+          <!-- OFFRE 3 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Spécialiste Cybersécurité</h2>
+                <p class="offre-entreprise">SecureTech</p>
+              </div>
+
+              <!-- BOOKMARK -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lille</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+4/5</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1100€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">Protégez les systèmes d’information contre les menaces et attaques.</p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Spécialiste Cybersécurité"
+              data-entreprise="SecureTech"
+              data-lieu="Lille"
+              data-type="Stage"
+              data-niveau="Bac+4/5"
+              data-duree="6 mois"
+              data-remu="1100€/mois"
+              data-entreprisedesc="SecureTech audite et sécurise les SI (réseau, applicatif, cloud). Culture sécurité et documentation. Encadrement par des consultants seniors, focus sur les bonnes pratiques et la qualité des livrables."
+              data-missions="Participer à des audits;Analyser des vulnérabilités;Mettre en place des recommandations;Rédiger des rapports;Suivre des incidents"
+              data-icon="fa-shield-halved"
+            >
+              Voir plus
+            </button>
+          </article>
+
+          <!-- OFFRE 4 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Développeur Mobile</h2>
+                <p class="offre-entreprise">App Innovate</p>
+              </div>
+
+              <!-- BOOKMARK -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Toulouse</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+3</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1000€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">Participez au développement d’applications mobiles innovantes.</p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Développeur Mobile"
+              data-entreprise="App Innovate"
+              data-lieu="Toulouse"
+              data-type="Stage"
+              data-niveau="Bac+3"
+              data-duree="4 mois"
+              data-remu="1000€/mois"
+              data-entreprisedesc="App Innovate conçoit des applications mobiles pour les secteurs de la santé et du sport. Environnement dynamique, sprints courts, tests sur appareils réels, code review et suivi qualité."
+              data-missions="Développer des fonctionnalités mobiles;Corriger des bugs;Participer aux revues de code;Collaborer avec le designer;Tester les applications"
+              data-icon="fa-mobile-screen-button"
+            >
+              Voir plus
+            </button>
+          </article>
+
+          <!-- OFFRE 5 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Ingénieur IA</h2>
+                <p class="offre-entreprise">AI Labs</p>
+              </div>
+
+              <!-- BOOKMARK -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Bordeaux</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Alternance</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+5</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1500€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">Concevez et entraînez des modèles d’intelligence artificielle.</p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Ingénieur IA"
+              data-entreprise="AI Labs"
+              data-lieu="Bordeaux"
+              data-type="Alternance"
+              data-niveau="Bac+5"
+              data-duree="12 mois"
+              data-remu="1500€/mois"
+              data-entreprisedesc="AI Labs développe des solutions d’IA pour l’industrie et les services. Culture R&amp;D, prototypage rapide, expérimentation, et mise en production progressive avec l’équipe produit."
+              data-missions="Concevoir des modèles d’IA;Entraîner des réseaux de neurones;Analyser les performances;Collaborer avec les équipes produit;Rester à jour sur les avancées en IA"
+              data-icon="fa-robot"
+            >
+              Voir plus
+            </button>
+          </article>
+
+          <!-- OFFRE 6 -->
+          <article class="offre-card">
+            <div class="offre-top">
+              <div class="offre-logo">
+                <i class="fa-solid fa-cogs"></i>
+              </div>
+
+              <div class="offre-title">
+                <h2 class="offre-poste">Ingénieur DevOps</h2>
+                <p class="offre-entreprise">Cloud Solutions</p>
+              </div>
+
+              <!-- BOOKMARK -->
+              <label class="ui-bookmark" title="Ajouter aux favoris">
+                <input type="checkbox" aria-label="Ajouter aux favoris" />
+                <div class="bookmark" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="offre-tags">
+              <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Marseille</span>
+              <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+              <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+4/5</span>
+              <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1300€/mois</span>
+            </div>
+
+            <div class="offre-desc">
+              <strong>Description</strong>
+              <p class="truncate-3">Automatisez les déploiements et assurez la fiabilité des systèmes.</p>
+            </div>
+
+            <button
+              class="btn-voir btn-full open-dialog"
+              type="button"
+              data-poste="Ingénieur DevOps"
+              data-entreprise="Cloud Solutions"
+              data-lieu="Marseille"
+              data-type="Stage"
+              data-niveau="Bac+4/5"
+              data-duree="6 mois"
+              data-remu="1300€/mois"
+              data-entreprisedesc="Cloud Solutions accompagne les entreprises dans leur transformation cloud avec des solutions sur mesure. Fort focus sur l’automatisation, l’observabilité, la sécurité et la fiabilité en production."
+              data-missions="Automatiser les déploiements;Gérer les infrastructures cloud;Surveiller les performances;Collaborer avec les équipes de développement;Assurer la sécurité des systèmes"
+              data-icon="fa-cogs"
+            >
+              Voir plus
+            </button>
+          </article>
+
+          <!-- Pagination -->
+          <nav class="pagination" aria-label="Pagination des offres">
+            <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
+              <button class="page-number active" type="button" aria-current="page">1</button>
+              <button class="page-number" type="button">2</button>
+              <button class="page-number" type="button">3</button>
+              <span class="page-ellipsis" aria-hidden="true">…</span>
+              <button class="page-number" type="button">10</button>
+            </div>
+
+            <button class="page-arrow" type="button" aria-label="Page suivante">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </nav>
+
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Features</h4>
+          <a href="#">A propos</a>
+          <a href="#">Les offres</a>
+          <a href="#">F.A.Q</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Mentions légales</a>
+          <a href="#">Termes d'utilisations</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Socials</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-sep"></div>
+    <div class="footer-bottom">
+      <span>Copyright © L.E.M.S 2026</span>
+    </div>
+  </footer>
+
+  <!-- ===== DIALOG (POPUP) ===== -->
+  <dialog class="dialog" id="offreDialog" aria-labelledby="dialogTitle">
+    <form method="dialog" class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo" id="dialogIcon">
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div>
+          <h2 id="dialogTitle">Titre du poste</h2>
+          <p class="dialog-company" id="dialogCompany">Entreprise</p>
+        </div>
+
+        <button class="dialog-close" value="cancel" aria-label="Fermer">✕</button>
+      </header>
+
+      <div class="dialog-grid">
+        <section class="dialog-box">
+          <h3>Détails</h3>
+          <ul>
+            <li><strong>Lieu :</strong> <span id="dialogLieu"></span></li>
+            <li><strong>Type :</strong> <span id="dialogType"></span></li>
+            <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
+            <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
+            <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
+          </ul>
+        </section>
+
+        <section class="dialog-box">
+          <h3>Missions</h3>
+          <ul id="dialogMissions"></ul>
+        </section>
+
+        <section class="dialog-box dialog-full">
+          <h3>À propos de l’entreprise</h3>
+          <p id="dialogEntrepriseDesc"></p>
+        </section>
+      </div>
+
+      <footer class="dialog-actions">
+        <button class="btn-voir btn-full" type="button">Postuler</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>
