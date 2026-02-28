@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Pilotes — Admin</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilAdmin.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="dashboardAdmin.html">Tableau de bord</a>
+        <a href="DashboardAGPilote.html" class="active">Pilotes</a>
+        <a href="DashboardAGOffre.html">Offres</a>
+        <a href="DashboardAGEntreprise.html">Entreprises</a>
+        <a href="DashboardAGEtudiant.html">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil"><i class="fa-solid fa-user"></i></a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Gestion des pilotes</h1>
+        <p class="page-subtitle">Créer, modifier ou supprimer des comptes pilotes de promotion.</p>
+      </div>
+      <button class="btn-add" type="button" id="btnCreatePilote">
+        <i class="fa-solid fa-plus"></i> Nouveau pilote
+      </button>
+    </div>
+
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Rechercher un pilote par nom ou prénom…" />
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Promotion</th>
+            <th>Étudiants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Roussel</strong></td><td>Antoine</td><td>CPI A2 Informatique</td><td>24</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit" title="Modifier" data-nom="Roussel" data-prenom="Antoine" data-promo="CPI A2 Informatique"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete" title="Supprimer" data-nom="Roussel" data-prenom="Antoine"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Jeanne</strong></td><td>Benoît</td><td>CPI A2 Généraliste</td><td>28</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit" title="Modifier" data-nom="Jeanne" data-prenom="Benoît" data-promo="CPI A2 Généraliste"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete" title="Supprimer" data-nom="Jeanne" data-prenom="Benoît"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Tout</strong></td><td>Firas</td><td>CPI A2 BTP</td><td>20</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit" title="Modifier" data-nom="Tout" data-prenom="Firas" data-promo="CPI A2 BTP"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete" title="Supprimer" data-nom="Tout" data-prenom="Firas"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Leroy</strong></td><td>Sophie</td><td>XX</td><td>22</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit" title="Modifier" data-nom="Leroy" data-prenom="Sophie" data-promo="BTS SIO 2026"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete" title="Supprimer" data-nom="Leroy" data-prenom="Sophie"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Moreau</strong></td><td>Thomas</td><td>XX</td><td>30</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit" title="Modifier" data-nom="Moreau" data-prenom="Thomas" data-promo="BUT Info 2026"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete" title="Supprimer" data-nom="Moreau" data-prenom="Thomas"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="pagination">
+      <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active">1</button>
+        <button class="page-number">2</button>
+      </div>
+      <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+  <!-- DIALOG : CRÉER pilote -->
+  <dialog class="dialog dialog--sm" id="dialogCreatePilote">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+        <div><h2>Nouveau pilote</h2><p class="dialog-company">Créer un compte pilote.</p></div>
+        <button class="dialog-close" id="btnCloseCreatePilote" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formCreatePilote" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="cPNom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cPNom" type="text" placeholder="Nom de famille" required /></div>
+          </div>
+          <div class="field">
+            <label for="cPPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cPPrenom" type="text" placeholder="Prénom" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cPPromo">Promotion</label>
+          <div class="input"><i class="fa-solid fa-graduation-cap"></i><input id="cPPromo" type="text" placeholder="Ex : BTS SIO 2026" /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelCreatePilote">Annuler</button>
+          <button class="btn-voir" type="submit">Créer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG : MODIFIER pilote -->
+  <dialog class="dialog dialog--sm" id="dialogEditPilote">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+        <div><h2>Modifier le pilote</h2><p class="dialog-company" id="editPiloteSubtitle">—</p></div>
+        <button class="dialog-close" id="btnCloseEditPilote" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formEditPilote" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="ePNom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="ePNom" type="text" required /></div>
+          </div>
+          <div class="field">
+            <label for="ePPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="ePPrenom" type="text" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ePPromo">Promotion</label>
+          <div class="input"><i class="fa-solid fa-graduation-cap"></i><input id="ePPromo" type="text" /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelEditPilote">Annuler</button>
+          <button class="btn-voir" type="submit">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG : SUPPRIMER pilote -->
+  <dialog class="dialog dialog--sm" id="dialogDeletePilote">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+        <div><h2>Supprimer un pilote</h2><p class="dialog-company" id="deletePiloteName">—</p></div>
+        <button class="dialog-close" id="btnCloseDeletePilote" type="button">✕</button>
+      </header>
+      <div class="dialog-confirm-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce compte pilote ? Cette action est <strong>irréversible</strong>.</p>
+      </div>
+      <footer class="dialog-actions">
+        <button class="btn-secondary" type="button" id="btnCancelDeletePilote">Annuler</button>
+        <button class="btn-danger" type="button" id="btnConfirmDeletePilote">Supprimer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    function open$(id){ document.getElementById(id).showModal(); }
+    function close$(id){ document.getElementById(id).close(); }
+    function backdrop(id){
+      const d = document.getElementById(id);
+      d.addEventListener('click', e => {
+        const r = d.getBoundingClientRect();
+        if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) d.close();
+      });
+    }
+    ['dialogCreatePilote','dialogEditPilote','dialogDeletePilote'].forEach(backdrop);
+
+    document.getElementById('btnCreatePilote').onclick = () => open$('dialogCreatePilote');
+    document.getElementById('btnCloseCreatePilote').onclick = () => close$('dialogCreatePilote');
+    document.getElementById('btnCancelCreatePilote').onclick = () => close$('dialogCreatePilote');
+    document.getElementById('formCreatePilote').onsubmit = e => { e.preventDefault(); alert('Pilote créé (démo)'); close$('dialogCreatePilote'); };
+
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('editPiloteSubtitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        document.getElementById('ePNom').value    = btn.dataset.nom    || '';
+        document.getElementById('ePPrenom').value = btn.dataset.prenom || '';
+        document.getElementById('ePPromo').value  = btn.dataset.promo  || '';
+        open$('dialogEditPilote');
+      };
+    });
+    document.getElementById('btnCloseEditPilote').onclick = () => close$('dialogEditPilote');
+    document.getElementById('btnCancelEditPilote').onclick = () => close$('dialogEditPilote');
+    document.getElementById('formEditPilote').onsubmit = e => { e.preventDefault(); alert('Modifications enregistrées (démo)'); close$('dialogEditPilote'); };
+
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('deletePiloteName').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        open$('dialogDeletePilote');
+      };
+    });
+    document.getElementById('btnCloseDeletePilote').onclick = () => close$('dialogDeletePilote');
+    document.getElementById('btnCancelDeletePilote').onclick = () => close$('dialogDeletePilote');
+    document.getElementById('btnConfirmDeletePilote').onclick = () => { alert('Pilote supprimé (démo)'); close$('dialogDeletePilote'); };
+  </script>
+</body>
+</html>
