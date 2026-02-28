@@ -1,0 +1,387 @@
+/* =========================
+   PAGE
+========================= */
+.container{
+  width: min(1200px, 94%);
+  margin: 26px auto 60px;
+}
+
+.page-head h1{
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+.page-subtitle{
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+.search-wrap{
+  margin: 0 0 18px;
+}
+
+.search-bar{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 14px 16px;
+}
+
+.search-bar i{
+  color: var(--muted);
+}
+
+.search-bar input{
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* =========================
+   GRID
+========================= */
+.applied-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1100px){
+  .applied-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px){
+  .applied-grid{ grid-template-columns: 1fr; }
+}
+
+/* =========================
+   CARD
+========================= */
+.applied-card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.applied-top{
+  background: rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 14px 14px;
+
+  display: grid;
+  grid-template-columns: 1fr 44px;
+  align-items: center;
+  gap: 12px;
+}
+
+.applied-title h2{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.applied-title p{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* petit badge/icon à droite */
+.applied-status{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+
+  background: rgba(94, 146, 166, 0.18);
+  border: 1px solid rgba(94, 146, 166, 0.25);
+  color: var(--primary-dark);
+}
+
+.applied-status.status--ok{
+  background: rgba(31, 139, 59, 0.14);
+  border-color: rgba(31, 139, 59, 0.22);
+  color: rgb(31, 139, 59);
+}
+.applied-status.status--wait{
+  background: rgba(217, 211, 29, 0.18);
+  border-color: rgba(217, 211, 29, 0.25);
+  color: #6b5b00;
+}
+.applied-status.status--no{
+  background: rgba(255, 59, 48, 0.14);
+  border-color: rgba(255, 59, 48, 0.22);
+  color: rgb(255, 59, 48);
+}
+
+.applied-body{
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.row{
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.label{
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.value{
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.stars{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #d5a400;
+}
+
+.desc p{
+  margin: 6px 0 0;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* =========================
+   Bouton (reprend l’esprit de ta page offres)
+========================= */
+.btn-voir{
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease;
+  margin: 0 14px 14px;
+}
+
+.btn-voir:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.btn-full{
+  width: calc(100% - 28px);
+  margin-top: auto;
+}
+
+/* =========================
+   Pagination (copie compatible avec tes styles)
+========================= */
+.pagination{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0 0;
+}
+
+.page-numbers{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+.page-number{
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(15, 23, 42, 0.03);
+  color: var(--text);
+  border-radius: 999px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease, background .12s ease, border-color .12s ease;
+}
+
+.page-number:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.page-number.active{
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: rgba(0,0,0,0);
+  color: #fff;
+}
+
+.page-ellipsis{
+  padding: 0 6px;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.page-arrow{
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.page-arrow:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.page-arrow:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================
+   <dialog> POPUP
+========================= */
+.dialog{
+  width: min(900px, 92vw);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  box-shadow: 0 24px 70px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+
+.dialog::backdrop{
+  background: rgba(0,0,0,.55);
+}
+
+.dialog-inner{
+  margin: 0;
+  padding: 18px;
+  background: var(--card);
+}
+
+.dialog-header{
+  display: grid;
+  grid-template-columns: 64px 1fr 42px;
+  gap: 14px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.dialog-logo{
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(94,146,166,.22), rgba(74,122,140,.10));
+  border: 1px solid rgba(94,146,166,.25);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+
+.dialog-company{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.dialog-close{
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.dialog-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.dialog-box{
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.dialog-box h3{ margin: 0 0 10px; }
+
+.dialog-box ul{
+  margin: 0;
+  padding-left: 18px;
+}
+
+.dialog-full{ grid-column: 1 / -1; }
+
+.dialog-actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+@media (max-width: 640px){
+  .dialog-grid{ grid-template-columns: 1fr; }
+  .dialog-actions{ flex-direction: column; }
+  .dialog-actions .btn-voir{ width: 100%; }
+}
+
+/* =========================
+   UTIL
+========================= */
+.truncate-3{
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
