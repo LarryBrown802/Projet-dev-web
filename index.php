@@ -38,6 +38,7 @@ $router->map('GET', '/offres', 'OffreController#listePublic', 'offres_public');
 $router->map('GET', '/entreprises', 'EntrepriseController#listePublic', 'entreprises_public');
 $router->map('GET', '/connexion', 'AuthController#connexion', 'connexion');
 $router->map('POST', '/connexion', 'AuthController#loginProcess', 'connexion_post');
+$router->map('GET', '/deconnexion', 'AuthController#deconnexion', 'deconnexion');
 // Pages Étudiant (Bientôt)
 $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
 

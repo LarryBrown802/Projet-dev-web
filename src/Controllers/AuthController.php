@@ -40,4 +40,18 @@ class AuthController {
             exit;
         }
     }
+
+    // Handles the GET request: Logs the user out
+    public function deconnexion() {
+        // 1. Empty all session variables
+        session_unset();
+        
+        // 2. Destroy the session
+        session_destroy();
+        
+        // 3. Redirect back to the public home page
+        header('Location: /');
+        exit;
+    }
+
 }
