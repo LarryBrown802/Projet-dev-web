@@ -1,0 +1,194 @@
+{# 1. On appelle le squelette de base #}
+{% extends 'base.html.twig' %}
+
+{# 2. On définit le titre de l'onglet #}
+{% block title %}LEMS - Mes candidatures{% endblock %}
+
+{# 3. CSS spécifique à cette page #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/offreDejaPostule.css">
+{% endblock %}
+
+{# 4. Contenu principal #}
+{% block content %}
+    <main class="container">
+        <div class="page-head">
+            <h1>Offres déjà postulées</h1>
+            <p class="page-subtitle">Retrouve ici les offres auxquelles tu as déjà candidaté.</p>
+        </div>
+
+        <section class="search-wrap" aria-label="Recherche">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search" placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher une offre postulée" />
+            </div>
+        </section>
+
+        <section class="applied-grid" aria-label="Liste des offres postulées">
+            
+            {# NOTE POUR L'ÉQUIPE : Boucle Twig à insérer ici -> {% for candidature in candidatures %} #}
+            
+            <article class="applied-card">
+                <div class="applied-top">
+                    <div class="applied-title">
+                        <h2>Développeur Web</h2>
+                        <p>Tech Solutions</p>
+                    </div>
+                    <div class="applied-status" title="Candidature envoyée">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                </div>
+
+                <div class="applied-body">
+                    <div class="row">
+                        <span class="label">Avis</span>
+                        <span class="value stars" aria-label="Note 4 sur 5">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Email</span>
+                        <span class="value">recrutement@techsolutions.fr</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Tel</span>
+                        <span class="value">+33 6 00 00 00 00</span>
+                    </div>
+                    <div class="desc">
+                        <span class="label">Description</span>
+                        <p class="truncate-3">Poste orienté front/back, équipe agile, bonnes pratiques, code review…</p>
+                    </div>
+                </div>
+
+                <button class="btn-voir btn-full open-dialog" type="button"
+                    data-poste="Développeur Web" data-entreprise="Tech Solutions" data-lieu="Lyon" data-type="Stage" data-niveau="Bac+2/3" data-duree="3 mois" data-remu="900€/mois" data-entreprisedesc="..." data-missions="Développer des écrans (HTML/CSS/JS);Corriger des bugs;Participer aux revues de code;Écrire des tests;Collaborer avec le designer" data-icon="fa-laptop-code">
+                    Voir plus
+                </button>
+            </article>
+
+            <article class="applied-card">
+                <div class="applied-top">
+                    <div class="applied-title">
+                        <h2>Data Analyst</h2>
+                        <p>Data Insights</p>
+                    </div>
+                    <div class="applied-status status--ok" title="Réponse reçue">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+
+                <div class="applied-body">
+                    <div class="row">
+                        <span class="label">Avis</span>
+                        <span class="value stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Email</span>
+                        <span class="value">jobs@datainsights.fr</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Tel</span>
+                        <span class="value">+33 1 00 00 00 00</span>
+                    </div>
+                    <div class="desc">
+                        <span class="label">Description</span>
+                        <p class="truncate-3">Analyse KPI, dashboards, automatisation de rapports, restitution…</p>
+                    </div>
+                </div>
+
+                <button class="btn-voir btn-full open-dialog" type="button"
+                    data-poste="Data Analyst" data-entreprise="Data Insights" data-lieu="Paris" data-type="Alternance" data-niveau="Bac+3" data-duree="12 mois" data-remu="1200€/mois" data-entreprisedesc="..." data-missions="Préparer et nettoyer les données;Créer des dashboards;Analyser des KPI;Présenter les résultats;Automatiser des rapports" data-icon="fa-chart-line">
+                    Voir plus
+                </button>
+            </article>
+
+            {# FIN DE LA BOUCLE {% endfor %} #}
+        </section>
+
+        <nav class="pagination" aria-label="Pagination des offres postulées">
+            <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
+                <button class="page-number active" type="button" aria-current="page">1</button>
+                <button class="page-number" type="button">2</button>
+            </div>
+            <button class="page-arrow" type="button" aria-label="Page suivante">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </nav>
+    </main>
+
+    <dialog class="dialog" id="offreDialog" aria-labelledby="dialogTitle">
+        <form method="dialog" class="dialog-inner">
+            <header class="dialog-header">
+                <div class="dialog-logo" id="dialogIcon">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <div>
+                    <h2 id="dialogTitle">Titre du poste</h2>
+                    <p class="dialog-company" id="dialogCompany">Entreprise</p>
+                </div>
+                <button class="dialog-close" value="cancel" aria-label="Fermer">✕</button>
+            </header>
+
+            <div class="dialog-grid">
+                <section class="dialog-box">
+                    <h3>Détails</h3>
+                    <ul>
+                        <li><strong>Lieu :</strong> <span id="dialogLieu"></span></li>
+                        <li><strong>Type :</strong> <span id="dialogType"></span></li>
+                        <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
+                        <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
+                        <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
+                    </ul>
+                </section>
+                <section class="dialog-box">
+                    <h3>Missions</h3>
+                    <ul id="dialogMissions"></ul>
+                </section>
+                <section class="dialog-box dialog-full">
+                    <h3>À propos de l’entreprise</h3>
+                    <p id="dialogEntrepriseDesc"></p>
+                </section>
+            </div>
+
+            <footer class="dialog-actions">
+                {# NOTE : Bouton grisé car l'étudiant a DÉJÀ postulé #}
+                <button class="btn-secondary btn-full" type="button" disabled>Candidature envoyée</button>
+            </footer>
+        </form>
+    </dialog>
+{% endblock %}
+
+{# Le script global est géré dans base.html.twig, mais s'il y a du JS spécifique à cette modale, il faut l'ajouter ici #}
+{% block javascripts %}
+    <script>
+        // JS Spécifique pour ouvrir la modale avec les bonnes données (similaire à script.js)
+        const dialog = document.getElementById('offreDialog');
+        const openBtns = document.querySelectorAll('.open-dialog');
+
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('dialogTitle').textContent = btn.dataset.poste;
+                document.getElementById('dialogCompany').textContent = btn.dataset.entreprise;
+                document.getElementById('dialogLieu').textContent = btn.dataset.lieu;
+                document.getElementById('dialogType').textContent = btn.dataset.type;
+                document.getElementById('dialogNiveau').textContent = btn.dataset.niveau;
+                document.getElementById('dialogDuree').textContent = btn.dataset.duree;
+                document.getElementById('dialogRemu').textContent = btn.dataset.remu;
+                document.getElementById('dialogEntrepriseDesc').textContent = btn.dataset.entreprisedesc;
+                
+                const ul = document.getElementById('dialogMissions');
+                ul.innerHTML = '';
+                (btn.dataset.missions||'').split(';').filter(Boolean).forEach(m => {
+                    const li = document.createElement('li'); li.textContent = m; ul.appendChild(li);
+                });
+                
+                dialog.showModal();
+            });
+        });
+    </script>
+{% endblock %}

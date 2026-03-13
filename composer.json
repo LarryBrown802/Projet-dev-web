@@ -1,0 +1,8 @@
+{
+    "name": "lems/projet-web",
+    "type": "project",
+    "require": {
+        "altorouter/altorouter": "^2.0",
+        "twig/twig": "^3.23"
+    }
+}

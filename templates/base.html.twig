@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    
+    {% block stylesheets %}{% endblock %}
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>{% block title %}LEMS{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-brand" href="/">LEMS</a>
+
+            <div class="navbar-right">
+                <a href="/" class="active">Accueil</a>
+                <a href="/offres">Offres</a>
+                <a href="/entreprise">Entreprise</a>
+                <a href="/connexion" class="btn-connexion">Connexion</a> 
+
+                <div class="profile">
+                    <a class="profile-btn" href="/profil" aria-label="Profil">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+
+                    <div class="profile-menu" role="menu">
+                        <a href="/profil" role="menuitem">Mon profil</a>
+                        <a href="/parametres" role="menuitem">Paramètres</a>
+                        <hr>
+                        <a href="/deconnexion" role="menuitem" class="deco">Déconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main> 
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-logo">LEMS</div>
+
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h4>Features</h4>
+                    <a href="/a-propos">A propos</a>
+                    <a href="/offres">Les offres</a>
+                    <a href="/faq">F.A.Q</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="/mentions-legales">Mentions légales</a>
+                    <a href="/termes">Termes d'utilisations</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-sep"></div>
+        <div class="footer-bottom">
+            <span>Copyright © L.E.M.S 2026</span>
+        </div>
+    </footer>
+
+    <script src="/assets/script.js"></script>
+    
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

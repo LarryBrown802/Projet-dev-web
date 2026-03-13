@@ -1,0 +1,188 @@
+{# 1. On appelle le squelette de base #}
+{% extends 'base.html.twig' %}
+
+{# 2. On définit le titre de l'onglet #}
+{% block title %}LEMS - Ma Wishlist{% endblock %}
+
+{# 3. CSS spécifique à cette page #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/wishlist.css">
+{% endblock %}
+
+{# 4. Contenu principal #}
+{% block content %}
+    <main class="container">
+        <header class="page-head">
+            <div class="page-title">
+                <h1>Ma wishlist</h1>
+                <p class="page-subtitle">Retrouve toutes les offres que tu as ajoutées en favoris.</p>
+            </div>
+
+            <div class="page-meta" aria-label="Statistiques wishlist">
+                <div class="meta-card">
+                    <span class="meta-label">Favoris</span>
+                    <span class="meta-value">3</span> {# Plus tard : {{ favoris|length }} #}
+                </div>
+                <div class="meta-card">
+                    <span class="meta-label">Nouveaux</span>
+                    <span class="meta-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="results-bar" aria-label="Recherche et tri">
+            <div class="results-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" placeholder="Rechercher dans mes favoris…" aria-label="Rechercher dans la wishlist" />
+            </div>
+
+            <div class="results-sort">
+                <label class="sr-only" for="sort">Trier</label>
+                <i class="fa-solid fa-arrow-up-wide-short"></i>
+                <select id="sort">
+                    <option value="recent">Plus récent</option>
+                    <option value="pertinence">Pertinence</option>
+                    <option value="remu">Rémunération</option>
+                    <option value="az">A → Z</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="wishlist-grid" aria-label="Liste des favoris">
+
+            {# NOTE POUR L'ÉQUIPE : Voici comment gérer le cas où il n'y a pas de favoris avec Twig #}
+            {# {% if favoris is empty %} #}
+                {# {% else %} #}
+                {# {% for offre in favoris %} #}
+
+                <article class="offre-card">
+                    <div class="offre-top">
+                        <div class="offre-logo">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <div class="offre-title">
+                            <h2 class="offre-poste">Développeur Web</h2>
+                            <p class="offre-entreprise">Tech Solutions</p>
+                        </div>
+
+                        <label class="ui-bookmark">
+                            <input type="checkbox" checked>
+                            <div class="bookmark">
+                                <svg viewBox="0 0 32 32">
+                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="offre-tags">
+                        <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lyon</span>
+                        <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+                        <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+2/3</span>
+                        <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 900€/mois</span>
+                    </div>
+
+                    <div class="offre-desc">
+                        <strong>Description</strong>
+                        <p class="truncate-3">Rejoignez notre équipe pour développer des applications web innovantes.</p>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn-secondary" type="button">Retirer</button>
+                        <button class="btn-voir" type="button">Voir plus</button>
+                    </div>
+                </article>
+
+                <article class="offre-card">
+                    <div class="offre-top">
+                        <div class="offre-logo">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="offre-title">
+                            <h2 class="offre-poste">Data Analyst</h2>
+                            <p class="offre-entreprise">Data Insights</p>
+                        </div>
+                        <label class="ui-bookmark">
+                            <input type="checkbox" checked>
+                            <div class="bookmark">
+                                <svg viewBox="0 0 32 32">
+                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="offre-tags">
+                        <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Paris</span>
+                        <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Alternance</span>
+                        <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+3</span>
+                        <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1200€/mois</span>
+                    </div>
+
+                    <div class="offre-desc">
+                        <strong>Description</strong>
+                        <p class="truncate-3">Analysez des données pour aider à la décision stratégique.</p>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn-secondary" type="button">Retirer</button>
+                        <button class="btn-voir" type="button">Voir plus</button>
+                    </div>
+                </article>
+
+                <article class="offre-card">
+                    <div class="offre-top">
+                        <div class="offre-logo">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="offre-title">
+                            <h2 class="offre-poste">Spécialiste Cybersécurité</h2>
+                            <p class="offre-entreprise">SecureTech</p>
+                        </div>
+                        <label class="ui-bookmark">
+                            <input type="checkbox" checked>
+                            <div class="bookmark">
+                                <svg viewBox="0 0 32 32">
+                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="offre-tags">
+                        <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lille</span>
+                        <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
+                        <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+4/5</span>
+                        <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1100€/mois</span>
+                    </div>
+
+                    <div class="offre-desc">
+                        <strong>Description</strong>
+                        <p class="truncate-3">Protégez les systèmes d’information contre les menaces et attaques.</p>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn-secondary" type="button">Retirer</button>
+                        <button class="btn-voir" type="button">Voir plus</button>
+                    </div>
+                </article>
+
+                {# {% endfor %} #}
+            {# {% endif %} #}
+
+            <nav class="pagination" aria-label="Pagination des favoris">
+                <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
+                    <button class="page-number active" type="button" aria-current="page">1</button>
+                    <button class="page-number" type="button">2</button>
+                </div>
+                <button class="page-arrow" type="button" aria-label="Page suivante">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </nav>
+
+        </section>
+    </main>
+{% endblock %}

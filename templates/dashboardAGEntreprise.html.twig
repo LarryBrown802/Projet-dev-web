@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Entreprises — Admin</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilAdmin.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="dashboardAdmin.html">Tableau de bord</a>
+        <a href="DashboardAGPilote.html">Pilotes</a>
+        <a href="DashboardAGOffre.html">Offres</a>
+        <a href="DashboardAGEntreprise.html" class="active">Entreprises</a>
+        <a href="DashboardAGEtudiant.html">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil"><i class="fa-solid fa-user"></i></a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Gestion des entreprises</h1>
+        <p class="page-subtitle">Créer, modifier, évaluer ou supprimer des fiches entreprises.</p>
+      </div>
+      <button class="btn-add" type="button" id="btnCreateEntreprise">
+        <i class="fa-solid fa-plus"></i> Nouvelle entreprise
+      </button>
+    </div>
+
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Rechercher une entreprise par nom…" />
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Entreprise</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Stagiaires ayant postulé</th>
+            <th>Note moy.</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tech Solutions</strong></td>
+            <td>contact@techsolutions.fr</td><td>01 23 45 67 89</td><td>6</td>
+            <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> 4/5</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Tech Solutions" data-email="contact@techsolutions.fr" data-tel="01 23 45 67 89" data-desc="Entreprise spécialisée dans le développement web et mobile."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Tech Solutions"><i class="fa-solid fa-star"></i></button>
+              <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Tech Solutions"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Data Insights</strong></td>
+            <td>contact@datainsights.fr</td><td>01 34 56 78 90</td><td>3</td>
+            <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> 5/5</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Data Insights" data-email="contact@datainsights.fr" data-tel="01 34 56 78 90" data-desc="Leader de l'analyse de données décisionnelles."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Data Insights"><i class="fa-solid fa-star"></i></button>
+              <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Data Insights"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>SecureTech</strong></td>
+            <td>contact@securetech.fr</td><td>01 45 67 89 01</td><td>4</td>
+            <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i> 3/5</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="SecureTech" data-email="contact@securetech.fr" data-tel="01 45 67 89 01" data-desc="Experts en cybersécurité et protection des systèmes d'information."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="SecureTech"><i class="fa-solid fa-star"></i></button>
+              <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="SecureTech"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Cloud Solutions</strong></td>
+            <td>contact@cloudsol.fr</td><td>01 56 78 90 12</td><td>2</td>
+            <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> 4/5</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Cloud Solutions" data-email="contact@cloudsol.fr" data-tel="01 56 78 90 12" data-desc="Solutions cloud et DevOps pour les entreprises en transformation numérique."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Cloud Solutions"><i class="fa-solid fa-star"></i></button>
+              <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Cloud Solutions"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>AI Labs</strong></td>
+            <td>contact@ailabs.fr</td><td>01 67 89 01 23</td><td>5</td>
+            <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> 5/5</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="AI Labs" data-email="contact@ailabs.fr" data-tel="01 67 89 01 23" data-desc="Développement de solutions d'intelligence artificielle pour l'industrie."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="AI Labs"><i class="fa-solid fa-star"></i></button>
+              <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="AI Labs"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="pagination">
+      <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active">1</button>
+        <button class="page-number">2</button>
+        <button class="page-number">3</button>
+      </div>
+      <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+  <!-- DIALOG CRÉER -->
+  <dialog class="dialog dialog--sm" id="dialogCreateEnt">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-building"></i></div>
+        <div><h2>Nouvelle entreprise</h2><p class="dialog-company">Remplissez la fiche.</p></div>
+        <button class="dialog-close" id="btnCloseCreateEnt" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formCreateEnt" novalidate>
+        <div class="field-group">
+          <div class="field"><label for="cENom">Nom <span class="required">*</span></label><div class="input"><i class="fa-solid fa-building"></i><input id="cENom" type="text" placeholder="Nom de l'entreprise" required /></div></div>
+          <div class="field"><label for="cEEmail">Email <span class="required">*</span></label><div class="input"><i class="fa-solid fa-envelope"></i><input id="cEEmail" type="email" placeholder="contact@entreprise.fr" required /></div></div>
+        </div>
+        <div class="field"><label for="cETel">Téléphone</label><div class="input"><i class="fa-solid fa-phone"></i><input id="cETel" type="tel" placeholder="01 23 45 67 89" /></div></div>
+        <div class="field"><label for="cEDesc">Description</label><textarea id="cEDesc" rows="3" placeholder="Activité, valeurs…"></textarea></div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelCreateEnt">Annuler</button>
+          <button class="btn-voir" type="submit">Créer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG MODIFIER -->
+  <dialog class="dialog dialog--sm" id="dialogEditEnt">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+        <div><h2>Modifier l'entreprise</h2><p class="dialog-company" id="editEntName">—</p></div>
+        <button class="dialog-close" id="btnCloseEditEnt" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formEditEnt" novalidate>
+        <div class="field-group">
+          <div class="field"><label for="eENom">Nom <span class="required">*</span></label><div class="input"><i class="fa-solid fa-building"></i><input id="eENom" type="text" required /></div></div>
+          <div class="field"><label for="eEEmail">Email <span class="required">*</span></label><div class="input"><i class="fa-solid fa-envelope"></i><input id="eEEmail" type="email" required /></div></div>
+        </div>
+        <div class="field"><label for="eETel">Téléphone</label><div class="input"><i class="fa-solid fa-phone"></i><input id="eETel" type="tel" /></div></div>
+        <div class="field"><label for="eEDesc">Description</label><textarea id="eEDesc" rows="3"></textarea></div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelEditEnt">Annuler</button>
+          <button class="btn-voir" type="submit">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG ÉVALUER -->
+  <dialog class="dialog dialog--sm" id="dialogRateEnt">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo" style="background:rgba(245,197,24,.15);border-color:rgba(245,197,24,.3);color:#c8a000"><i class="fa-solid fa-star"></i></div>
+        <div><h2>Évaluer l'entreprise</h2><p class="dialog-company" id="rateEntName">—</p></div>
+        <button class="dialog-close" id="btnCloseRateEnt" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formRateEnt" novalidate>
+        <div class="field">
+          <label>Note <span class="required">*</span></label>
+          <div class="star-picker" role="group">
+            <input type="radio" name="note" id="s5" value="5"/><label for="s5"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="note" id="s4" value="4"/><label for="s4"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="note" id="s3" value="3"/><label for="s3"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="note" id="s2" value="2"/><label for="s2"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="note" id="s1" value="1"/><label for="s1"><i class="fa-solid fa-star"></i></label>
+          </div>
+        </div>
+        <div class="field"><label for="rateComment">Commentaire (optionnel)</label><textarea id="rateComment" rows="3" placeholder="Votre retour…"></textarea></div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelRateEnt">Annuler</button>
+          <button class="btn-voir" type="submit">Envoyer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG SUPPRIMER -->
+  <dialog class="dialog dialog--sm" id="dialogDeleteEnt">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+        <div><h2>Supprimer l'entreprise</h2><p class="dialog-company" id="deleteEntName">—</p></div>
+        <button class="dialog-close" id="btnCloseDeleteEnt" type="button">✕</button>
+      </header>
+      <div class="dialog-confirm-body"><p>Êtes-vous sûr de vouloir supprimer cette entreprise ? Cette action est <strong>irréversible</strong>.</p></div>
+      <footer class="dialog-actions">
+        <button class="btn-secondary" type="button" id="btnCancelDeleteEnt">Annuler</button>
+        <button class="btn-danger" type="button" id="btnConfirmDeleteEnt">Supprimer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    function open$(id){ document.getElementById(id).showModal(); }
+    function close$(id){ document.getElementById(id).close(); }
+    function backdrop(id){ const d=document.getElementById(id); d.addEventListener('click',e=>{ const r=d.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) d.close(); }); }
+    ['dialogCreateEnt','dialogEditEnt','dialogRateEnt','dialogDeleteEnt'].forEach(backdrop);
+
+    document.getElementById('btnCreateEntreprise').onclick = () => open$('dialogCreateEnt');
+    document.getElementById('btnCloseCreateEnt').onclick = () => close$('dialogCreateEnt');
+    document.getElementById('btnCancelCreateEnt').onclick = () => close$('dialogCreateEnt');
+    document.getElementById('formCreateEnt').onsubmit = e => { e.preventDefault(); alert('Entreprise créée (démo)'); close$('dialogCreateEnt'); };
+
+    document.querySelectorAll('.btn-edit-ent').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('editEntName').textContent = btn.dataset.nom;
+        document.getElementById('eENom').value   = btn.dataset.nom   || '';
+        document.getElementById('eEEmail').value  = btn.dataset.email || '';
+        document.getElementById('eETel').value    = btn.dataset.tel   || '';
+        document.getElementById('eEDesc').value   = btn.dataset.desc  || '';
+        open$('dialogEditEnt');
+      };
+    });
+    document.getElementById('btnCloseEditEnt').onclick = () => close$('dialogEditEnt');
+    document.getElementById('btnCancelEditEnt').onclick = () => close$('dialogEditEnt');
+    document.getElementById('formEditEnt').onsubmit = e => { e.preventDefault(); alert('Modifications enregistrées (démo)'); close$('dialogEditEnt'); };
+
+    document.querySelectorAll('.btn-rate-ent').forEach(btn => {
+      btn.onclick = () => { document.getElementById('rateEntName').textContent = btn.dataset.nom; open$('dialogRateEnt'); };
+    });
+    document.getElementById('btnCloseRateEnt').onclick = () => close$('dialogRateEnt');
+    document.getElementById('btnCancelRateEnt').onclick = () => close$('dialogRateEnt');
+    document.getElementById('formRateEnt').onsubmit = e => { e.preventDefault(); alert('Évaluation envoyée (démo)'); close$('dialogRateEnt'); };
+
+    document.querySelectorAll('.btn-delete-ent').forEach(btn => {
+      btn.onclick = () => { document.getElementById('deleteEntName').textContent = btn.dataset.nom; open$('dialogDeleteEnt'); };
+    });
+    document.getElementById('btnCloseDeleteEnt').onclick = () => close$('dialogDeleteEnt');
+    document.getElementById('btnCancelDeleteEnt').onclick = () => close$('dialogDeleteEnt');
+    document.getElementById('btnConfirmDeleteEnt').onclick = () => { alert('Entreprise supprimée (démo)'); close$('dialogDeleteEnt'); };
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{# 1. On appelle le squelette de base #}
+{% extends 'base.html.twig' %}
+
+{# 2. On définit le titre de l'onglet #}
+{% block title %}LEMS - Connexion{% endblock %}
+
+{# 3. On charge uniquement le CSS de la page de connexion #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/connexion.css">
+{% endblock %}
+
+{# 4. On injecte le contenu au centre de la page #}
+{% block content %}
+    <main class="auth-wrap">
+        <section class="auth-card" aria-label="Formulaire de connexion">
+            <header class="auth-head">
+                <div class="auth-badge" aria-hidden="true">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <div>
+                    <h1>Connexion</h1>
+                    <p>Accède à ton espace et retrouve tes candidatures.</p>
+                </div>
+            </header>
+
+            {# Le formulaire pointe vers la route /connexion gérée par AltoRouter #}
+            <form class="auth-form" action="/connexion" method="post">
+                
+                <div class="field">
+                    <label for="email">Adresse email</label>
+                    <div class="input">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input id="email" name="email" type="email" placeholder="ex: mon.mail@viacesi.fr" autocomplete="email" required />
+                    </div>
+                </div>
+
+                <div class="field" style="margin-top: 15px;">
+                    <div class="label-row">
+                        <label for="password">Mot de passe</label>
+                    </div>
+                    <div class="input">
+                        <i class="fa-solid fa-lock"></i>
+                        <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+                    </div>
+                </div>
+
+                <label class="check" style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" name="remember" />
+                    <span>Se souvenir de moi</span>
+                </label>
+
+                <button class="btn-primary" type="submit" style="margin-top: 25px;">Se connecter</button>
+            </form>
+        </section>
+    </main>
+{% endblock %}

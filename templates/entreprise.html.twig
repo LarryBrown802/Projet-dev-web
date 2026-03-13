@@ -1,0 +1,92 @@
+{# 1. On appelle le squelette de base #}
+{% extends 'base.html.twig' %}
+
+{# 2. On définit le titre de l'onglet #}
+{% block title %}LEMS - Entreprises partenaires{% endblock %}
+
+{# 3. CSS spécifique à la page entreprise #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/entreprise.css">
+{% endblock %}
+
+{# 4. Contenu principal #}
+{% block content %}
+    <main>
+        <section class="entreprise-section">
+            
+            {# NOTE POUR L'ÉQUIPE : Boucle Twig à insérer ici -> {% for entreprise in entreprises %} #}
+            
+            <article class="entreprise-card">
+                <div class="entreprise-logo"></div>
+                <h3>Tech Solutions</h3>
+                
+                <div class="avis">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+                
+                <div class="contact-info">
+                    <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
+                    <p><i class="fa-solid fa-envelope"></i> contact@techsolutions.fr</p>
+                </div>
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
+                <p>6 élèves ont déjà postulé</p>
+                
+                <a href="/offres?entreprise=tech-solutions" class="btn-voir">Découvrir les offres</a>
+            </article>
+
+            <article class="entreprise-card">
+                <div class="entreprise-logo"></div>
+                <h3>Data Insights</h3>
+                
+                <div class="avis">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                
+                <div class="contact-info">
+                    <p><i class="fa-solid fa-phone"></i> 01 34 56 78 90</p>
+                    <p><i class="fa-solid fa-envelope"></i> contact@datainsights.fr</p>
+                </div>
+                
+                <p>Leader de l'analyse de données décisionnelles. Donec vel sapien eget nunc efficitur.</p>
+                <p>3 élèves ont déjà postulé</p>
+                
+                <a href="/offres?entreprise=data-insights" class="btn-voir">Découvrir les offres</a>
+            </article>
+
+            <article class="entreprise-card">
+                <div class="entreprise-logo"></div>
+                <h3>SecureTech</h3>
+                
+                <div class="avis">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                </div>
+                
+                <div class="contact-info">
+                    <p><i class="fa-solid fa-phone"></i> 01 45 67 89 01</p>
+                    <p><i class="fa-solid fa-envelope"></i> contact@securetech.fr</p>
+                </div>
+                
+                <p>Experts en cybersécurité et protection des systèmes d'information.</p>
+                <p>4 élèves ont déjà postulé</p>
+                
+                <a href="/offres?entreprise=securetech" class="btn-voir">Découvrir les offres</a>
+            </article>
+
+            {# FIN DE LA BOUCLE {% endfor %} #}
+
+        </section>
+    </main>
+{% endblock %}

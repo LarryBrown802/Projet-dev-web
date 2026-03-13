@@ -1,0 +1,137 @@
+{# On hérite du fichier base #}
+{% extends 'base.html.twig' %}
+
+{# On définit le titre de la page #}
+{% block title %}LEMS - Accueil{% endblock %}
+
+{# On peut ajouter le CSS spécifique de l'accueil ici #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/accueil.css">
+{% endblock %}
+
+{# On injecte le contenu de l'accueil #}
+{% block content %}
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+                <span class="hero-text">Notre job, vous aider</span>
+                <span class="hero-text">à choisir le vôtre parmi</span>
+                <span class="hero-big">4 offres</span>
+            </div>
+        </div>
+
+        <form class="hero-search" action="/recherche" method="get">
+            <div class="searchbox">
+                <div class="searchbox-field">
+                    <label for="q">QUOI ?</label>
+                    <input id="q" name="q" type="text" placeholder="Métier, entreprise, compétence..." />
+                </div>
+
+                <div class="searchbox-divider"></div>
+
+                <div class="searchbox-field">
+                    <label for="where">OÙ ?</label>
+                    <input id="where" name="where" type="text" placeholder="Ville, département, code postal..." />
+                </div>
+
+                <button class="searchbox-btn" type="submit" aria-label="Rechercher">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <h2>Dernières offres mise en ligne</h2>
+
+    <section class="offers-grid">
+        <aside class="list">
+            <div class="list-cards">
+                
+                {# TODO Plus tard : Remplacer ces cartes en dur par une boucle Twig (for offre in offres) #}
+                <article class="mini-card">
+                    <div class="mini-logo"></div>
+                    <div>
+                        <p class="mini-title">Entreprise<br>Intitulé du poste</p>
+                        <p class="mini-info">
+                            <i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>Stage
+                            <i class="fa-solid fa-location-dot"></i>Lieu
+                            <i class="fa-solid fa-ranking-star"></i>Niveau
+                        </p>
+                    </div>
+                    <label class="ui-bookmark"><input type="checkbox"><div class="bookmark"><i class="fa-regular fa-bookmark"></i></div></label>
+                    <div class="separateur"></div>
+                    <div class="mini-meta"><span class="pill">5h</span></div>
+                </article>
+
+                <article class="mini-card">
+                    <div class="mini-logo"></div>
+                    <div>
+                        <p class="mini-title">Entreprise<br>Intitulé du poste</p>
+                        <p class="mini-sub">Stage • Lieu • Niveau</p>
+                    </div>
+                    <label class="ui-bookmark"><input type="checkbox"><div class="bookmark"><i class="fa-regular fa-bookmark"></i></div></label>
+                    <div class="separateur"></div>
+                    <div class="mini-meta"><span class="pill">1j</span></div>
+                </article>
+
+            </div>
+
+            <div class="list-footer">
+                <a href="/offres" class="btn-voirplus">Voir plus</a>
+            </div>
+        </aside>
+        
+        <article class="detail">
+            <div class="detail-head">
+                <div class="detail-img"></div>
+                <div>
+                    <p class="detail-title">Titre de l’entreprise</p>
+                    <p class="detail-sub">Intitulé du poste</p>
+                </div>
+            </div>
+
+            <div class="tags">
+                <span class="tag t-yellow">Rouen</span>
+                <span class="tag t-red">Stage</span>
+                <span class="tag t-purple">11</span>
+                <span class="tag t-green">Bac+2</span>
+            </div>
+
+            <div class="tabs" role="tablist">
+                <button class="tab-btn active" type="button" data-tab="desc">Description</button>
+                <button class="tab-btn" type="button" data-tab="company">Entreprise</button>
+            </div>
+
+            <div class="detail-body">
+                <div class="tab-content active" id="tab-desc">
+                    <p class="section-title">Description du poste</p>
+                    <p class="para">Lorem ipsum dolor sit amet...</p>
+                    <p class="section-title">Prérequis</p>
+                    <p class="para">Maîtrise de Twig requise...</p>
+                </div>
+                <div class="tab-content" id="tab-company" hidden>
+                    <p class="section-title">À propos de l’entreprise</p>
+                    <p class="para">...infos entreprise...</p>
+                </div>
+            </div>
+
+            <div class="detail-footer">
+                <button class="apply-btn" type="button">Postuler</button>
+            </div>
+        </article>
+    </section>
+
+    <div class="faq-title">F.A.Q</div>
+    <section class="faq">
+        <details>
+            <summary>Question numéro 1 ?<span class="plus"></span></summary>
+            <p>Lorem ipsum dolor sit amet...</p>
+        </details>
+        <details>
+            <summary>Question numéro 2 ?<span class="plus"></span></summary>
+            <p>Lorem ipsum dolor sit amet...</p>
+        </details>
+    </section>
+{% endblock %}
