@@ -42,7 +42,7 @@ class OfferController
         );
 
         echo $this->twig->render('offer.html.twig', [
-            'current_page' => 'offres',
+            'current_page' => 'offers',
             'offers' => $offers,
             'search' => $search,
             'location' => $location,
