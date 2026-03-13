@@ -13,7 +13,7 @@ require "vendor/autoload.php";
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment($loader, [
     'debug' => true // Permet d'afficher les erreurs Twig en phase de développement
-]);
+]); 
 
 // ASTUCE DE CHEF : On donne accès à la variable $_SESSION à tous les fichiers Twig.
 // C'est grâce à ça que notre base.html.twig saura s'il faut afficher le menu Admin, Pilote ou Étudiant !
@@ -37,7 +37,7 @@ $router->map('GET', '/', 'MainController#accueil', 'accueil');
 $router->map('GET', '/offres', 'OffreController#listePublic', 'offres_public');
 $router->map('GET', '/entreprises', 'EntrepriseController#listePublic', 'entreprises_public');
 $router->map('GET', '/connexion', 'AuthController#connexion', 'connexion');
-
+$router->map('POST', '/connexion', 'AuthController#loginProcess', 'connexion_post');
 // Pages Étudiant (Bientôt)
 $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
 

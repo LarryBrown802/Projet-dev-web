@@ -1,5 +1,7 @@
-@import url(../assets/components/navbar.css);
-@import url(../assets/components/footer.css);
+/* assets/main.css */
+
+@import url(components/navbar.css);
+@import url(components/footer.css);
 
 /* =========================
    THEME
