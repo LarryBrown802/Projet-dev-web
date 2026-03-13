@@ -1,0 +1,211 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/accueil.css">
+{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+                <span class="hero-text">Notre job, vous aider</span>
+                <span class="hero-text">à choisir le vôtre parmi</span>
+                <span class="hero-big">{{ latestOffers|length }} offres</span>
+            </div>
+        </div>
+
+        <form class="hero-search" action="/index.php" method="get">
+            <input type="hidden" name="page" value="offres">
+
+            <div class="searchbox">
+                <div class="searchbox-field">
+                    <label for="q">QUOI ?</label>
+                    <input
+                        id="q"
+                        name="search"
+                        type="text"
+                        placeholder="Métier, entreprise, compétence..."
+                    />
+                </div>
+
+                <div class="searchbox-divider"></div>
+
+                <div class="searchbox-field">
+                    <label for="where">OÙ ?</label>
+                    <input
+                        id="where"
+                        name="location"
+                        type="text"
+                        placeholder="Ville, département, code postal..."
+                    />
+                </div>
+
+                <button class="searchbox-btn" type="submit" aria-label="Rechercher">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <h2>Dernières offres mise en ligne</h2>
+
+    <section class="offers-grid">
+        <!-- Liste à gauche -->
+        <aside class="list">
+            <div class="list-cards">
+                {% for offer in latestOffers %}
+                    <article class="mini-card">
+                        <div class="mini-logo"></div>
+
+                        <div>
+                            <p class="mini-title">
+                                {{ offer.entreprise }}<br>
+                                {{ offer.poste }}
+                            </p>
+
+                            <p class="mini-info">
+                                <i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>{{ offer.type }}
+                                <i class="fa-solid fa-location-dot"></i>{{ offer.lieu }}
+                                <i class="fa-solid fa-ranking-star"></i>{{ offer.niveau }}
+                            </p>
+                        </div>
+
+                        <label class="ui-bookmark">
+                            <input type="checkbox">
+                            <div class="bookmark">
+                                <svg viewBox="0 0 32 32">
+                                    <g>
+                                        <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </label>
+
+                        <div class="separateur"></div>
+
+                        <div class="mini-meta">
+                            <span class="pill">{{ offer.duree }}</span>
+                        </div>
+                    </article>
+                {% else %}
+                    <p>Aucune offre disponible pour le moment.</p>
+                {% endfor %}
+            </div>
+
+            <div class="list-footer">
+                <a href="/index.php?page=offres" class="btn-voirplus">Voir plus</a>
+            </div>
+        </aside>
+
+        <!-- Détail à droite -->
+        {% if latestOffers is not empty %}
+            {% set firstOffer = latestOffers|first %}
+
+            <article class="detail">
+                <div class="detail-head">
+                    <div class="detail-img"></div>
+                    <div>
+                        <p class="detail-title">{{ firstOffer.entreprise }}</p>
+                        <p class="detail-sub">{{ firstOffer.poste }}</p>
+                    </div>
+
+                    <label class="ui-bookmark">
+                        <input type="checkbox">
+                        <div class="bookmark">
+                            <svg viewBox="0 0 32 32">
+                                <g>
+                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="tags">
+                    <span class="tag t-yellow">{{ firstOffer.lieu }}</span>
+                    <span class="tag t-red">{{ firstOffer.type }}</span>
+                    <span class="tag t-purple">{{ firstOffer.duree }}</span>
+                    <span class="tag t-green">{{ firstOffer.niveau }}</span>
+                </div>
+
+                <div class="tabs" role="tablist" aria-label="Détails de l'offre">
+                    <button class="tab-btn active" type="button" data-tab="desc" role="tab" aria-selected="true">
+                        Description
+                    </button>
+                    <button class="tab-btn" type="button" data-tab="company" role="tab" aria-selected="false">
+                        Entreprise
+                    </button>
+                </div>
+
+                <div class="detail-body">
+                    <div class="tab-content active" id="tab-desc" data-content="desc" role="tabpanel">
+                        <p class="section-title">Description du poste</p>
+                        <p class="para">
+                            {{ firstOffer.description }}
+                        </p>
+
+                        <p class="section-title">Prérequis</p>
+                        <p class="para">
+                            Niveau demandé : {{ firstOffer.niveau }}<br>
+                            Type de contrat : {{ firstOffer.type }}<br>
+                            Durée : {{ firstOffer.duree }}
+                        </p>
+                    </div>
+
+                    <div class="tab-content" id="tab-company" data-content="company" role="tabpanel" hidden>
+                        <p class="section-title">À propos de l’entreprise</p>
+                        <p class="para">{{ firstOffer.entrepriseDesc }}</p>
+
+                        <p class="section-title">Technos / environnement</p>
+                        <p class="para">
+                            Environnement professionnel, missions variées et accompagnement sur le poste.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="detail-footer">
+                    <button class="apply-btn" type="button">Postuler</button>
+                </div>
+            </article>
+        {% endif %}
+    </section>
+
+    <div class="faq-title">F.A.Q</div>
+
+    <section class="faq">
+        <details>
+            <summary>
+                Comment rechercher une offre ?
+                <span class="plus"></span>
+            </summary>
+            <p>
+                Utilisez la barre de recherche en haut de la page d’accueil pour rechercher par métier,
+                entreprise ou localisation.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                Comment postuler ?
+                <span class="plus"></span>
+            </summary>
+            <p>
+                Une fois l’offre consultée, cliquez sur le bouton “Postuler” pour accéder à la candidature.
+            </p>
+        </details>
+
+        <details>
+            <summary>
+                Puis-je filtrer les offres ?
+                <span class="plus"></span>
+            </summary>
+            <p>
+                Oui, la page Offres permet de filtrer les résultats par lieu, type de contrat et niveau.
+            </p>
+        </details>
+    </section>
+{% endblock %}
