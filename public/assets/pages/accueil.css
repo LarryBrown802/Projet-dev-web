@@ -13,7 +13,7 @@
   min-height: 420px;
   border-radius: 14px;
   overflow: hidden;  
-  background: url("../img/hellowork.jpg") center/cover no-repeat;
+  background: url("../../img/hellowork.jpg") center/cover no-repeat;
 }
 
 /* voile sombre pour lisibilité */
@@ -662,4 +662,5 @@ details[open] summary .plus::before{
   .tags{
     grid-template-columns: repeat(2, 1fr);
   }
+
 }*/
