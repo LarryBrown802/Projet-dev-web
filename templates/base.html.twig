@@ -17,25 +17,48 @@
         <nav class="navbar">
             <a class="navbar-brand" href="/">LEMS</a>
 
-            <div class="navbar-right">
-                <a href="/" class="active">Accueil</a>
-                <a href="/offres">Offres</a>
-                <a href="/entreprise">Entreprise</a>
-                <a href="/connexion" class="btn-connexion">Connexion</a> 
+<div class="navbar-right">
+    
+    {# SI LA PERSONNE CONNECTEE EST UN ADMINISTRATEUR #}
+    {% if session.profil == 'Administrateur' %}
+        <a href="/dashboard-admin">Tableau de bord</a>
+        <a href="/admin/pilotes">Pilotes</a>
+        <a href="/admin/offres">Offres</a>
+        <a href="/admin/entreprises">Entreprises</a>
+        <a href="/admin/etudiants">Étudiants</a>
+    
+    {# SI LA PERSONNE CONNECTEE EST UN PILOTE #}
+    {% elseif session.profil == 'Pilote' %}
+        <a href="/dashboard-pilote">Tableau de bord</a>
+        <a href="/pilote/etudiants">Mes Étudiants</a>
+        <a href="/offres">Offres</a>
+        <a href="/entreprise">Entreprises</a>
 
-                <div class="profile">
-                    <a class="profile-btn" href="/profil" aria-label="Profil">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
+    {# SI C'EST UN ETUDIANT OU UN VISITEUR (Par défaut) #}
+    {% else %}
+        <a href="/" class="active">Accueil</a>
+        <a href="/offres">Offres</a>
+        <a href="/entreprise">Entreprises</a>
+    {% endif %}
 
-                    <div class="profile-menu" role="menu">
-                        <a href="/profil" role="menuitem">Mon profil</a>
-                        <a href="/parametres" role="menuitem">Paramètres</a>
-                        <hr>
-                        <a href="/deconnexion" role="menuitem" class="deco">Déconnexion</a>
-                    </div>
-                </div>
+    {# On affiche "Connexion" s'il n'est pas connecté, sinon on affiche son profil #}
+    {% if session.profil is defined %}
+        <div class="profile">
+            <a class="profile-btn" href="/profil" aria-label="Profil">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <div class="profile-menu" role="menu">
+                <a href="/profil" role="menuitem">Mon profil</a>
+                <a href="/parametres" role="menuitem">Paramètres</a>
+                <hr>
+                <a href="/deconnexion" role="menuitem" class="deco">Déconnexion</a>
             </div>
+        </div>
+    {% else %}
+        <a href="/connexion" class="btn-connexion">Connexion</a> 
+    {% endif %}
+
+</div>
         </nav>
     </header>
 

@@ -1,0 +1,133 @@
+/* =========================
+   NAVBAR
+========================= */
+.navbar{
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+  border-radius: 16px;
+  margin: 10px;
+}
+
+.navbar-brand{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: .6px;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.navbar-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header nav a{
+  color: var(--textnav);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .12s ease, background-color .12s ease;
+  font-weight: 700;
+}
+
+.navbar-right .btn-connexion > a:hover{
+  background: rgba(255,255,255,.15);
+  transform: translateY(-1px);
+}
+
+nav a.active{
+  background: rgba(255,255,255,.95);
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+/* Connexion */
+.btn-connexion{
+  background: #111;
+  color: var(--textnav);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+
+/* Profil dropdown */
+.profile{
+  position: relative;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-btn{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.16);
+  border: 2px solid rgba(255,255,255,.25);
+  color: var(--textnav);
+  text-decoration: none;
+}
+.profile-btn i{ font-size: 14px; }
+
+.profile-menu{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 190px;
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 14px;
+  padding: 8px;
+  display: none;
+  z-index: 999;
+  box-shadow: var(--shadow-soft);
+}
+
+.profile::after{
+  content:"";
+  position:absolute;
+  left:-10px; right:-10px;
+  top: 100%;
+  height: 12px;
+}
+
+.profile-menu a{
+  display: block;
+  padding: 10px 10px;
+  border-radius: 12px;
+  color: #111;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+}
+.profile-menu a:hover{ background: #f3f4f6; }
+.profile-menu hr{
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 6px 0;
+}
+.profile-menu .deco{ color: #c0392b; }
+
+.profile:hover .profile-menu,
+.profile:focus-within .profile-menu{
+  display: block;
+}
