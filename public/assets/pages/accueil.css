@@ -13,7 +13,7 @@
   min-height: 420px;
   border-radius: 14px;
   overflow: hidden;  
-  background: url("../img/hellowork.jpg") center/cover no-repeat;
+  background: url("hellowork.jpg") center/cover no-repeat;
 }
 
 /* voile sombre pour lisibilité */

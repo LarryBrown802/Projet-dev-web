@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {# CSS global #}
     <link rel="stylesheet" href="/assets/main.css">
 
-    {# CSS spécifique à la page #}
     {% block stylesheets %}{% endblock %}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,39 +13,68 @@
     <title>{% block title %}LEMS{% endblock %}</title>
 </head>
 <body>
-    <!-- ===== HEADER / NAVBAR ===== -->
     <header>
         <nav class="navbar">
             <a class="navbar-brand" href="/index.php?page=accueil">LEMS</a>
 
             <div class="navbar-right">
+
+                {# ===== LIENS COMMUNS À TOUS ===== #}
                 <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
-                <a href="/index.php?page=offres" class="{% if current_page == 'offres' %}active{% endif %}">Offres</a>
-                <a href="/index.php?page=entreprise" class="{% if current_page == 'entreprise' %}active{% endif %}">Entreprise</a>
-                <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
 
-                <div class="profile">
-                    <a class="profile-btn" href="/index.php?page=profil" aria-label="Profil">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
+                {# ===== LIENS ADMIN ===== #}
+                {% if session.role == 'admin' %}
+                    <a href="/index.php?page=dashboard-administrateur"     class="{% if current_page == 'dashboard-administrateur' %}active{% endif %}">Dashboard</a>
+                    <a href="/index.php?page=dashboard-administrateur-offres" class="{% if current_page == 'dashboard-administrateur-offres' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=gestion-entreprises"  class="{% if current_page == 'entreprises' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=gestion-pilotes"   class="{% if current_page == 'pilotes' %}active{% endif %}">Pilotes</a>
+                    <a href="/index.php?page=gestion-etudiants"   class="{% if current_page == 'etudiants' %}active{% endif %}">Étudiants</a>
 
-                    <div class="profile-menu" role="menu">
-                        <a href="/index.php?page=profil" role="menuitem">Mon profil</a>
-                        <a href="/index.php?page=parametres" role="menuitem">Paramètres</a>
-                        <hr>
-                        <a href="/index.php?page=deconnexion" role="menuitem" class="deco">Déconnexion</a>
+                {# ===== LIENS PILOTE ===== #}
+                {% elseif session.role == 'pilote' %}
+                    <a href="/index.php?page=dashboard-pilote"     class="{% if current_page == 'dashboard-pilote' %}active{% endif %}">Dashboard</a>
+                    <a href="/index.php?page=dashboard-pilote-offres" class="{% if current_page == 'dashboard-pilote-offres' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=gestion-entreprises"  class="{% if current_page == 'entreprises' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=gestion-etudiants"   class="{% if current_page == 'etudiants' %}active{% endif %}">Étudiants</a>
+
+                {# ===== LIENS ETUDIANT ===== #}
+                {% elseif session.role == 'etudiant' %}
+                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                    <a href="/index.php?page=wishlist"  class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
+
+                {# ===== NON CONNECTÉ ===== #}
+                {% else %}
+                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                {% endif %}
+
+                {# ===== BOUTON CONNEXION / PROFIL ===== #}
+                {% if session.role is not defined or session.role is empty %}
+                    <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
+                {% else %}
+                    <div class="profile">
+                        <a class="profile-btn" href="/index.php?page=profil" aria-label="Profil">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+
+                        <div class="profile-menu" role="menu">
+                            <a href="/index.php?page=profil"      role="menuitem">Mon profil</a>
+                            <a href="/index.php?page=parametres"  role="menuitem">Paramètres</a>
+                            <hr>
+                            <a href="/index.php?page=logout" role="menuitem" class="deco">Déconnexion</a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
+
             </div>
         </nav>
     </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <!-- ===== FOOTER ===== -->
     <footer>
         <div class="footer-wrap">
             <div class="footer-logo">LEMS</div>

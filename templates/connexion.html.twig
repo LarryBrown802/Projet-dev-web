@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/connexion.css">
+{% endblock %}
+
+{% block content %}
+    <main class="auth-wrap">
+        <section class="auth-card" aria-label="Formulaire de connexion">
+            <header class="auth-head">
+                <div class="auth-badge" aria-hidden="true">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <div>
+                    <h1>Connexion</h1>
+                    <p>Accède à ton espace et retrouve tes candidatures.</p>
+                </div>
+            </header>
+
+            <form class="auth-form" action="/index.php?page=connexion" method="post">
+                <div class="field">
+                    <label for="email">Adresse email</label>
+                    <div class="input">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input id="email" name="email" type="email" placeholder="ex: mon.mail@viacesi.fr" autocomplete="email" required />
+                    </div>
+                </div>
+
+                <div>
+                    <div class="label-row">
+                        <label for="password">Mot de passe</label>
+                    </div>
+                    <div class="input">
+                        <i class="fa-solid fa-lock"></i>
+                        <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+                    </div>
+                </div>
+
+                <label class="check">
+                    <input type="checkbox" name="remember" />
+                    <span>Se souvenir de moi</span>
+                </label>
+
+                <button class="btn-primary" type="submit">Se connecter</button>
+            </form>
+        </section>
+    </main>
+{% endblock %}
