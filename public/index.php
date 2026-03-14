@@ -9,6 +9,8 @@ use App\Controllers\HomeController;
 use App\Controllers\OfferController;
 use App\Controllers\CompanyController;
 use App\Controllers\WishlistController;
+use App\Controllers\DashboardPilotController;
+use App\Controllers\OfferPilotController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -57,6 +59,19 @@ switch ($page) {
     case 'wishlist':
         requireRole('etudiant');
         $controller = new WishlistController($twig);
+        $controller->index();
+        break;
+
+    // ===== PILOTE SEULEMENT =====
+    case 'dashboard_pilot':
+        requireRole('pilote');
+        $controller = new DashboardPilotController($twig);
+        $controller->index();
+        break;
+
+    case 'offer_pilot':
+        requireRole('pilote');
+        $controller = new OfferPilotController($twig);
         $controller->index();
         break;
 
