@@ -53,30 +53,7 @@ switch ($page) {
         $controller->index();
         break;
 
-    // ===== CONNECTÉS SEULEMENT =====
-    /*case 'offres':
-        requireRole('admin', 'pilote', 'etudiant');
-        $controller = new OfferController($twig);
-        $controller->index();
-        break;*/
-
-    // ===== ADMIN SEULEMENT =====
-    /*case 'dashboard':
-    case 'utilisateurs':
-        requireRole('admin');
-        $controller = new AdminController($twig);
-        $controller->index();
-        break;*/
-
-    // ===== PILOTE ET ADMIN =====
-    /*case 'entreprises':
-    case 'statistiques':
-        requireRole('admin', 'pilote');
-        $controller = new EntrepriseController($twig);
-        $controller->index();
-        break;*/
-
-    // ===== ETUDIANT SEULEMENT =====
+     // ===== ETUDIANT SEULEMENT =====
     case 'wishlist':
         requireRole('etudiant');
         $controller = new WishlistController($twig);
