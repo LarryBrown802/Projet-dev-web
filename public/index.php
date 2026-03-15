@@ -12,6 +12,7 @@ use App\Controllers\WishlistController;
 use App\Controllers\DashboardPilotController;
 use App\Controllers\OfferPilotController;
 use App\Controllers\CompanyPilotController;
+use App\Controllers\StudentPilotController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -79,6 +80,12 @@ switch ($page) {
     case 'company_pilot':
         requireRole('pilote');
         $controller = new CompanyPilotController($twig);
+        $controller->index();
+        break;
+
+    case 'student_pilot':
+        requireRole('pilote');
+        $controller = new StudentPilotController($twig);
         $controller->index();
         break;
 
