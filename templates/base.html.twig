@@ -24,8 +24,8 @@
 
                 {# ===== LIENS ADMIN ===== #}
                 {% if session.role == 'admin' %}
-                    <a href="/index.php?page=dashboard-administrateur"     class="{% if current_page == 'dashboard-administrateur' %}active{% endif %}">Dashboard</a>
-                    <a href="/index.php?page=dashboard-administrateur-offres" class="{% if current_page == 'dashboard-administrateur-offres' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
+                    <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
                     <a href="/index.php?page=gestion-entreprises"  class="{% if current_page == 'entreprises' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=gestion-pilotes"   class="{% if current_page == 'pilotes' %}active{% endif %}">Pilotes</a>
                     <a href="/index.php?page=gestion-etudiants"   class="{% if current_page == 'etudiants' %}active{% endif %}">Étudiants</a>

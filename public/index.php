@@ -13,6 +13,8 @@ use App\Controllers\DashboardPilotController;
 use App\Controllers\OfferPilotController;
 use App\Controllers\CompanyPilotController;
 use App\Controllers\StudentPilotController;
+use App\Controllers\DashboardAdminController;
+use App\Controllers\OfferAdminController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -88,6 +90,21 @@ switch ($page) {
         $controller = new StudentPilotController($twig);
         $controller->index();
         break;
+
+    // ===== ADMIN SEULEMENT =====
+    case 'dashboard_admin':
+        requireRole('admin');
+        $controller = new DashboardAdminController($twig);
+        $controller->index();
+        break;
+
+    case 'offer_admin':
+        requireRole('admin');
+        $controller = new OfferAdminController($twig);
+        $controller->index();
+        break;
+        
+    // ===== ADMIN ET PILOTES =====
 
     // ===== DECONNEXION =====
     case 'logout':
