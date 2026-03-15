@@ -15,6 +15,9 @@ use App\Controllers\CompanyPilotController;
 use App\Controllers\StudentPilotController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\OfferAdminController;
+use App\Controllers\CompanyAdminController;
+use App\Controllers\PilotAdminController;
+use App\Controllers\StudentAdminController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -103,8 +106,23 @@ switch ($page) {
         $controller = new OfferAdminController($twig);
         $controller->index();
         break;
+
+    case 'company_admin':
+        requireRole('admin');
+        $controller = new CompanyAdminController($twig);
+        $controller->index();
+        break;
         
-    // ===== ADMIN ET PILOTES =====
+    case 'pilot_admin':
+        requireRole('admin');
+        $controller = new PilotAdminController($twig);
+        $controller->index();
+        break;
+
+    case 'student_admin':
+        $controller = new StudentAdminController($twig);
+        $controller->index();
+        break;
 
     // ===== DECONNEXION =====
     case 'logout':
