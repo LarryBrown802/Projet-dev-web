@@ -26,9 +26,9 @@
                 {% if session.role == 'admin' %}
                     <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
                     <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
-                    <a href="/index.php?page=gestion-entreprises"  class="{% if current_page == 'entreprises' %}active{% endif %}">Entreprises</a>
-                    <a href="/index.php?page=gestion-pilotes"   class="{% if current_page == 'pilotes' %}active{% endif %}">Pilotes</a>
-                    <a href="/index.php?page=gestion-etudiants"   class="{% if current_page == 'etudiants' %}active{% endif %}">Étudiants</a>
+                    <a href="/index.php?page=company_admin"  class="{% if current_page == 'company_admin' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=pilot_admin"   class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
+                    <a href="/index.php?page=student_admin"   class="{% if current_page == 'student_admin' %}active{% endif %}">Étudiants</a>
 
                 {# ===== LIENS PILOTE ===== #}
                 {% elseif session.role == 'pilote' %}
