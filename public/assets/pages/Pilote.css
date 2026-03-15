@@ -169,10 +169,9 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  transition: transform .14s ease, box-shadow .14s ease;
+  transition: box-shadow .14s ease;
 }
 .shortcut-card:hover {
-  transform: translateY(-3px);
   box-shadow: var(--shadow);
 }
 
@@ -208,10 +207,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: transform .12s ease, filter .12s ease;
+  transition:  filter .12s ease;
   white-space: nowrap;
 }
-.btn-add:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-add:hover {  filter: brightness(1.06); }
 
 /* =========================
    BARRE DE RECHERCHE
@@ -317,9 +316,9 @@
   place-items: center;
   font-size: 13px;
   color: var(--text);
-  transition: transform .12s ease, filter .12s ease, background .12s ease;
+  transition:  filter .12s ease, background .12s ease;
 }
-.btn-icon:hover { transform: translateY(-1px); filter: brightness(.97); }
+.btn-icon:hover {  filter: brightness(.97); }
 
 .btn-icon.btn-edit,
 .btn-icon.btn-edit-offre,
@@ -375,9 +374,8 @@
   font-weight: 900;
   font-size: 13px;
   cursor: pointer;
-  transition: transform .12s ease, background .12s ease;
+  transition:  background .12s ease;
 }
-.page-number:hover { transform: translateY(-1px); }
 .page-number.active {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border-color: transparent;
@@ -394,9 +392,7 @@
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: transform .12s ease;
 }
-.page-arrow:hover { transform: translateY(-1px); }
 .page-arrow:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
 /* =========================
@@ -585,9 +581,9 @@ textarea:focus {
   padding: 11px 18px;
   font-weight: 900;
   cursor: pointer;
-  transition: transform .12s ease, filter .12s ease;
+  transition:  filter .12s ease;
 }
-.btn-voir:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-voir:hover { filter: brightness(1.06); }
 
 .btn-secondary {
   border: 1px solid rgba(15,23,42,.14);
@@ -597,9 +593,9 @@ textarea:focus {
   font-weight: 900;
   cursor: pointer;
   color: var(--text);
-  transition: transform .12s ease, filter .12s ease;
+  transition: filter .12s ease;
 }
-.btn-secondary:hover { transform: translateY(-1px); }
+
 
 .btn-danger {
   background: linear-gradient(135deg, #ff4d4d, #c0392b);
@@ -609,9 +605,9 @@ textarea:focus {
   padding: 11px 18px;
   font-weight: 900;
   cursor: pointer;
-  transition: transform .12s ease, filter .12s ease;
+  transition: filter .12s ease;
 }
-.btn-danger:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.btn-danger:hover { filter: brightness(1.08); }
 
 /* =========================
    STAR PICKER (Évaluation)

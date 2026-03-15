@@ -65,7 +65,7 @@
 
 /* BTN ADD */
 .btn-add { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 14px; padding: 12px 18px; font-weight: 900; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform .12s ease, filter .12s ease; white-space: nowrap; }
-.btn-add:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-add:hover { filter: brightness(1.06); }
 
 /* SEARCH BAR */
 .search-bar-wrap { margin-bottom: 14px; }
@@ -88,7 +88,6 @@
 /* ACTIONS */
 .actions-cell { display: flex; gap: 6px; align-items: center; }
 .btn-icon { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); cursor: pointer; display: grid; place-items: center; font-size: 13px; color: var(--text); transition: transform .12s ease; }
-.btn-icon:hover { transform: translateY(-1px); }
 .btn-edit, .btn-edit-ent, .btn-edit-offre, .btn-edit-etu { color: var(--primary-dark); border-color: rgba(94,146,166,.3); background: rgba(94,146,166,.08); }
 .btn-rate, .btn-rate-ent { color: #c8a000; border-color: rgba(217,211,29,.4); background: rgba(217,211,29,.12); }
 .btn-view-offre, .btn-view-etu { color: rgb(31,139,59); border-color: rgba(31,139,59,.3); background: rgba(31,139,59,.08); }
@@ -98,11 +97,9 @@
 .pagination { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 4px 0 0; }
 .page-numbers { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 6px; box-shadow: var(--shadow-soft); }
 .page-number { border: 1px solid rgba(15,23,42,.10); background: rgba(15,23,42,.03); color: var(--text); border-radius: 999px; min-width: 36px; height: 36px; padding: 0 10px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; cursor: pointer; transition: transform .12s ease, background .12s ease; }
-.page-number:hover { transform: translateY(-1px); }
 .page-number.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-color: transparent; color: #fff; }
 .page-ellipsis { padding: 0 6px; color: var(--muted); font-weight: 900; }
 .page-arrow { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); box-shadow: var(--shadow-soft); cursor: pointer; display: grid; place-items: center; transition: transform .12s ease; }
-.page-arrow:hover { transform: translateY(-1px); }
 .page-arrow:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
 /* DIALOG */
@@ -145,12 +142,11 @@ textarea { width: 100%; padding: 12px 14px; border: 1px solid rgba(15,23,42,.08)
 textarea:focus { border-color: rgba(94,146,166,.55); box-shadow: 0 0 0 4px rgba(94,146,166,.12); }
 
 /* BUTTONS */
-.btn-voir { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
-.btn-voir:hover { transform: translateY(-1px); filter: brightness(1.06); }
-.btn-secondary { border: 1px solid rgba(15,23,42,.14); background: var(--card); border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; color: var(--text); transition: transform .12s ease; }
-.btn-secondary:hover { transform: translateY(-1px); }
-.btn-danger { background: linear-gradient(135deg, #ff4d4d, #c0392b); color: #fff; border: none; border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
-.btn-danger:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.btn-voir { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; transition: filter .12s ease; }
+.btn-voir:hover { filter: brightness(1.06); }
+.btn-secondary { border: 1px solid rgba(15,23,42,.14); background: var(--card); border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; color: var(--text); }
+.btn-danger { background: linear-gradient(135deg, #ff4d4d, #c0392b); color: #fff; border: none; border-radius: 14px; padding: 11px 18px; font-weight: 900; cursor: pointer; transition: filter .12s ease; }
+.btn-danger:hover { filter: brightness(1.08); }
 
 /* STAR PICKER */
 .star-picker { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }

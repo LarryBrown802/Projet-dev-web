@@ -41,81 +41,80 @@
                 </tr>
             </thead>
             <tbody>
+                {% for student in students %}
                 <tr>
-                    <td><strong>Boucetta</strong></td>
-                    <td>Enzo</td>
-                    <td>enzo.boucetta@viacesi.fr</td>
-                    <td>3</td>
-                    <td><span class="badge badge--wait">En cours</span></td>
+                    <td><strong>{{ student.nom }}</strong></td>
+                    <td>{{ student.prenom }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.candidatures }}</td>
+                    <td>
+                        {% if student.statut == 'ok' %}
+                            <span class="badge badge--ok">Stage trouvé</span>
+                        {% elseif student.statut == 'no' %}
+                            <span class="badge badge--no">Non trouvé</span>
+                        {% else %}
+                            <span class="badge badge--wait">En cours</span>
+                        {% endif %}
+                    </td>
                     <td class="actions-cell">
-                        <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr" data-candidatures='[{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"20/02/2026","statut":"wait"},{"offre":"Data Analyst","entreprise":"Data Insights","date":"15/02/2026","statut":"ok"},{"offre":"DevOps","entreprise":"Cloud Solutions","date":"10/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Boucetta" data-prenom="Enzo"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-icon btn-view-etu" title="Voir les candidatures"
+                            data-nom="{{ student.nom }}"
+                            data-prenom="{{ student.prenom }}"
+                            data-email="{{ student.email }}"
+                            data-candidatures="{{ student.candidatures_detail }}">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn-icon btn-edit-etu" title="Modifier"
+                            data-nom="{{ student.nom }}"
+                            data-prenom="{{ student.prenom }}"
+                            data-email="{{ student.email }}">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon btn-delete-etu" title="Supprimer"
+                            data-nom="{{ student.nom }}"
+                            data-prenom="{{ student.prenom }}">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
-                <tr>
-                    <td><strong>Battoktok</strong></td>
-                    <td>Michel</td>
-                    <td>michel.battoktok@viacesi.fr</td>
-                    <td>5</td>
-                    <td><span class="badge badge--ok">Stage trouvé</span></td>
-                    <td class="actions-cell">
-                        <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr" data-candidatures='[{"offre":"Data Analyst","entreprise":"Data Insights","date":"19/02/2026","statut":"ok"},{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"10/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Battoktok" data-prenom="Michel"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>Chefdjou</strong></td>
-                    <td>Larry Brown</td>
-                    <td>larry.chefdjou@viacesi.fr</td>
-                    <td>2</td>
-                    <td><span class="badge badge--no">Non trouvé</span></td>
-                    <td class="actions-cell">
-                        <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr" data-candidatures='[{"offre":"Cybersécurité","entreprise":"SecureTech","date":"18/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Chefdjou" data-prenom="Larry Brown"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>Verel</strong></td>
-                    <td>Samuel</td>
-                    <td>samuel.verel@viacesi.fr</td>
-                    <td>4</td>
-                    <td><span class="badge badge--wait">En cours</span></td>
-                    <td class="actions-cell">
-                        <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr" data-candidatures='[{"offre":"DevOps","entreprise":"Cloud Solutions","date":"17/02/2026","statut":"wait"},{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"12/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Verel" data-prenom="Samuel"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>Linard</strong></td>
-                    <td>Raphael</td>
-                    <td>raphael.linard@viacesi.fr</td>
-                    <td>1</td>
-                    <td><span class="badge badge--wait">En cours</span></td>
-                    <td class="actions-cell">
-                        <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr" data-candidatures='[{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"16/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Linard" data-prenom="Raphael"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
+                {% else %}
+                    <tr><td colspan="6">Aucun étudiant trouvé.</td></tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <!-- Refaire la Pagination avec PHP-->
     <!-- Pagination -->
-    <nav class="pagination" aria-label="Pagination des étudiants">
-      <button class="page-arrow" type="button" disabled><i class="fa-solid fa-chevron-left"></i></button>
-      <div class="page-numbers">
-        <button class="page-number active" type="button">1</button>
-        <button class="page-number" type="button">2</button>
-        <button class="page-number" type="button">3</button>
-      </div>
-      <button class="page-arrow" type="button"><i class="fa-solid fa-chevron-right"></i></button>
-    </nav>
+   <nav class="pagination" aria-label="Pagination des étudiants">
+    {% if pageCourante > 1 %}
+        <a href="?page=student_pilot&p={{ pageCourante - 1 }}" class="page-arrow">
+            <i class="fa-solid fa-chevron-left"></i>
+        </a>
+    {% else %}
+        <button class="page-arrow" type="button" disabled>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    {% endif %}
+
+    <div class="page-numbers">
+        {% for i in 1..totalPages %}
+            <a href="?page=student_pilot&p={{ i }}"
+               class="page-number {% if i == pageCourante %}active{% endif %}">
+                {{ i }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if pageCourante < totalPages %}
+        <a href="?page=student_pilot&p={{ pageCourante + 1 }}" class="page-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+        </a>
+    {% else %}
+        <button class="page-arrow" type="button" disabled>
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    {% endif %}
+</nav>
 
 </main>
 {% endblock %}

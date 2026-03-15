@@ -155,10 +155,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform .14s ease, box-shadow .14s ease;
+  transition: box-shadow .14s ease;
 }
 .offre-card:hover{
-  transform: translateY(-3px);
   box-shadow: var(--shadow);
 }
 
@@ -308,10 +307,9 @@
   padding: 12px 14px;
   font-weight: 900;
   cursor: pointer;
-  transition: transform .12s ease, filter .12s ease;
+  transition:  filter .12s ease;
 }
 .btn-voir:hover{
-  transform: translateY(-1px);
   filter: brightness(1.06);
 }
 
@@ -323,10 +321,9 @@
   font-weight: 900;
   cursor: pointer;
   color: var(--text);
-  transition: transform .12s ease, filter .12s ease;
+  transition: filter .12s ease;
 }
 .btn-secondary:hover{
-  transform: translateY(-1px);
   filter: brightness(.99);
 }
 
@@ -367,11 +364,10 @@
   justify-content: center;
   font-weight: 900;
   cursor: pointer;
-  transition: transform .12s ease, filter .12s ease, background .12s ease, border-color .12s ease;
+  transition: filter .12s ease, background .12s ease, border-color .12s ease;
 }
 
 .page-number:hover{
-  transform: translateY(-1px);
   filter: brightness(1.02);
   border-color: rgba(15, 23, 42, 0.16);
 }
@@ -398,11 +394,10 @@
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: transform .12s ease, filter .12s ease;
+  transition: filter .12s ease;
 }
 
 .page-arrow:hover{
-  transform: translateY(-1px);
   filter: brightness(1.02);
 }
 

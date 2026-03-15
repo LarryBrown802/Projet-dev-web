@@ -334,17 +334,40 @@
                     {% endfor %}
 
                     <nav class="pagination" aria-label="Pagination des offres">
-                        <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
+                        {# Bouton précédent #}
+                        {% if pageCourante > 1 %}
+                            <a href="?page=offers&p={{ pageCourante - 1 }}&search={{ search }}&location={{ location }}"
+                            class="page-arrow" aria-label="Page précédente">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                        {% else %}
+                            <button class="page-arrow" type="button" disabled aria-label="Page précédente">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        {% endif %}
 
-                        <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
-                            <button class="page-number active" type="button" aria-current="page">1</button>
+                        {# Numéros de pages #}
+                        <div class="page-numbers">
+                            {% for i in 1..totalPages %}
+                                <a href="?page=offers&p={{ i }}&search={{ search }}&location={{ location }}"
+                                class="page-number {% if i == pageCourante %}active{% endif %}"
+                                {% if i == pageCourante %}aria-current="page"{% endif %}>
+                                    {{ i }}
+                                </a>
+                            {% endfor %}
                         </div>
 
-                        <button class="page-arrow" type="button" aria-label="Page suivante" disabled>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
+                        {# Bouton suivant #}
+                        {% if pageCourante < totalPages %}
+                            <a href="?page=offers&p={{ pageCourante + 1 }}&search={{ search }}&location={{ location }}"
+                            class="page-arrow" aria-label="Page suivante">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        {% else %}
+                            <button class="page-arrow" type="button" disabled aria-label="Page suivante">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        {% endif %}
                     </nav>
                 </section>
             </section>
