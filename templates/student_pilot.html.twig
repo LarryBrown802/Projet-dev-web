@@ -116,5 +116,23 @@
     {% endif %}
 </nav>
 
+        <div class="page-numbers">
+            {% for p in pagination.pages %}
+                {% if p == '...' %}
+                    <span class="page-ellipsis">…</span>
+                {% else %}
+                    <button class="page-number {% if p == pagination.current %}active{% endif %}"
+                        onclick="window.location='/index.php?page=student_pilot&p={{ p }}'">
+                        {{ p }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <button class="page-arrow" {% if not pagination.hasNext %}disabled{% endif %}
+            onclick="window.location='/index.php?page=student_pilot&p={{ pagination.current + 1 }}'">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </nav>
 </main>
 {% endblock %}
