@@ -6,7 +6,7 @@
 
 {# 3. CSS spécifique au panel admin #}
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/admin.css">
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
 {% endblock %}
 
 {# 4. Contenu principal #}
@@ -37,40 +37,46 @@
                         <th>Entreprise</th>
                         <th>Email</th>
                         <th>Téléphone</th>
-                        <th>Stagiaires ayant postulé</th>
+                        <th>Offres actives</th>
+                        <th>Statut</th>
                         <th>Note moy.</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {# NOTE POUR TON ÉQUIPE : 
-                       C'est ici qu'il faudra faire une boucle : {% for entreprise in entreprises %} 
-                    #}
-                    <tr>
-                        <td><strong>Tech Solutions</strong></td>
-                        <td>contact@techsolutions.fr</td>
-                        <td>01 23 45 67 89</td>
-                        <td>6</td>
-                        <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> 4/5</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Tech Solutions" data-email="contact@techsolutions.fr" data-tel="01 23 45 67 89" data-desc="Entreprise spécialisée dans le développement web et mobile."><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Tech Solutions"><i class="fa-solid fa-star"></i></button>
-                            <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Tech Solutions"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Insights</strong></td>
-                        <td>contact@datainsights.fr</td>
-                        <td>01 34 56 78 90</td>
-                        <td>3</td>
-                        <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> 5/5</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Data Insights" data-email="contact@datainsights.fr" data-tel="01 34 56 78 90" data-desc="Leader de l'analyse de données décisionnelles."><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Data Insights"><i class="fa-solid fa-star"></i></button>
-                            <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Data Insights"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    {# FIN DE LA FUTURE BOUCLE : {% endfor %} #}
+                    {# THE DYNAMIC LOOP #}
+                    {% for entreprise in entreprises %}
+                        <tr>
+                            <td><strong>{{ entreprise.nom }}</strong></td>
+                            <td>{{ entreprise.email }}</td>
+                            <td>{{ entreprise.tel }}</td>
+                            <td>{{ entreprise.offres }}</td>
+                            <td><span class="badge {{ entreprise.badge }}">{{ entreprise.statut }}</span></td>
+                            <td>
+                                <span class="stars">
+                                    {% for i in 1..5 %}
+                                        {% if i <= entreprise.note %}
+                                            <i class="fa-solid fa-star"></i>
+                                        {% else %}
+                                            <i class="fa-regular fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span style="margin-left:4px;font-weight:800">{{ entreprise.note }}/5</span>
+                                </span>
+                            </td>
+                            <td class="actions-cell">
+                                <button class="btn-icon btn-edit-ent" title="Modifier" 
+                                    data-nom="{{ entreprise.nom }}" 
+                                    data-email="{{ entreprise.email }}" 
+                                    data-tel="{{ entreprise.tel }}" 
+                                    data-desc="Entreprise partenaire de la plateforme."><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-icon btn-rate-ent" title="Évaluer" 
+                                    data-nom="{{ entreprise.nom }}"><i class="fa-solid fa-star"></i></button>
+                                <button class="btn-icon btn-delete-ent" title="Supprimer" 
+                                    data-nom="{{ entreprise.nom }}"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -174,7 +180,6 @@
     </dialog>
 {% endblock %}
 
-{# 5. Le JavaScript spécifique à cette page (les pop-ups / modals) #}
 {% block javascripts %}
     <script>
         function open$(id){ document.getElementById(id).showModal(); }

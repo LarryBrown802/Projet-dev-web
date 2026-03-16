@@ -52,6 +52,10 @@ $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
 
 // Pages Administrateur (Bientôt)
 $router->map('GET', '/dashboard-admin', 'AdminController#dashboard', 'dash_admin');
+$router->map('GET', '/admin/pilotes', 'AdminController#gestionPilotes', 'admin_pilotes');
+$router->map('GET', '/admin/entreprises', 'AdminController#gestionEntreprises', 'admin_entreprises');
+$router->map('GET', '/admin/etudiants', 'AdminController#gestionEtudiants', 'admin_etudiants');
+$router->map('GET', '/admin/offres', 'AdminController#gestionOffres', 'admin_offres');
 
 // =========================================================================
 // 6. EXÉCUTION DU ROUTEUR (L'Aiguillage)

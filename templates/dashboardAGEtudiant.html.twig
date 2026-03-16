@@ -6,7 +6,7 @@
 
 {# 3. CSS spécifique au panel admin #}
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/admin.css">
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
 {% endblock %}
 
 {# 4. Contenu principal #}
@@ -42,82 +42,51 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {# NOTE POUR TON ÉQUIPE : Boucle Twig à faire ici plus tard {% for etudiant in etudiants %} #}
-                    <tr>
-                        <td><strong>Boucetta</strong></td>
-                        <td>Enzo</td>
-                        <td>enzo.boucetta@viacesi.fr</td>
-                        <td>3</td>
-                        <td><span class="badge badge--wait">En cours</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr" data-candidatures='[{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"20/02/2026","statut":"wait"},{"offre":"Data Analyst","entreprise":"Data Insights","date":"15/02/2026","statut":"ok"},{"offre":"DevOps","entreprise":"Cloud Solutions","date":"10/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Boucetta" data-prenom="Enzo"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Battoktok</strong></td>
-                        <td>Michel</td>
-                        <td>michel.battoktok@viacesi.fr</td>
-                        <td>5</td>
-                        <td><span class="badge badge--ok">Stage trouvé</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr" data-candidatures='[{"offre":"Data Analyst","entreprise":"Data Insights","date":"19/02/2026","statut":"ok"},{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"10/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Battoktok" data-prenom="Michel"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chefdjou</strong></td>
-                        <td>Larry Brown</td>
-                        <td>larry.chefdjou@viacesi.fr</td>
-                        <td>2</td>
-                        <td><span class="badge badge--no">Non trouvé</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr" data-candidatures='[{"offre":"Cybersécurité","entreprise":"SecureTech","date":"18/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Chefdjou" data-prenom="Larry Brown"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Verel</strong></td>
-                        <td>Samuel</td>
-                        <td>samuel.verel@viacesi.fr</td>
-                        <td>4</td>
-                        <td><span class="badge badge--wait">En cours</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr" data-candidatures='[{"offre":"DevOps","entreprise":"Cloud Solutions","date":"17/02/2026","statut":"wait"},{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"12/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Verel" data-prenom="Samuel"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Linard</strong></td>
-                        <td>Raphael</td>
-                        <td>raphael.linard@viacesi.fr</td>
-                        <td>1</td>
-                        <td><span class="badge badge--wait">En cours</span></td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr" data-candidatures='[{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"16/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Linard" data-prenom="Raphael"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    {# FIN DE LA BOUCLE #}
+                    {# THE DYNAMIC LOOP #}
+                    {% for etudiant in etudiants %}
+                        <tr>
+                            <td><strong>{{ etudiant.nom }}</strong></td>
+                            <td>{{ etudiant.prenom }}</td>
+                            <td>{{ etudiant.email }}</td>
+                            <td>{{ etudiant.nb_candidatures }}</td>
+                            <td><span class="badge {{ etudiant.badge }}">{{ etudiant.statut }}</span></td>
+                            <td class="actions-cell">
+                                <button class="btn-icon btn-view-etu" title="Voir les candidatures" 
+                                    data-nom="{{ etudiant.nom }}" 
+                                    data-prenom="{{ etudiant.prenom }}" 
+                                    data-email="{{ etudiant.email }}" 
+                                    data-pilote="{{ etudiant.pilote }}"
+                                    data-candidatures='{{ etudiant.candidatures|raw }}'>
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit-etu" title="Modifier" 
+                                    data-nom="{{ etudiant.nom }}" 
+                                    data-prenom="{{ etudiant.prenom }}" 
+                                    data-email="{{ etudiant.email }}">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="btn-icon btn-delete-etu" title="Supprimer" 
+                                    data-nom="{{ etudiant.nom }}" 
+                                    data-prenom="{{ etudiant.prenom }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <nav class="pagination">
-            <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+        <nav class="pagination" aria-label="Pagination des étudiants">
+            <button class="page-arrow" type="button" disabled><i class="fa-solid fa-chevron-left"></i></button>
             <div class="page-numbers">
-                <button class="page-number active">1</button>
-                <button class="page-number">2</button>
-                <button class="page-number">3</button>
+                <button class="page-number active" type="button">1</button>
+                <button class="page-number" type="button">2</button>
+                <button class="page-number" type="button">3</button>
                 <span class="page-ellipsis">…</span>
-                <button class="page-number">8</button>
+                <button class="page-number" type="button">8</button>
             </div>
-            <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="page-arrow" type="button"><i class="fa-solid fa-chevron-right"></i></button>
         </nav>
     </main>
 
@@ -162,7 +131,6 @@
                         <i class="fa-solid fa-chalkboard-teacher"></i>
                         <select id="cPilote" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
                             <option value="">Sélectionner…</option>
-                            {# Plus tard : Boucle for sur les pilotes #}
                             <option>Dupont Jean — BTS SIO 2025</option>
                             <option>Durand Marie — BUT Info 2025</option>
                             <option>Martin Paul — Licence Pro 2025</option>
@@ -214,7 +182,6 @@
     </dialog>
 {% endblock %}
 
-{# 5. Le JavaScript spécifique (modales) #}
 {% block javascripts %}
     <script>
         function open$(id){ document.getElementById(id).showModal(); }

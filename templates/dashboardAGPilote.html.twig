@@ -6,7 +6,7 @@
 
 {# 3. CSS spécifique au panel admin #}
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/admin.css">
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
 {% endblock %}
 
 {# 4. Contenu principal #}
@@ -42,58 +42,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {# NOTE POUR TON ÉQUIPE : Boucle Twig à insérer ici -> {% for pilote in pilotes %} #}
-                    <tr>
-                        <td><strong>Roussel</strong></td>
-                        <td>Antoine</td>
-                        <td>CPI A2 Informatique</td>
-                        <td>24</td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit" title="Modifier" data-nom="Roussel" data-prenom="Antoine" data-promo="CPI A2 Informatique"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete" title="Supprimer" data-nom="Roussel" data-prenom="Antoine"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Jeanne</strong></td>
-                        <td>Benoît</td>
-                        <td>CPI A2 Généraliste</td>
-                        <td>28</td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit" title="Modifier" data-nom="Jeanne" data-prenom="Benoît" data-promo="CPI A2 Généraliste"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete" title="Supprimer" data-nom="Jeanne" data-prenom="Benoît"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tout</strong></td>
-                        <td>Firas</td>
-                        <td>CPI A2 BTP</td>
-                        <td>20</td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit" title="Modifier" data-nom="Tout" data-prenom="Firas" data-promo="CPI A2 BTP"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete" title="Supprimer" data-nom="Tout" data-prenom="Firas"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Leroy</strong></td>
-                        <td>Sophie</td>
-                        <td>XX</td>
-                        <td>22</td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit" title="Modifier" data-nom="Leroy" data-prenom="Sophie" data-promo="BTS SIO 2026"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete" title="Supprimer" data-nom="Leroy" data-prenom="Sophie"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>Moreau</strong></td>
-                        <td>Thomas</td>
-                        <td>XX</td>
-                        <td>30</td>
-                        <td class="actions-cell">
-                            <button class="btn-icon btn-edit" title="Modifier" data-nom="Moreau" data-prenom="Thomas" data-promo="BUT Info 2026"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon btn-delete" title="Supprimer" data-nom="Moreau" data-prenom="Thomas"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    {# FIN DE LA BOUCLE #}
+                    {# THE DYNAMIC LOOP #}
+                    {% for pilote in pilotes %}
+                        <tr>
+                            <td><strong>{{ pilote.nom }}</strong></td>
+                            <td>{{ pilote.prenom }}</td>
+                            <td>{{ pilote.promotion }}</td>
+                            <td>{{ pilote.etudiants }}</td>
+                            <td class="actions-cell">
+                                <button class="btn-icon btn-edit" title="Modifier" 
+                                    data-nom="{{ pilote.nom }}" 
+                                    data-prenom="{{ pilote.prenom }}" 
+                                    data-promo="{{ pilote.promotion }}">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Supprimer" 
+                                    data-nom="{{ pilote.nom }}" 
+                                    data-prenom="{{ pilote.prenom }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -187,7 +157,6 @@
     </dialog>
 {% endblock %}
 
-{# 5. Le JavaScript spécifique (modales de la page pilote) #}
 {% block javascripts %}
     <script>
         function open$(id){ document.getElementById(id).showModal(); }
