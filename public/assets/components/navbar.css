@@ -2,6 +2,7 @@
    NAVBAR
 ========================= */
 .navbar{
+  user-select: none;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   padding: 12px 18px;
   display: flex;

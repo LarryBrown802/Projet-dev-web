@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Company{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <div class="page-head">
+        <div>
+            <h1>Gestion des entreprises</h1>
+            <p class="page-subtitle">Créer, modifier, évaluer ou supprimer des fiches entreprises.</p>
+        </div>
+        <button class="btn-add" type="button" id="btnCreateEntreprise">
+            <i class="fa-solid fa-plus"></i> Nouvelle entreprise
+        </button>
+    </div>
+
+    <div class="search-bar-wrap">
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Rechercher une entreprise par nom…" />
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Stagiaires ayant postulé</th>
+                    <th>Note moy.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tech Solutions</strong></td>
+                    <td>contact@techsolutions.fr</td><td>01 23 45 67 89</td><td>6</td>
+                    <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> 4/5</span></td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Tech Solutions" data-email="contact@techsolutions.fr" data-tel="01 23 45 67 89" data-desc="Entreprise spécialisée dans le développement web et mobile."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Tech Solutions"><i class="fa-solid fa-star"></i></button>
+                        <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Tech Solutions"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Data Insights</strong></td>
+                    <td>contact@datainsights.fr</td><td>01 34 56 78 90</td><td>3</td>
+                    <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> 5/5</span></td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Data Insights" data-email="contact@datainsights.fr" data-tel="01 34 56 78 90" data-desc="Leader de l'analyse de données décisionnelles."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Data Insights"><i class="fa-solid fa-star"></i></button>
+                        <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Data Insights"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>SecureTech</strong></td>
+                    <td>contact@securetech.fr</td><td>01 45 67 89 01</td><td>4</td>
+                    <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i> 3/5</span></td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="SecureTech" data-email="contact@securetech.fr" data-tel="01 45 67 89 01" data-desc="Experts en cybersécurité et protection des systèmes d'information."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="SecureTech"><i class="fa-solid fa-star"></i></button>
+                        <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="SecureTech"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Cloud Solutions</strong></td>
+                    <td>contact@cloudsol.fr</td><td>01 56 78 90 12</td><td>2</td>
+                    <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> 4/5</span></td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="Cloud Solutions" data-email="contact@cloudsol.fr" data-tel="01 56 78 90 12" data-desc="Solutions cloud et DevOps pour les entreprises en transformation numérique."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="Cloud Solutions"><i class="fa-solid fa-star"></i></button>
+                        <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="Cloud Solutions"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>AI Labs</strong></td>
+                    <td>contact@ailabs.fr</td><td>01 67 89 01 23</td><td>5</td>
+                    <td><span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> 5/5</span></td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit-ent" title="Modifier" data-nom="AI Labs" data-email="contact@ailabs.fr" data-tel="01 67 89 01 23" data-desc="Développement de solutions d'intelligence artificielle pour l'industrie."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-rate-ent" title="Évaluer" data-nom="AI Labs"><i class="fa-solid fa-star"></i></button>
+                        <button class="btn-icon btn-delete-ent" title="Supprimer" data-nom="AI Labs"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Refaire la Pagination avec PHP-->
+    <nav class="pagination">
+      <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active">1</button>
+        <button class="page-number">2</button>
+        <button class="page-number">3</button>
+      </div>
+      <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+</main>
+{% endblock %}

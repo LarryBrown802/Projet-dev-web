@@ -21,11 +21,10 @@
   flex-direction: column;
   gap: 12px;
 
-  transition: transform .14s ease, box-shadow .14s ease;
+  transition: box-shadow .14s ease;
 }
 
 .entreprise-card:hover{
-  transform: translateY(-3px);
   box-shadow: var(--shadow);
 }
 

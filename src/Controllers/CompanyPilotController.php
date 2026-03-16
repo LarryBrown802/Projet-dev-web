@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\CompanyModel;
+use Twig\Environment;
+
+class CompanyPilotController
+{
+    private Environment $twig;
+    private CompanyModel $companyModel;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+        $this->companyModel = new CompanyModel();
+    }
+
+    public function index(): void
+    {
+        $allCompanies = $this->companyModel->getAllCompanies();
+        $totalPages   = $this->companyModel->totalPages($allCompanies);
+        $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
+        $companies    = $this->companyModel->getPage($allCompanies, $pageCourante);
+
+        echo $this->twig->render('company_pilot.html.twig', [
+            'current_page' => 'company_pilot',
+            'companies'    => $companies,
+            'pageCourante' => $pageCourante,
+            'totalPages'   => $totalPages,
+        ]);
+    }
+}

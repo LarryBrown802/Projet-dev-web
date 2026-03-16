@@ -18,37 +18,28 @@ class OfferController
 
     public function index(): void
     {
-        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $location = isset($_GET['location']) ? trim($_GET['location']) : '';
+        $search     = trim($_GET['search']   ?? '');
+        $location   = trim($_GET['location'] ?? '');
+        $types      = is_array($_GET['types']      ?? null) ? array_map('trim', $_GET['types'])      : [];
+        $levels     = is_array($_GET['levels']     ?? null) ? array_map('trim', $_GET['levels'])     : [];
+        $categories = is_array($_GET['categories'] ?? null) ? array_map('trim', $_GET['categories']) : [];
 
-        $types = isset($_GET['types']) && is_array($_GET['types'])
-            ? array_map('trim', $_GET['types'])
-            : [];
-
-        $levels = isset($_GET['levels']) && is_array($_GET['levels'])
-            ? array_map('trim', $_GET['levels'])
-            : [];
-
-        $categories = isset($_GET['categories']) && is_array($_GET['categories'])
-            ? array_map('trim', $_GET['categories'])
-            : [];
-
-        $offers = $this->offerModel->searchOffers(
-            $search,
-            $location,
-            $types,
-            $levels,
-            $categories
-        );
+        $allOffers    = $this->offerModel->searchOffers($search, $location, $types, $levels, $categories);
+        $totalPages   = $this->offerModel->totalPages($allOffers);
+        $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
+        $offers       = $this->offerModel->getPage($allOffers, $pageCourante);
 
         echo $this->twig->render('offer.html.twig', [
-            'current_page' => 'offres',
-            'offers' => $offers,
-            'search' => $search,
-            'location' => $location,
-            'types' => $types,
-            'levels' => $levels,
-            'categories' => $categories
+            'current_page' => 'offers',
+            'offers'       => $offers,
+            'totalOffers'  => count($allOffers),
+            'pageCourante' => $pageCourante,
+            'totalPages'   => $totalPages,
+            'search'       => $search,
+            'location'     => $location,
+            'types'        => $types,
+            'levels'       => $levels,
+            'categories'   => $categories,
         ]);
     }
 }
