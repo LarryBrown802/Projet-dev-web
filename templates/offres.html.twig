@@ -141,101 +141,87 @@
             </aside>
 
             <section class="results" aria-label="Résultats des offres">
-                <div class="results-bar">
+                
+                {# CHANGEMENT ICI : On transforme la barre en formulaire pour capturer la recherche ! #}
+                <form class="results-bar" action="/offres" method="GET">
                     <div class="results-search">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="search" placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher" />
+                        {# Ajout de name="q" et value="{{ searchQuery }}" #}
+                        <input type="search" name="q" value="{{ searchQuery }}" placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher" />
                     </div>
 
                     <div class="results-sort">
                         <label class="sr-only" for="sort">Trier</label>
                         <i class="fa-solid fa-arrow-up-wide-short"></i>
-                        <select id="sort">
+                        <select id="sort" name="sort" onchange="this.form.submit()">
                             <option value="pertinence">Pertinence</option>
                             <option value="recent">Plus récent</option>
                             <option value="remu">Rémunération</option>
                             <option value="az">A → Z</option>
                         </select>
                     </div>
-                </div>
+                    
+                    {# Bouton caché pour que la touche "Entrée" fonctionne #}
+                    <button type="submit" style="display: none;">Chercher</button>
+                </form>
 
                 <section class="offres" aria-label="Liste des offres">
 
-                    {# NOTE POUR L'ÉQUIPE : Boucle Twig à insérer ici -> {% for offre in offres %} #}
-                    
-                    <article class="offre-card">
-                        <div class="offre-top">
-                            <div class="offre-logo">
-                                <i class="fa-solid fa-laptop-code"></i>
-                            </div>
-                            <div class="offre-title">
-                                <h2 class="offre-poste">Développeur Web</h2>
-                                <p class="offre-entreprise">Tech Solutions</p>
-                            </div>
-                            <label class="ui-bookmark" title="Ajouter aux favoris">
-                                <input type="checkbox" aria-label="Ajouter aux favoris" />
-                                <div class="bookmark" aria-hidden="true">
-                                    <svg viewBox="0 0 32 32"><path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path></svg>
+                    {# LA BOUCLE TWIG MAGIQUE #}
+                    {% for offre in offres %}
+                        <article class="offre-card">
+                            <div class="offre-top">
+                                <div class="offre-logo">
+                                    <i class="fa-solid {{ offre.icon }}"></i>
                                 </div>
-                            </label>
-                        </div> 
-
-                        <div class="offre-tags">
-                            <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Lyon</span>
-                            <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Stage</span>
-                            <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+2/3</span>
-                            <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 900€/mois</span>
-                        </div>
-
-                        <div class="offre-desc">
-                            <strong>Description</strong>
-                            <p class="truncate-3">
-                                Rejoignez notre équipe pour développer des applications web innovantes. Lorem ipsum dolor sit amet...
-                            </p>
-                        </div>
-
-                        <button class="btn-voir btn-full open-dialog" type="button"
-                            data-poste="Développeur Web" data-entreprise="Tech Solutions" data-lieu="Lyon" data-type="Stage" data-niveau="Bac+2/3" data-duree="3 mois" data-remu="900€/mois" data-entreprisedesc="Tech Solutions développe des plateformes web pour le retail et l’industrie. Équipe agile, code review et bonnes pratiques." data-missions="Développer des écrans (HTML/CSS/JS);Corriger des bugs;Participer aux revues de code;Écrire des tests;Collaborer avec le designer" data-icon="fa-laptop-code">
-                            Voir plus
-                        </button>
-                    </article>
-
-                    <article class="offre-card">
-                        <div class="offre-top">
-                            <div class="offre-logo">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div class="offre-title">
-                                <h2 class="offre-poste">Data Analyst</h2>
-                                <p class="offre-entreprise">Data Insights</p>
-                            </div>
-                            <label class="ui-bookmark" title="Ajouter aux favoris">
-                                <input type="checkbox" aria-label="Ajouter aux favoris" />
-                                <div class="bookmark" aria-hidden="true">
-                                    <svg viewBox="0 0 32 32"><path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path></svg>
+                                <div class="offre-title">
+                                    <h2 class="offre-poste">{{ offre.titre }}</h2>
+                                    <p class="offre-entreprise">{{ offre.entreprise }}</p>
                                 </div>
-                            </label>
+                                <label class="ui-bookmark" title="Ajouter aux favoris">
+                                    <input type="checkbox" aria-label="Ajouter aux favoris" />
+                                    <div class="bookmark" aria-hidden="true">
+                                        <svg viewBox="0 0 32 32"><path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path></svg>
+                                    </div>
+                                </label>
+                            </div> 
+
+                            <div class="offre-tags">
+                                <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> {{ offre.lieu }}</span>
+                                <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> {{ offre.type }}</span>
+                                <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> {{ offre.niveau }}</span>
+                                <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> {{ offre.remu }}</span>
+                            </div>
+
+                            <div class="offre-desc">
+                                <strong>Description</strong>
+                                <p class="truncate-3">
+                                    {{ offre.description }}
+                                </p>
+                            </div>
+
+                            <button class="btn-voir btn-full open-dialog" type="button"
+                                data-poste="{{ offre.titre }}" 
+                                data-entreprise="{{ offre.entreprise }}" 
+                                data-lieu="{{ offre.lieu }}" 
+                                data-type="{{ offre.type }}" 
+                                data-niveau="{{ offre.niveau }}" 
+                                data-duree="{{ offre.duree }}" 
+                                data-remu="{{ offre.remu }}" 
+                                data-entreprisedesc="{{ offre.entreprise_desc }}" 
+                                data-missions="{{ offre.missions }}" 
+                                data-icon="{{ offre.icon }}">
+                                Voir plus
+                            </button>
+                        </article>
+                    {% else %}
+                        {# Message affiché s'il n'y a aucun résultat de recherche ! #}
+                        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                            <i class="fa-solid fa-folder-open" style="font-size: 40px; color: var(--muted); margin-bottom: 10px;"></i>
+                            <h3>Aucune offre trouvée</h3>
+                            <p>Essayez de modifier votre recherche ou vos filres.</p>
                         </div>
-
-                        <div class="offre-tags">
-                            <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> Paris</span>
-                            <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> Alternance</span>
-                            <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> Bac+3</span>
-                            <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> 1200€/mois</span>
-                        </div>
-
-                        <div class="offre-desc">
-                            <strong>Description</strong>
-                            <p class="truncate-3">Analysez des données pour aider à la décision stratégique.</p>
-                        </div>
-
-                        <button class="btn-voir btn-full open-dialog" type="button"
-                            data-poste="Data Analyst" data-entreprise="Data Insights" data-lieu="Paris" data-type="Alternance" data-niveau="Bac+3" data-duree="12 mois" data-remu="1200€/mois" data-entreprisedesc="Data Insights accompagne des PME et grands comptes avec des dashboards et analyses décisionnelles." data-missions="Préparer et nettoyer les données;Créer des dashboards;Analyser des KPI;Présenter les résultats;Automatiser des rapports" data-icon="fa-chart-line">
-                            Voir plus
-                        </button>
-                    </article>
-
-                    {# FIN DE LA BOUCLE {% endfor %} #}
+                    {% endfor %}
 
                     <nav class="pagination" aria-label="Pagination des offres">
                         <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
@@ -299,7 +285,6 @@
     </dialog>
 {% endblock %}
 
-{# 5. JS Spécifique pour remplir la modale avec les infos du bouton "Voir plus" #}
 {% block javascripts %}
     <script>
         const dialog = document.getElementById('offreDialog');

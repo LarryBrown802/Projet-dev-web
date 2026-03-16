@@ -11,81 +11,46 @@
 
 {# 4. Contenu principal #}
 {% block content %}
-    <main>
+    <main class="container" style="width: min(1200px, 94%); margin: 26px auto 60px;">
+        
+        <div class="page-head" style="margin-bottom: 20px;">
+            <h1 style="margin: 0 0 8px; font-size: 28px; font-weight: 900;">Entreprises partenaires</h1>
+        </div>
+
         <section class="entreprise-section">
             
-            {# NOTE POUR L'ÉQUIPE : Boucle Twig à insérer ici -> {% for entreprise in entreprises %} #}
-            
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                <h3>Tech Solutions</h3>
-                
-                <div class="avis">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                </div>
-                
-                <div class="contact-info">
-                    <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                    <p><i class="fa-solid fa-envelope"></i> contact@techsolutions.fr</p>
-                </div>
-                
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                <p>6 élèves ont déjà postulé</p>
-                
-                <a href="/offres?entreprise=tech-solutions" class="btn-voir">Découvrir les offres</a>
-            </article>
-
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                <h3>Data Insights</h3>
-                
-                <div class="avis">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                
-                <div class="contact-info">
-                    <p><i class="fa-solid fa-phone"></i> 01 34 56 78 90</p>
-                    <p><i class="fa-solid fa-envelope"></i> contact@datainsights.fr</p>
-                </div>
-                
-                <p>Leader de l'analyse de données décisionnelles. Donec vel sapien eget nunc efficitur.</p>
-                <p>3 élèves ont déjà postulé</p>
-                
-                <a href="/offres?entreprise=data-insights" class="btn-voir">Découvrir les offres</a>
-            </article>
-
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                <h3>SecureTech</h3>
-                
-                <div class="avis">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                </div>
-                
-                <div class="contact-info">
-                    <p><i class="fa-solid fa-phone"></i> 01 45 67 89 01</p>
-                    <p><i class="fa-solid fa-envelope"></i> contact@securetech.fr</p>
-                </div>
-                
-                <p>Experts en cybersécurité et protection des systèmes d'information.</p>
-                <p>4 élèves ont déjà postulé</p>
-                
-                <a href="/offres?entreprise=securetech" class="btn-voir">Découvrir les offres</a>
-            </article>
-
-            {# FIN DE LA BOUCLE {% endfor %} #}
+            {# THE TWIG LOOP #}
+            {% for entreprise in entreprises %}
+                <article class="entreprise-card">
+                    {# I added a dynamic background color and the first letter of the company name to the logo! #}
+                    <div class="entreprise-logo" style="background-color: {{ entreprise.couleur }};">
+                        <h2 style="margin:0;">{{ entreprise.nom|slice(0, 1) }}</h2>
+                    </div>
+                    
+                    <h3>{{ entreprise.nom }}</h3>
+                    
+                    <div class="avis">
+                        {# Logic to display the correct number of solid/regular stars #}
+                        {% for i in 1..5 %}
+                            {% if i <= entreprise.avis %}
+                                <i class="fa-solid fa-star"></i>
+                            {% else %}
+                                <i class="fa-regular fa-star" style="color: #ccc;"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="contact-info">
+                        <p style="margin: 4px 0;"><i class="fa-solid fa-phone"></i> {{ entreprise.telephone }}</p>
+                        <p style="margin: 4px 0;"><i class="fa-solid fa-envelope"></i> {{ entreprise.email }}</p>
+                    </div>
+                    
+                    <p>{{ entreprise.description }}</p>
+                    <p style="font-weight: bold; color: var(--primary-dark);">{{ entreprise.candidats }} élèves ont déjà postulé</p>
+                    
+                    <a href="/offres?entreprise={{ entreprise.slug }}" class="btn-voir">Découvrir les offres</a>
+                </article>
+            {% endfor %}
 
         </section>
     </main>

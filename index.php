@@ -39,6 +39,11 @@ $router->map('GET', '/entreprises', 'EntrepriseController#listePublic', 'entrepr
 $router->map('GET', '/connexion', 'AuthController#connexion', 'connexion');
 $router->map('POST', '/connexion', 'AuthController#loginProcess', 'connexion_post');
 $router->map('GET', '/deconnexion', 'AuthController#deconnexion', 'deconnexion');
+$router->map('GET', '/entreprise', 'EntrepriseController#listePublic', 'entreprise');
+
+// Route Pilote
+$router->map('GET', '/dashboard-pilote', 'PiloteController#dashboard', 'dashboard_pilote');
+
 // Pages Étudiant (Bientôt)
 $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
 

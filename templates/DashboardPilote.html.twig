@@ -6,7 +6,7 @@
 
 {# 3. CSS spécifique au panel pilote #}
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/pilote.css">
+    <link rel="stylesheet" href="/assets/pages/Pilote.css">
 {% endblock %}
 
 {# 4. Contenu principal #}
@@ -16,17 +16,16 @@
         <div class="page-head">
             <div>
                 <h1>Tableau de bord</h1>
-                {# NOTE : Plus tard, le nom et la promo seront des variables : {{ session.prenom }} {{ session.nom }} etc. #}
-                <p class="page-subtitle">Bienvenue, <strong>M. Dupont</strong> — Pilote de promotion CPI A2 Informatique</p>
+                <p class="page-subtitle">Bienvenue, <strong>{{ pilote.nom }}</strong> — Pilote de promotion {{ pilote.promotion }}</p>
             </div>
             <div class="page-meta">
                 <div class="meta-card">
                     <span class="meta-label">Promotion</span>
-                    <span class="meta-value">CPI A2 Informatique</span>
+                    <span class="meta-value" style="font-size: 16px;">{{ pilote.promotion }}</span>
                 </div>
                 <div class="meta-card">
                     <span class="meta-label">Étudiants</span>
-                    <span class="meta-value">27</span>
+                    <span class="meta-value">{{ pilote.nb_etudiants }}</span>
                 </div>
             </div>
         </div>
@@ -36,28 +35,28 @@
                 <div class="kpi-icon kpi-blue"><i class="fa-solid fa-file-circle-check"></i></div>
                 <div>
                     <p class="kpi-label">Candidatures totales</p>
-                    <p class="kpi-value">87</p>
+                    <p class="kpi-value">{{ kpis.candidatures_totales }}</p>
                 </div>
             </article>
             <article class="kpi-card">
                 <div class="kpi-icon kpi-green"><i class="fa-solid fa-user-graduate"></i></div>
                 <div>
                     <p class="kpi-label">Étudiants ayant postulé</p>
-                    <p class="kpi-value">18</p>
+                    <p class="kpi-value">{{ kpis.etudiants_postule }}</p>
                 </div>
             </article>
             <article class="kpi-card">
                 <div class="kpi-icon kpi-yellow"><i class="fa-solid fa-building"></i></div>
                 <div>
                     <p class="kpi-label">Entreprises partenaires</p>
-                    <p class="kpi-value">12</p>
+                    <p class="kpi-value">{{ kpis.entreprises }}</p>
                 </div>
             </article>
             <article class="kpi-card">
                 <div class="kpi-icon kpi-purple"><i class="fa-solid fa-briefcase"></i></div>
                 <div>
                     <p class="kpi-label">Offres disponibles</p>
-                    <p class="kpi-value">4</p>
+                    <p class="kpi-value">{{ kpis.offres_dispos }}</p>
                 </div>
             </article>
         </section>
@@ -97,43 +96,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {# NOTE : Boucle pour afficher les dernières candidatures : {% for candidature in candidatures_recentes %} #}
-                        <tr>
-                            <td><strong>Enzo boucetta</strong></td>
-                            <td>Développeur Web</td>
-                            <td>Tech Solutions</td>
-                            <td>20/02/2026</td>
-                            <td><span class="badge badge--wait">En attente</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Julien Voltz</strong></td>
-                            <td>Data Analyst</td>
-                            <td>Data Insights</td>
-                            <td>19/02/2026</td>
-                            <td><span class="badge badge--ok">Accepté</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Michel Battoktok</strong></td>
-                            <td>Cybersécurité</td>
-                            <td>SecureTech</td>
-                            <td>18/02/2026</td>
-                            <td><span class="badge badge--no">Refusé</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Samuel Verel</strong></td>
-                            <td>DevOps</td>
-                            <td>Cloud Solutions</td>
-                            <td>17/02/2026</td>
-                            <td><span class="badge badge--wait">En attente</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Larry Brown</strong></td>
-                            <td>Ingénieur IA</td>
-                            <td>AI Labs</td>
-                            <td>16/02/2026</td>
-                            <td><span class="badge badge--wait">En attente</span></td>
-                        </tr>
-                        {# FIN BOUCLE #}
+                        {# THE DYNAMIC LOOP #}
+                        {% for candidature in candidatures %}
+                            <tr>
+                                <td><strong>{{ candidature.etudiant }}</strong></td>
+                                <td>{{ candidature.offre }}</td>
+                                <td>{{ candidature.entreprise }}</td>
+                                <td>{{ candidature.date }}</td>
+                                <td><span class="badge {{ candidature.badge }}">{{ candidature.statut }}</span></td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

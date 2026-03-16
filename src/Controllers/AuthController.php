@@ -16,26 +16,29 @@ class AuthController {
 
     // Handles the POST request: Processes the form submission
     public function loginProcess() {
-        // 1. Get the data from the form (using the 'name' attributes from your HTML)
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        // 2. DUMMY CHECK (We will replace this with a real Database query later)
+        // 1. Check pour l'Administrateur
         if ($email === 'admin@viacesi.fr' && $password === 'admin123') {
-            
-            // 3. Login successful! Save user data in the Session
             $_SESSION['user'] = [
                 'role' => 'admin',
                 'email' => $email
             ];
-            
-            // 4. Redirect to the Admin Dashboard
             header('Location: /dashboard-admin');
             exit;
-            
-        } else {
-            // Login failed! Redirect back to the login page
-            // (Later, we will add a nice error message here)
+        } 
+        // 2. Check pour le Pilote (NOUVEAU)
+        elseif ($email === 'pilote@viacesi.fr' && $password === 'pilote123') {
+            $_SESSION['user'] = [
+                'role' => 'pilote',
+                'email' => $email
+            ];
+            header('Location: /dashboard-pilote');
+            exit;
+        } 
+        // 3. Échec de la connexion
+        else {
             header('Location: /connexion');
             exit;
         }
