@@ -463,7 +463,7 @@
   color: #fff;
   border: none;
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: 12px 1px;
   font-weight: 900;
   cursor: pointer;
   transition: transform .12s ease, filter .12s ease;
