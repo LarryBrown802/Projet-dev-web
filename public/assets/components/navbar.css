@@ -77,8 +77,8 @@ nav a.active{
 }
 
 .profile-btn{
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -131,4 +131,5 @@ nav a.active{
 .profile:hover .profile-menu,
 .profile:focus-within .profile-menu{
   display: block;
+
 }
