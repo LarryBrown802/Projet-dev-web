@@ -26,7 +26,7 @@
                 {% if session.role == 'admin' %}
                     <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
                     <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
-                    <a href="/index.php?page=company_admin"  class="{% if current_page == 'company_admin' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=pilot_admin"   class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
                     <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
 
@@ -34,7 +34,7 @@
                 {% elseif session.role == 'pilote' %}
                     <a href="/index.php?page=dashboard_pilot"     class="{% if current_page == 'dashboard_pilot' %}active{% endif %}">Dashboard</a>
                     <a href="/index.php?page=offer_pilot" class="{% if current_page == 'offer_pilot' %}active{% endif %}">Gérer offres</a>
-                    <a href="/index.php?page=company_pilot"  class="{% if current_page == 'company_pilot' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
 
                 {# ===== LIENS ETUDIANT ===== #}
