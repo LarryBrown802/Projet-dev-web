@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class CompanyModel
+class CompanyManagementModel
 {
     private array $companies;
     private int $parPage = 5;

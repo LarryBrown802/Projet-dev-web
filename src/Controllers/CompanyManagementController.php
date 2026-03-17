@@ -2,18 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Models\CompanyModel;
+use App\Models\CompanyManagementModel;
 use Twig\Environment;
 
 class CompanyManagementController
 {
     private Environment $twig;
-    private CompanyModel $companyModel;
+    private CompanyManagementModel $companyModel;
 
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
-        $this->companyModel = new CompanyModel();
+        $this->companyModel = new CompanyManagementModel();
     }
 
     public function index(): void
