@@ -18,7 +18,6 @@ use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\OfferAdminController;
-use App\Controllers\CompanyAdminController;
 use App\Controllers\PilotAdminController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
