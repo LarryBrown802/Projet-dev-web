@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Student{% endblock %}
+{% block title %}Gestion des étudiants{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/assets/pages/Pilote.css">
@@ -11,15 +11,22 @@
 
     <div class="page-head">
         <div>
-            <h1>Gestion des étudiants</h1>
+            <h1>
+                {% if session.role == 'admin' %}
+                    Gestion de tous les étudiants
+                {% else %}
+                    Mes étudiants
+                {% endif %}
+            </h1>
             <p class="page-subtitle">Consultez les profils, les candidatures et l'état de la recherche de stage.</p>
         </div>
-        <button class="btn-add" type="button" id="btnCreateEtudiant">
-            <i class="fa-solid fa-plus"></i> Nouvel étudiant
-        </button>
+        {% if session.role == 'admin' or session.role == 'pilote' %}
+            <button class="btn-add" type="button" id="btnCreateEtudiant">
+                <i class="fa-solid fa-plus"></i> Nouvel étudiant
+            </button>
+        {% endif %}
     </div>
 
-    <!-- Barre recherche -->
     <div class="search-bar-wrap">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -27,7 +34,6 @@
         </div>
     </div>
 
-    <!-- Tableau -->
     <div class="table-wrap">
         <table class="dash-table">
             <thead>
@@ -35,6 +41,7 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Email</th>
+                    <th>Promotion</th>
                     <th>Candidatures</th>
                     <th>Statut recherche</th>
                     <th>Actions</th>
@@ -46,6 +53,7 @@
                     <td><strong>{{ student.nom }}</strong></td>
                     <td>{{ student.prenom }}</td>
                     <td>{{ student.email }}</td>
+                    <td>{{ student.promotion }}</td>
                     <td>{{ student.candidatures }}</td>
                     <td>
                         {% if student.statut == 'ok' %}
@@ -78,61 +86,42 @@
                     </td>
                 </tr>
                 {% else %}
-                    <tr><td colspan="6">Aucun étudiant trouvé.</td></tr>
+                    <tr><td colspan="7">Aucun étudiant trouvé.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <!-- Pagination -->
-   <nav class="pagination" aria-label="Pagination des étudiants">
-    {% if pageCourante > 1 %}
-        <a href="?page=student_pilot&p={{ pageCourante - 1 }}" class="page-arrow">
-            <i class="fa-solid fa-chevron-left"></i>
-        </a>
-    {% else %}
-        <button class="page-arrow" type="button" disabled>
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-    {% endif %}
-
-    <div class="page-numbers">
-        {% for i in 1..totalPages %}
-            <a href="?page=student_pilot&p={{ i }}"
-               class="page-number {% if i == pageCourante %}active{% endif %}">
-                {{ i }}
+    <nav class="pagination" aria-label="Pagination des étudiants">
+        {% if pageCourante > 1 %}
+            <a href="?page=student_management&p={{ pageCourante - 1 }}" class="page-arrow">
+                <i class="fa-solid fa-chevron-left"></i>
             </a>
-        {% endfor %}
-    </div>
-
-    {% if pageCourante < totalPages %}
-        <a href="?page=student_pilot&p={{ pageCourante + 1 }}" class="page-arrow">
-            <i class="fa-solid fa-chevron-right"></i>
-        </a>
-    {% else %}
-        <button class="page-arrow" type="button" disabled>
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
-    {% endif %}
-</nav>
+        {% else %}
+            <button class="page-arrow" type="button" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        {% endif %}
 
         <div class="page-numbers">
-            {% for p in pagination.pages %}
-                {% if p == '...' %}
-                    <span class="page-ellipsis">…</span>
-                {% else %}
-                    <button class="page-number {% if p == pagination.current %}active{% endif %}"
-                        onclick="window.location='/index.php?page=student_pilot&p={{ p }}'">
-                        {{ p }}
-                    </button>
-                {% endif %}
+            {% for i in 1..totalPages %}
+                <a href="?page=student_management&p={{ i }}"
+                   class="page-number {% if i == pageCourante %}active{% endif %}">
+                    {{ i }}
+                </a>
             {% endfor %}
         </div>
 
-        <button class="page-arrow" {% if not pagination.hasNext %}disabled{% endif %}
-            onclick="window.location='/index.php?page=student_pilot&p={{ pagination.current + 1 }}'">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        {% if pageCourante < totalPages %}
+            <a href="?page=student_management&p={{ pageCourante + 1 }}" class="page-arrow">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        {% else %}
+            <button class="page-arrow" type="button" disabled>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        {% endif %}
     </nav>
+
 </main>
 {% endblock %}

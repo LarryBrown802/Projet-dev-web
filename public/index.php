@@ -15,7 +15,7 @@ use App\Controllers\WishlistController;
 use App\Controllers\DashboardPilotController;
 use App\Controllers\OfferPilotController;
 use App\Controllers\CompanyPilotController;
-use App\Controllers\StudentPilotController;
+use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\OfferAdminController;
 use App\Controllers\CompanyAdminController;
@@ -91,9 +91,9 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'student_pilot':
-        requireRole('pilote');
-        $controller = new StudentPilotController($twig);
+    case 'student_management':
+        requireRole('admin', 'pilote'); // Admin peut aussi voir tous les étudiants
+        $controller = new StudentManagementController($twig);
         $controller->index();
         break;
 
@@ -122,10 +122,11 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'student_admin':
+    /*case 'student_admin':
+        requireRole('admin');
         $controller = new StudentAdminController($twig);
         $controller->index();
-        break;
+        break;*/
 
     // ===== DECONNEXION =====
     case 'logout':
