@@ -47,7 +47,7 @@ $router->map('GET', '/pilote/etudiants', 'PiloteController#mesEtudiants', 'pilot
 $router->map('GET', '/pilote/entreprises', 'PiloteController#mesEntreprises', 'pilote_entreprises');
 $router->map('GET', '/pilote/offres', 'PiloteController#mesOffres', 'pilote_offres');
 
-// Pages Étudiant (Bientôt)
+// Routes Etudiant
 $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
 
 // Pages Administrateur (Bientôt)
