@@ -9,9 +9,16 @@ class ConnexionController
     private Environment $twig;
 
     private array $users = [
-        ['email' => 'admin@test.com', 'password' => 'admin123', 'role' => 'admin'],
-        ['email' => 'pilote@test.com', 'password' => 'pilote123', 'role' => 'pilote'],
-        ['email' => 'etudiant@test.com', 'password' => 'etudiant123', 'role' => 'etudiant']
+        // Admins
+        ['id' => 1, 'email' => 'admin1@test.com',  'password' => 'admin123',   'role' => 'admin'],
+        ['id' => 2, 'email' => 'admin2@test.com',  'password' => 'admin456',   'role' => 'admin'],
+
+        // Pilotes
+        ['id' => 3, 'email' => 'pilote1@test.com', 'password' => 'pilote123',  'role' => 'pilote'],
+        ['id' => 4, 'email' => 'pilote2@test.com', 'password' => 'pilote456',  'role' => 'pilote'],
+
+        // Etudiants
+        ['id' => 5, 'email' => 'etudiant@test.com','password' => 'etudiant123','role' => 'etudiant'],
     ];
 
     public function __construct(Environment $twig)
@@ -37,8 +44,9 @@ class ConnexionController
                 }
             }
             if ($found) {
-                $_SESSION['role']  = $found['role'];
+                $_SESSION['role'] = $found['role'];
                 $_SESSION['email'] = $found['email'];
+                $_SESSION['id'] = $found['id'];
                 header('Location: /index.php?page=accueil');
                 exit;
             }

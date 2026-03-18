@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 session_start();
 
@@ -11,13 +14,11 @@ use App\Controllers\CompanyController;
 use App\Controllers\WishlistController;
 use App\Controllers\DashboardPilotController;
 use App\Controllers\OfferPilotController;
-use App\Controllers\CompanyPilotController;
-use App\Controllers\StudentPilotController;
+use App\Controllers\CompanyManagementController;
+use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\OfferAdminController;
-use App\Controllers\CompanyAdminController;
 use App\Controllers\PilotAdminController;
-use App\Controllers\StudentAdminController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -82,15 +83,15 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'company_pilot':
-        requireRole('pilote');
-        $controller = new CompanyPilotController($twig);
+    case 'company_management':
+        requireRole('admin', 'pilote');
+        $controller = new CompanyManagementController($twig);
         $controller->index();
         break;
 
-    case 'student_pilot':
-        requireRole('pilote');
-        $controller = new StudentPilotController($twig);
+    case 'student_management':
+        requireRole('admin', 'pilote'); // Admin peut aussi voir tous les étudiants
+        $controller = new StudentManagementController($twig);
         $controller->index();
         break;
 
@@ -107,11 +108,11 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'company_admin':
+    /*case 'company_admin':
         requireRole('admin');
         $controller = new CompanyAdminController($twig);
         $controller->index();
-        break;
+        break;*/
         
     case 'pilot_admin':
         requireRole('admin');
@@ -119,10 +120,11 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'student_admin':
+    /*case 'student_admin':
+        requireRole('admin');
         $controller = new StudentAdminController($twig);
         $controller->index();
-        break;
+        break;*/
 
     // ===== DECONNEXION =====
     case 'logout':

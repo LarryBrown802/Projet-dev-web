@@ -86,35 +86,28 @@
 
     <!-- Pagination -->
     <nav class="pagination" aria-label="Pagination des entreprises">
-    {% if pageCourante > 1 %}
-        <a href="?page=company_pilot&p={{ pageCourante - 1 }}" class="page-arrow">
-            <i class="fa-solid fa-chevron-left"></i>
-        </a>
-    {% else %}
-        <button class="page-arrow" type="button" disabled>
+        <button class="page-arrow" type="button"
+            {% if pageCourante <= 1 %}disabled{% endif %}
+            onclick="window.location='?page=company_management&p={{ pageCourante - 1 }}'">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
-    {% endif %}
 
-    <div class="page-numbers">
-        {% for i in 1..totalPages %}
-            <a href="?page=company_pilot&p={{ i }}"
-               class="page-number {% if i == pageCourante %}active{% endif %}">
-                {{ i }}
-            </a>
-        {% endfor %}
-    </div>
+        <div class="page-numbers">
+            {% for i in 1..totalPages %}
+                <button class="page-number {% if i == pageCourante %}active{% endif %}"
+                    type="button"
+                    onclick="window.location='?page=company_management&p={{ i }}'">
+                    {{ i }}
+                </button>
+            {% endfor %}
+        </div>
 
-    {% if pageCourante < totalPages %}
-        <a href="?page=company_pilot&p={{ pageCourante + 1 }}" class="page-arrow">
-            <i class="fa-solid fa-chevron-right"></i>
-        </a>
-    {% else %}
-        <button class="page-arrow" type="button" disabled>
+        <button class="page-arrow" type="button"
+            {% if pageCourante >= totalPages %}disabled{% endif %}
+            onclick="window.location='?page=company_management&p={{ pageCourante + 1 }}'">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
-    {% endif %}
-</nav>
+    </nav>
 
-  </main>
+</main>
 {% endblock %}
