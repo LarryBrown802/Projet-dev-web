@@ -49,6 +49,7 @@ $router->map('GET', '/pilote/offres', 'PiloteController#mesOffres', 'pilote_offr
 
 // Routes Etudiant
 $router->map('GET', '/wishlist', 'EtudiantController#wishlist', 'wishlist');
+$router->map('GET', '/mes-candidatures', 'EtudiantController#candidatures', 'mes_candidatures');
 
 // Pages Administrateur (Bientôt)
 $router->map('GET', '/dashboard-admin', 'AdminController#dashboard', 'dash_admin');
