@@ -137,7 +137,27 @@ class EtudiantController
                 'entreprise_desc' => 'CloudTech est spécialisée dans les solutions cloud et DevOps.',
                 'missions' => 'Créer des API;Maintenir le backend;Optimiser les performances;Sécuriser les données',
                 'icon' => 'fa-server'
+            ],
+            [
+                'poste' => 'UX/UI Designer',
+                'entreprise' => 'DesignPro',
+                'status_icon' => 'fa-hourglass-half',
+                'status_class' => 'status--pending',
+                'status_title' => 'En attente',
+                'avis' => 4,
+                'email' => 'recrutement@designpro.fr',
+                'tel' => '+33 7 11 22 33 44',
+                'desc_courte' => 'Conception d’interfaces utilisateur, maquettes, tests utilisateurs…',
+                'lieu' => 'Lyon',
+                'type' => 'Emploi',
+                'niveau' => 'Bac+3',
+                'duree' => '6 mois',
+                'remu' => '1500€/mois',
+                'entreprise_desc' => 'DesignPro accompagne les startups dans leur développement produit.',
+                'missions' => 'Créer des maquettes;Concevoir des interfaces;Réaliser des tests utilisateurs;Documenter les designs',
+                'icon' => 'fa-paint-brush'
             ]
+
 
         ];
 
