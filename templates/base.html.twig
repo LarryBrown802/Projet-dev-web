@@ -19,9 +19,6 @@
 
             <div class="navbar-right">
 
-                {# ===== LIENS COMMUNS À TOUS ===== #}
-                <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
-
                 {# ===== LIENS ADMIN ===== #}
                 {% if session.role == 'admin' %}
                     <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
@@ -39,12 +36,14 @@
 
                 {# ===== LIENS ETUDIANT ===== #}
                 {% elseif session.role == 'etudiant' %}
+                    <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
                     <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
                     <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
                     <a href="/index.php?page=wishlist"  class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
 
                 {# ===== NON CONNECTÉ ===== #}
                 {% else %}
+                    <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
                     <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
                     <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
                 {% endif %}
