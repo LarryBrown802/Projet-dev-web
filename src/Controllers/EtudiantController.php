@@ -11,7 +11,6 @@ class EtudiantController {
 
     // Handles the GET request for '/wishlist'
     public function wishlist() {
-        // SECURITY GATE: In the future, check if the user is logged in as 'etudiant'
         
         // DUMMY DATA: Offers the student has bookmarked
         $favoris = [
@@ -35,7 +34,7 @@ class EtudiantController {
                 'description' => 'Analysez des données pour aider à la décision stratégique.',
                 'icon' => 'fa-chart-line'
             ],
-            
+            [
                 'titre' => 'Spécialiste Cybersécurité',
                 'entreprise' => 'SecureTech',
                 'lieu' => 'Lille',
@@ -51,5 +50,5 @@ class EtudiantController {
         echo $this->twig->render('wishlist.html.twig', [
             'favoris' => $favoris
         ]);
-    }
-}
+    } // <-- This closes the wishlist() method
+} // <-- This closes the EtudiantController class
