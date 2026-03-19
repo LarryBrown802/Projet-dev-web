@@ -13,7 +13,7 @@ use App\Controllers\OfferController;
 use App\Controllers\CompanyController;
 use App\Controllers\WishlistController;
 use App\Controllers\DashboardPilotController;
-use App\Controllers\OfferPilotController;
+use App\Controllers\OfferManagementController;
 use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
@@ -77,9 +77,9 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'offer_pilot':
-        requireRole('pilote');
-        $controller = new OfferPilotController($twig);
+    case 'offer_management':
+        requireRole('admin', 'pilote');
+        $controller = new OfferManagementController($twig);
         $controller->index();
         break;
 
@@ -102,11 +102,11 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'offer_admin':
+    /*case 'offer_admin':
         requireRole('admin');
         $controller = new OfferAdminController($twig);
         $controller->index();
-        break;
+        break;*/
 
     /*case 'company_admin':
         requireRole('admin');
