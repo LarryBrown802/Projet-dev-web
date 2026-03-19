@@ -421,41 +421,58 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        // ==========================================
+        // 1. MODAL LOGIC (VOIR PLUS)
+        // ==========================================
         const dialog = document.getElementById('offreDialog');
-        const openBtns = document.querySelectorAll('.open-dialog');
 
-        openBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Populate texts
-                document.getElementById('dialogTitle').textContent = btn.dataset.poste;
-                document.getElementById('dialogCompany').textContent = btn.dataset.entreprise;
-                document.getElementById('dialogLieu').textContent = btn.dataset.lieu;
-                document.getElementById('dialogType').textContent = btn.dataset.type;
-                document.getElementById('dialogNiveau').textContent = btn.dataset.niveau;
-                document.getElementById('dialogDuree').textContent = btn.dataset.duree;
-                document.getElementById('dialogRemu').textContent = btn.dataset.remu;
-                document.getElementById('dialogEntrepriseDesc').textContent = btn.dataset.entreprisedesc;
-                
-                // Populate Icon
-                const iconContainer = document.getElementById('dialogIcon');
-                iconContainer.innerHTML = `<i class="fa-solid ${btn.dataset.icon}"></i>`;
-                
-                // Populate Missions List
-                const ul = document.getElementById('dialogMissions');
-                ul.innerHTML = '';
-                const missions = (btn.dataset.missions || '').split(';').filter(Boolean);
-                missions.forEach(m => {
-                    const li = document.createElement('li'); 
-                    li.textContent = m; 
-                    ul.appendChild(li);
+        function initModals() {
+            const openBtns = document.querySelectorAll('.open-dialog');
+            openBtns.forEach(btn => {
+                // Remove old listeners to avoid duplicates when paginating
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                newBtn.addEventListener('click', () => {
+                    document.getElementById('dialogTitle').textContent = newBtn.dataset.poste;
+                    document.getElementById('dialogCompany').textContent = newBtn.dataset.entreprise;
+                    document.getElementById('dialogLieu').textContent = newBtn.dataset.lieu;
+                    document.getElementById('dialogType').textContent = newBtn.dataset.type;
+                    document.getElementById('dialogNiveau').textContent = newBtn.dataset.niveau;
+                    document.getElementById('dialogDuree').textContent = newBtn.dataset.duree;
+                    document.getElementById('dialogRemu').textContent = newBtn.dataset.remu;
+                    document.getElementById('dialogEntrepriseDesc').textContent = newBtn.dataset.entreprisedesc;
+                    
+                    document.getElementById('dialogIcon').innerHTML = `<i class="fa-solid ${newBtn.dataset.icon}"></i>`;
+                    
+                    const ul = document.getElementById('dialogMissions');
+                    ul.innerHTML = '';
+                    (newBtn.dataset.missions||'').split(';').filter(Boolean).forEach(m => {
+                        const li = document.createElement('li'); li.textContent = m; ul.appendChild(li);
+                    });
+                    
+                    dialog.showModal();
                 });
-                
-                // Open Modal
-                dialog.showModal();
             });
-        });
-        
-        // Close modal when clicking the backdrop
+
+            // Postuler button logic inside modal
+            const btnApplyAction = document.querySelector('.dialog-actions .btn-voir');
+            if (btnApplyAction) {
+                const newApplyBtn = btnApplyAction.cloneNode(true);
+                btnApplyAction.parentNode.replaceChild(newApplyBtn, btnApplyAction);
+                
+                newApplyBtn.addEventListener('click', () => {
+                    const poste = encodeURIComponent(document.getElementById('dialogTitle').textContent);
+                    const entreprise = encodeURIComponent(document.getElementById('dialogCompany').textContent);
+                    window.location.href = `/index.php?page=apply&poste=${poste}&entreprise=${entreprise}`;
+                });
+            }
+        }
+
+        // Initialize Modals on first load
+        initModals();
+
+        // Close modal on backdrop click
         dialog.addEventListener('click', e => {
             const r = dialog.getBoundingClientRect();
             if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
@@ -463,15 +480,95 @@
             }
         });
 
-        // MAKE THE APPLY BUTTON WORK
-        const btnApplyAction = document.querySelector('.dialog-actions .btn-voir');
-        btnApplyAction.addEventListener('click', () => {
-            // Get the title and company from the modal
-            const poste = encodeURIComponent(document.getElementById('dialogTitle').textContent);
-            const entreprise = encodeURIComponent(document.getElementById('dialogCompany').textContent);
+
+        // ==========================================
+        // 2. CAROUSEL STATISTIQUES
+        // ==========================================
+        const track = document.querySelector('.carousel-track');
+        const cards = document.querySelectorAll('.stat-card');
+        const prevBtn = document.querySelector('.carousel-btn.prev');
+        const nextBtn = document.querySelector('.carousel-btn.next');
+        const dots = document.querySelectorAll('.carousel-dots .dot');
+
+        if (track && cards.length > 0) {
+            let currentIndex = 0;
+
+            function updateCarousel() {
+                // Calculate width to slide (Card width + CSS gap)
+                const cardWidth = cards[0].offsetWidth;
+                const style = window.getComputedStyle(track);
+                const gap = parseFloat(style.gap) || 0;
+                
+                const moveAmount = (cardWidth + gap) * currentIndex;
+                
+                // Apply smooth sliding
+                track.style.transform = `translateX(-${moveAmount}px)`;
+                track.style.transition = 'transform 0.4s ease-in-out';
+
+                // Update active dot
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < cards.length - 1) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+        }
+
+
+        // ==========================================
+        // 3. INSTANT PAGINATION (AJAX)
+        // ==========================================
+        document.addEventListener('click', async function(e) {
+            const paginationLink = e.target.closest('.pagination a');
+            if (!paginationLink) return;
+
+            // Stop the page from doing a hard reload
+            e.preventDefault(); 
+            const url = paginationLink.href;
             
-            // Redirect to the apply page with the data in the URL
-            window.location.href = `/index.php?page=apply&poste=${poste}&entreprise=${entreprise}`;
+            try {
+                // Fetch the next page silently
+                const response = await fetch(url);
+                const html = await response.text();
+                
+                // Convert response to DOM
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Instantly swap the offers container
+                const newOffersContent = doc.querySelector('.offres').innerHTML;
+                document.querySelector('.offres').innerHTML = newOffersContent;
+                
+                // Update the URL bar silently so history/bookmarks still work
+                window.history.pushState({path: url}, '', url);
+                
+                // Re-initialize modals for the newly loaded offers
+                initModals();
+                
+            } catch(err) {
+                console.error("AJAX Pagination Error:", err);
+                // Fallback if network fails: load normally
+                window.location.href = url; 
+            }
         });
     </script>
 {% endblock %}
