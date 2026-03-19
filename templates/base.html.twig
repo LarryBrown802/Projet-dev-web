@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="/assets/main.css">
-    
+
     {% block stylesheets %}{% endblock %}
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <title>{% block title %}LEMS{% endblock %}</title>
@@ -15,54 +15,63 @@
 <body>
     <header>
         <nav class="navbar">
-            <a class="navbar-brand" href="/">LEMS</a>
+            <a class="navbar-brand" href="/index.php?page=accueil">LEMS</a>
 
-<div class="navbar-right">
-    
-    {# SI LA PERSONNE CONNECTEE EST UN ADMINISTRATEUR #}
-    {% if session.user is defined and session.user.role == 'admin' %}
-        <a href="/dashboard-admin">Tableau de bord</a>
-        <a href="/admin/pilotes">Pilotes</a>
-        <a href="/admin/offres">Offres</a>
-        <a href="/admin/entreprises">Entreprises</a>
-        <a href="/admin/etudiants">Étudiants</a>
-    
-    {# SI LA PERSONNE CONNECTEE EST UN PILOTE #}
-    {% elseif session.user is defined and session.user.role == 'pilote' %}
-        <a href="/dashboard-pilote">Tableau de bord</a>
-        <a href="/pilote/etudiants">Mes Étudiants</a>
-        <a href="/offres">Offres</a>
-        <a href="/entreprise">Entreprises</a>
+            <div class="navbar-right">
 
-    {# SI C'EST UN ETUDIANT OU UN VISITEUR (Par défaut) #}
-    {% else %}
-        <a href="/">Accueil</a>
-        <a href="/offres">Offres</a>
-        <a href="/entreprise">Entreprises</a>
-    {% endif %}
+                {# ===== LIENS COMMUNS À TOUS ===== #}
+                <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
 
-    {# On affiche le profil s'il est connecté, sinon le bouton Connexion #}
-    {% if session.user is defined %}
-        <div class="profile">
-            <a class="profile-btn" href="/profil" aria-label="Profil">
-                <i class="fa-solid fa-user"></i>
-            </a>
-            <div class="profile-menu" role="menu">
-                <a href="/profil" role="menuitem">Mon profil</a>
-                <a href="/parametres" role="menuitem">Paramètres</a>
-                <hr>
-                <a href="/deconnexion" role="menuitem" class="deco">Déconnexion</a>
+                {# ===== LIENS ADMIN ===== #}
+                {% if session.role == 'admin' %}
+                    <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
+                    <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=pilot_admin"   class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
+                    <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
+
+                {# ===== LIENS PILOTE ===== #}
+                {% elseif session.role == 'pilote' %}
+                    <a href="/index.php?page=dashboard_pilot"     class="{% if current_page == 'dashboard_pilot' %}active{% endif %}">Dashboard</a>
+                    <a href="/index.php?page=offer_pilot" class="{% if current_page == 'offer_pilot' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
+                    <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
+
+                {# ===== LIENS ETUDIANT ===== #}
+                {% elseif session.role == 'etudiant' %}
+                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                    <a href="/index.php?page=wishlist"  class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
+
+                {# ===== NON CONNECTÉ ===== #}
+                {% else %}
+                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                {% endif %}
+
+                {# ===== BOUTON CONNEXION / PROFIL ===== #}
+                {% if session.role is not defined or session.role is empty %}
+                    <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
+                {% else %}
+                    <div class="profile">
+                        <a class="profile-btn" href="/index.php?page=profil" aria-label="Profil">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+
+                        <div class="profile-menu" role="menu">
+                            <a href="/index.php?page=profil"      role="menuitem">Mon profil</a>
+                            <a href="/index.php?page=parametres"  role="menuitem">Paramètres</a>
+                            <hr>
+                            <a href="/index.php?page=logout" role="menuitem" class="deco">Déconnexion</a>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
-        </div>
-    {% else %}
-        <a href="/connexion" class="btn-connexion">Connexion</a> 
-    {% endif %}
-
-</div>
         </nav>
     </header>
 
-    <main> 
+    <main>
         {% block content %}{% endblock %}
     </main>
 
@@ -73,15 +82,15 @@
             <div class="footer-cols">
                 <div class="footer-col">
                     <h4>Features</h4>
-                    <a href="/a-propos">A propos</a>
-                    <a href="/offres">Les offres</a>
-                    <a href="/faq">F.A.Q</a>
+                    <a href="/index.php?page=apropos">A propos</a>
+                    <a href="/index.php?page=offers">Les offres</a>
+                    <a href="/index.php?page=faq">F.A.Q</a>
                 </div>
 
                 <div class="footer-col">
                     <h4>Legal</h4>
-                    <a href="/mentions-legales">Mentions légales</a>
-                    <a href="/termes">Termes d'utilisations</a>
+                    <a href="/index.php?page=mentions-legales">Mentions légales</a>
+                    <a href="/index.php?page=conditions-utilisation">Termes d'utilisations</a>
                 </div>
 
                 <div class="footer-col">
@@ -99,8 +108,8 @@
         </div>
     </footer>
 
-    <script src="/assets/script.js"></script>
-    
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script src="/assets/script.js"></script>
+    {% endblock %}
 </body>
 </html>

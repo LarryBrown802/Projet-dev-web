@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Company{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <div class="page-head">
+        <div>
+            <h1>Gestion des offres</h1>
+            <p class="page-subtitle">Créer, modifier ou supprimer des offres de stage et d'alternance.</p>
+        </div>
+        <button class="btn-add" type="button" id="btnCreateOffre">
+            <i class="fa-solid fa-plus"></i> Nouvelle offre
+        </button>
+    </div>
+
+    <div class="search-bar-wrap" style="display:grid;grid-template-columns:1fr 200px;gap:12px">
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Rechercher par titre, entreprise…" />
+        </div>
+        <div class="search-bar">
+            <i class="fa-solid fa-filter"></i>
+            <select style="border:none;outline:none;width:100%;background:transparent;font-weight:800;cursor:pointer">
+                <option>Tous les types</option>
+                <option>Stage</option>
+                <option>Alternance</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Entreprise</th>
+                    <th>Type</th>
+                    <th>Niveau</th>
+                    <th>Lieu</th>
+                    <th>Rémunération</th>
+                    <th>Date</th>
+                    <th>Candidatures</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Développeur Web</strong></td>
+                    <td>Tech Solutions</td>
+                    <td><span class="tag-pill tag-stage">Stage</span></td>
+                    <td><span class="tag-pill tag-bac">Bac+2/3</span></td>
+                    <td><span class="tag-pill tag-lieu">Lyon</span></td>
+                    <td>900 €/mois</td>
+                    <td>10/01/2026</td>
+                    <td>6</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-view-offre" title="Voir" data-titre="Développeur Web" data-entreprise="Tech Solutions" data-type="Stage" data-lieu="Lyon" data-remu="900 €/mois" data-niveau="Bac+2/3" data-duree="6 mois" data-date="10/01/2026" data-desc="Rejoignez notre équipe pour développer des applications web innovantes." data-missions="Développer des interfaces;Travailler avec les APIs REST;Participer aux revues de code"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Développeur Web" data-entreprise="Tech Solutions" data-type="Stage" data-lieu="Lyon" data-remu="900" data-niveau="Bac+2/3" data-duree="6" data-desc="Rejoignez notre équipe pour développer des applications web innovantes."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Développeur Web"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Data Analyst</strong></td>
+                    <td>Data Insights</td>
+                    <td><span class="tag-pill tag-alt">Alternance</span></td>
+                    <td><span class="tag-pill tag-bac">Bac+3</span></td>
+                    <td><span class="tag-pill tag-lieu">Paris</span></td>
+                    <td>1 200 €/mois</td>
+                    <td>15/01/2026</td>
+                    <td>3</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-view-offre" title="Voir" data-titre="Data Analyst" data-entreprise="Data Insights" data-type="Alternance" data-lieu="Paris" data-remu="1 200 €/mois" data-niveau="Bac+3" data-duree="12 mois" data-date="15/01/2026" data-desc="Analysez des données pour aider à la décision stratégique." data-missions="Analyser les données;Créer des tableaux de bord;Présenter les insights"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Data Analyst" data-entreprise="Data Insights" data-type="Alternance" data-lieu="Paris" data-remu="1200" data-niveau="Bac+3" data-duree="12" data-desc="Analysez des données pour aider à la décision stratégique."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Data Analyst"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Spécialiste Cybersécurité</strong></td>
+                    <td>SecureTech</td>
+                    <td><span class="tag-pill tag-stage">Stage</span></td>
+                    <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+                    <td><span class="tag-pill tag-lieu">Lille</span></td>
+                    <td>1 100 €/mois</td>
+                    <td>20/01/2026</td>
+                    <td>4</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-view-offre" title="Voir" data-titre="Spécialiste Cybersécurité" data-entreprise="SecureTech" data-type="Stage" data-lieu="Lille" data-remu="1 100 €/mois" data-niveau="Bac+4/5" data-duree="6 mois" data-date="20/01/2026" data-desc="Protégez les systèmes d'information contre les menaces." data-missions="Audits de sécurité;Tests d'intrusion;Rédaction de rapports"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Spécialiste Cybersécurité" data-entreprise="SecureTech" data-type="Stage" data-lieu="Lille" data-remu="1100" data-niveau="Bac+4/5" data-duree="6" data-desc="Protégez les systèmes d'information contre les menaces."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Spécialiste Cybersécurité"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Ingénieur DevOps</strong></td>
+                    <td>Cloud Solutions</td>
+                    <td><span class="tag-pill tag-stage">Stage</span></td>
+                    <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+                    <td><span class="tag-pill tag-lieu">Marseille</span></td>
+                    <td>1 300 €/mois</td>
+                    <td>25/01/2026</td>
+                    <td>2</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-view-offre" title="Voir" data-titre="Ingénieur DevOps" data-entreprise="Cloud Solutions" data-type="Stage" data-lieu="Marseille" data-remu="1 300 €/mois" data-niveau="Bac+4/5" data-duree="6 mois" data-date="25/01/2026" data-desc="Automatisez les déploiements et assurez la fiabilité des systèmes." data-missions="Automatiser les déploiements;Gérer les infra cloud;Monitoring"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Ingénieur DevOps" data-entreprise="Cloud Solutions" data-type="Stage" data-lieu="Marseille" data-remu="1300" data-niveau="Bac+4/5" data-duree="6" data-desc="Automatisez les déploiements et assurez la fiabilité des systèmes."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Ingénieur DevOps"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Ingénieur IA</strong></td>
+                    <td>AI Labs</td>
+                    <td><span class="tag-pill tag-alt">Alternance</span></td>
+                    <td><span class="tag-pill tag-bac">Bac+5</span></td>
+                    <td><span class="tag-pill tag-lieu">Bordeaux</span></td>
+                    <td>1 500 €/mois</td>
+                    <td>01/02/2026</td>
+                    <td>5</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-view-offre" title="Voir" data-titre="Ingénieur IA" data-entreprise="AI Labs" data-type="Alternance" data-lieu="Bordeaux" data-remu="1 500 €/mois" data-niveau="Bac+5" data-duree="12 mois" data-date="01/02/2026" data-desc="Concevez et entraînez des modèles d'IA." data-missions="Concevoir des modèles;Entraîner des réseaux;Analyser les performances"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Ingénieur IA" data-entreprise="AI Labs" data-type="Alternance" data-lieu="Bordeaux" data-remu="1500" data-niveau="Bac+5" data-duree="12" data-desc="Concevez et entraînez des modèles d'IA."><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Ingénieur IA"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Refaire la Pagination avec PHP-->
+    <nav class="pagination">
+      <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active">1</button>
+        <button class="page-number">2</button>
+        <button class="page-number">3</button>
+      </div>
+      <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+</main>
+{% endblock %}

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/pilote.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Étudiants — Pilote</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilPilote.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="DashboardPilote.html">Tableau de bord</a>
+        <a href="DashboardPGEntreprise.html">Entreprises</a>
+        <a href="DashboardPGOffre.html">Offres</a>
+        <a href="DashboardPGEtudiant.html" class="active">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+          </a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Gestion des étudiants</h1>
+        <p class="page-subtitle">Consultez les profils, les candidatures et l'état de la recherche de stage.</p>
+      </div>
+      <button class="btn-add" type="button" id="btnCreateEtudiant">
+        <i class="fa-solid fa-plus"></i> Nouvel étudiant
+      </button>
+    </div>
+
+    <!-- Barre recherche -->
+    <div class="search-bar-wrap">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Rechercher par nom, prénom ou email…" aria-label="Rechercher un étudiant" />
+      </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Candidatures</th>
+            <th>Statut recherche</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Boucetta</strong></td>
+            <td>Enzo</td>
+            <td>enzo.boucetta@viacesi.fr</td>
+            <td>3</td>
+            <td><span class="badge badge--wait">En cours</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr" data-candidatures='[{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"20/02/2026","statut":"wait"},{"offre":"Data Analyst","entreprise":"Data Insights","date":"15/02/2026","statut":"ok"},{"offre":"DevOps","entreprise":"Cloud Solutions","date":"10/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Boucetta" data-prenom="Enzo" data-email="enzo.boucetta@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Boucetta" data-prenom="Enzo"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Battoktok</strong></td>
+            <td>Michel</td>
+            <td>michel.battoktok@viacesi.fr</td>
+            <td>5</td>
+            <td><span class="badge badge--ok">Stage trouvé</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr" data-candidatures='[{"offre":"Data Analyst","entreprise":"Data Insights","date":"19/02/2026","statut":"ok"},{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"10/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Battoktok" data-prenom="Michel" data-email="michel.battoktok@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Battoktok" data-prenom="Michel"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Chefdjou</strong></td>
+            <td>Larry Brown</td>
+            <td>larry.chefdjou@viacesi.fr</td>
+            <td>2</td>
+            <td><span class="badge badge--no">Non trouvé</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr" data-candidatures='[{"offre":"Cybersécurité","entreprise":"SecureTech","date":"18/02/2026","statut":"no"}]'><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Chefdjou" data-prenom="Larry Brown" data-email="larry.chefdjou@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Chefdjou" data-prenom="Larry Brown"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Verel</strong></td>
+            <td>Samuel</td>
+            <td>samuel.verel@viacesi.fr</td>
+            <td>4</td>
+            <td><span class="badge badge--wait">En cours</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr" data-candidatures='[{"offre":"DevOps","entreprise":"Cloud Solutions","date":"17/02/2026","statut":"wait"},{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"12/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Verel" data-prenom="Samuel" data-email="samuel.verel@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Verel" data-prenom="Samuel"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Linard</strong></td>
+            <td>Raphael</td>
+            <td>raphael.linard@viacesi.fr</td>
+            <td>1</td>
+            <td><span class="badge badge--wait">En cours</span></td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-etu" title="Voir les candidatures" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr" data-candidatures='[{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"16/02/2026","statut":"wait"}]'><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-etu" title="Modifier" data-nom="Linard" data-prenom="Raphael" data-email="raphael.linard@viacesi.fr"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-etu" title="Supprimer" data-nom="Linard" data-prenom="Raphael"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination" aria-label="Pagination des étudiants">
+      <button class="page-arrow" type="button" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active" type="button">1</button>
+        <button class="page-number" type="button">2</button>
+        <button class="page-number" type="button">3</button>
+      </div>
+      <button class="page-arrow" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+  <!-- ===== DIALOG : VOIR candidatures étudiant ===== -->
+  <dialog class="dialog" id="dialogViewEtu" aria-labelledby="viewEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo kpi-blue"><i class="fa-solid fa-user-graduate"></i></div>
+        <div>
+          <h2 id="viewEtuTitle">—</h2>
+          <p class="dialog-company" id="viewEtuEmail">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseViewEtu" type="button">✕</button>
+      </header>
+      <div style="margin-top:14px">
+        <h3 style="margin:0 0 10px;font-size:15px">Candidatures envoyées</h3>
+        <div class="table-wrap">
+          <table class="dash-table" id="viewEtuTable">
+            <thead>
+              <tr>
+                <th>Offre</th>
+                <th>Entreprise</th>
+                <th>Date</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="viewEtuTbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="dialog-actions" style="margin-top:14px">
+        <button class="btn-secondary" id="btnCloseViewEtu2" type="button">Fermer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : CRÉER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogCreateEtu" aria-labelledby="createEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-user-plus"></i></div>
+        <div>
+          <h2 id="createEtuTitle">Nouvel étudiant</h2>
+          <p class="dialog-company">Créer un compte étudiant.</p>
+        </div>
+        <button class="dialog-close" id="btnCloseCreateEtu" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formCreateEtu" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="cENom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cENom" type="text" placeholder="Nom de famille" required /></div>
+          </div>
+          <div class="field">
+            <label for="cEPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cEPrenom" type="text" placeholder="Prénom" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cEEmail">Email <span class="required">*</span></label>
+          <div class="input"><i class="fa-solid fa-envelope"></i><input id="cEEmail" type="email" placeholder="prenom.nom@viacesi.fr" required /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelCreateEtu">Annuler</button>
+          <button class="btn-voir" type="submit">Créer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : MODIFIER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogEditEtu" aria-labelledby="editEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+        <div>
+          <h2 id="editEtuTitle">Modifier l'étudiant</h2>
+          <p class="dialog-company" id="editEtuSubtitle">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseEditEtu" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formEditEtu" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="eENom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="eENom" type="text" required /></div>
+          </div>
+          <div class="field">
+            <label for="eEPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="eEPrenom" type="text" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="eEEmail">Email <span class="required">*</span></label>
+          <div class="input"><i class="fa-solid fa-envelope"></i><input id="eEEmail" type="email" required /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelEditEtu">Annuler</button>
+          <button class="btn-voir" type="submit">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : SUPPRIMER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogDeleteEtu" aria-labelledby="deleteEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+        <div>
+          <h2 id="deleteEtuTitle">Supprimer un étudiant</h2>
+          <p class="dialog-company" id="deleteEtuName">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseDeleteEtu" type="button">✕</button>
+      </header>
+      <div class="dialog-confirm-body">
+        <p>Cette action est <strong>irréversible</strong>. Le compte et toutes les données de cet étudiant seront supprimés.</p>
+      </div>
+      <footer class="dialog-actions">
+        <button class="btn-secondary" type="button" id="btnCancelDeleteEtu">Annuler</button>
+        <button class="btn-danger" type="button" id="btnConfirmDeleteEtu">Supprimer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    function openDialog(id) { document.getElementById(id).showModal(); }
+    function closeDialog(id) { document.getElementById(id).close(); }
+    function closeOnBackdrop(dialogEl) {
+      dialogEl.addEventListener('click', e => {
+        const r = dialogEl.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)
+          dialogEl.close();
+      });
+    }
+    ['dialogViewEtu','dialogCreateEtu','dialogEditEtu','dialogDeleteEtu'].forEach(id => {
+      closeOnBackdrop(document.getElementById(id));
+    });
+
+    const statusLabels = { ok: 'Accepté', wait: 'En attente', no: 'Refusé' };
+    const statusClass  = { ok: 'badge--ok', wait: 'badge--wait', no: 'badge--no' };
+
+    /* VOIR */
+    document.querySelectorAll('.btn-view-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('viewEtuTitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        document.getElementById('viewEtuEmail').textContent = btn.dataset.email;
+        const tbody = document.getElementById('viewEtuTbody');
+        tbody.innerHTML = '';
+        const cands = JSON.parse(btn.dataset.candidatures || '[]');
+        cands.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td><strong>${c.offre}</strong></td><td>${c.entreprise}</td><td>${c.date}</td><td><span class="badge ${statusClass[c.statut]}">${statusLabels[c.statut]}</span></td>`;
+          tbody.appendChild(tr);
+        });
+        openDialog('dialogViewEtu');
+      });
+    });
+    ['btnCloseViewEtu','btnCloseViewEtu2'].forEach(id => document.getElementById(id).addEventListener('click', () => closeDialog('dialogViewEtu')));
+
+    /* CRÉER */
+    document.getElementById('btnCreateEtudiant').addEventListener('click', () => openDialog('dialogCreateEtu'));
+    document.getElementById('btnCloseCreateEtu').addEventListener('click', () => closeDialog('dialogCreateEtu'));
+    document.getElementById('btnCancelCreateEtu').addEventListener('click', () => closeDialog('dialogCreateEtu'));
+    document.getElementById('formCreateEtu').addEventListener('submit', e => {
+      e.preventDefault(); alert('Étudiant créé (démo)'); closeDialog('dialogCreateEtu');
+    });
+
+    /* MODIFIER */
+    document.querySelectorAll('.btn-edit-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('editEtuSubtitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        document.getElementById('eENom').value    = btn.dataset.nom    || '';
+        document.getElementById('eEPrenom').value = btn.dataset.prenom || '';
+        document.getElementById('eEEmail').value  = btn.dataset.email  || '';
+        openDialog('dialogEditEtu');
+      });
+    });
+    document.getElementById('btnCloseEditEtu').addEventListener('click', () => closeDialog('dialogEditEtu'));
+    document.getElementById('btnCancelEditEtu').addEventListener('click', () => closeDialog('dialogEditEtu'));
+    document.getElementById('formEditEtu').addEventListener('submit', e => {
+      e.preventDefault(); alert('Modifications enregistrées (démo)'); closeDialog('dialogEditEtu');
+    });
+
+    /* SUPPRIMER */
+    document.querySelectorAll('.btn-delete-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('deleteEtuName').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        openDialog('dialogDeleteEtu');
+      });
+    });
+    document.getElementById('btnCloseDeleteEtu').addEventListener('click', () => closeDialog('dialogDeleteEtu'));
+    document.getElementById('btnCancelDeleteEtu').addEventListener('click', () => closeDialog('dialogDeleteEtu'));
+    document.getElementById('btnConfirmDeleteEtu').addEventListener('click', () => {
+      alert('Étudiant supprimé (démo)'); closeDialog('dialogDeleteEtu');
+    });
+  </script>
+</body>
+</html>

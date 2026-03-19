@@ -1,15 +1,11 @@
-{# 1. On appelle le squelette de base #}
 {% extends 'base.html.twig' %}
 
-{# 2. On définit le titre de l'onglet #}
-{% block title %}LEMS - Connexion{% endblock %}
+{% block title %}Connexion{% endblock %}
 
-{# 3. On charge uniquement le CSS de la page de connexion #}
 {% block stylesheets %}
     <link rel="stylesheet" href="/assets/pages/connexion.css">
 {% endblock %}
 
-{# 4. On injecte le contenu au centre de la page #}
 {% block content %}
     <main class="auth-wrap">
         <section class="auth-card" aria-label="Formulaire de connexion">
@@ -23,9 +19,7 @@
                 </div>
             </header>
 
-            {# Le formulaire pointe vers la route /connexion gérée par AltoRouter #}
-            <form class="auth-form" action="/connexion" method="post">
-                
+            <form class="auth-form" action="/index.php?page=connexion" method="post">
                 <div class="field">
                     <label for="email">Adresse email</label>
                     <div class="input">
@@ -34,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="field" style="margin-top: 15px;">
+                <div>
                     <div class="label-row">
                         <label for="password">Mot de passe</label>
                     </div>
@@ -44,12 +38,12 @@
                     </div>
                 </div>
 
-                <label class="check" style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                <label class="check">
                     <input type="checkbox" name="remember" />
                     <span>Se souvenir de moi</span>
                 </label>
 
-                <button class="btn-primary" type="submit" style="margin-top: 25px;">Se connecter</button>
+                <button class="btn-primary" type="submit">Se connecter</button>
             </form>
         </section>
     </main>

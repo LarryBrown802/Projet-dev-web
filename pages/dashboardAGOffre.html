@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <title>Offres — Admin</title>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <a class="navbar-brand" href="accueilAdmin.html">LEMS</a>
+      <div class="navbar-right">
+        <a href="dashboardAdmin.html">Tableau de bord</a>
+        <a href="DashboardAGPilote.html">Pilotes</a>
+        <a href="DashboardAGOffre.html" class="active">Offres</a>
+        <a href="DashboardAGEntreprise.html">Entreprises</a>
+        <a href="DashboardAGEtudiant.html">Étudiants</a>
+        <div class="profile">
+          <a class="profile-btn" href="profil.html" aria-label="Profil"><i class="fa-solid fa-user"></i></a>
+          <div class="profile-menu" role="menu">
+            <a href="profil.html" role="menuitem">Mon profil</a>
+            <a href="parametres.html" role="menuitem">Paramètres</a>
+            <hr>
+            <a href="connexion.html" role="menuitem" class="deco">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <div>
+        <h1>Gestion des offres</h1>
+        <p class="page-subtitle">Créer, modifier ou supprimer des offres de stage et d'alternance.</p>
+      </div>
+      <button class="btn-add" type="button" id="btnCreateOffre">
+        <i class="fa-solid fa-plus"></i> Nouvelle offre
+      </button>
+    </div>
+
+    <div class="search-bar-wrap" style="display:grid;grid-template-columns:1fr 200px;gap:12px">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" placeholder="Rechercher par titre, entreprise…" />
+      </div>
+      <div class="search-bar">
+        <i class="fa-solid fa-filter"></i>
+        <select style="border:none;outline:none;width:100%;background:transparent;font-weight:800;cursor:pointer">
+          <option>Tous les types</option>
+          <option>Stage</option>
+          <option>Alternance</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Entreprise</th>
+            <th>Type</th>
+            <th>Niveau</th>
+            <th>Lieu</th>
+            <th>Rémunération</th>
+            <th>Date</th>
+            <th>Candidatures</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Développeur Web</strong></td>
+            <td>Tech Solutions</td>
+            <td><span class="tag-pill tag-stage">Stage</span></td>
+            <td><span class="tag-pill tag-bac">Bac+2/3</span></td>
+            <td><span class="tag-pill tag-lieu">Lyon</span></td>
+            <td>900 €/mois</td>
+            <td>10/01/2026</td>
+            <td>6</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-offre" title="Voir" data-titre="Développeur Web" data-entreprise="Tech Solutions" data-type="Stage" data-lieu="Lyon" data-remu="900 €/mois" data-niveau="Bac+2/3" data-duree="6 mois" data-date="10/01/2026" data-desc="Rejoignez notre équipe pour développer des applications web innovantes." data-missions="Développer des interfaces;Travailler avec les APIs REST;Participer aux revues de code"><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Développeur Web" data-entreprise="Tech Solutions" data-type="Stage" data-lieu="Lyon" data-remu="900" data-niveau="Bac+2/3" data-duree="6" data-desc="Rejoignez notre équipe pour développer des applications web innovantes."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Développeur Web"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Data Analyst</strong></td>
+            <td>Data Insights</td>
+            <td><span class="tag-pill tag-alt">Alternance</span></td>
+            <td><span class="tag-pill tag-bac">Bac+3</span></td>
+            <td><span class="tag-pill tag-lieu">Paris</span></td>
+            <td>1 200 €/mois</td>
+            <td>15/01/2026</td>
+            <td>3</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-offre" title="Voir" data-titre="Data Analyst" data-entreprise="Data Insights" data-type="Alternance" data-lieu="Paris" data-remu="1 200 €/mois" data-niveau="Bac+3" data-duree="12 mois" data-date="15/01/2026" data-desc="Analysez des données pour aider à la décision stratégique." data-missions="Analyser les données;Créer des tableaux de bord;Présenter les insights"><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Data Analyst" data-entreprise="Data Insights" data-type="Alternance" data-lieu="Paris" data-remu="1200" data-niveau="Bac+3" data-duree="12" data-desc="Analysez des données pour aider à la décision stratégique."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Data Analyst"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Spécialiste Cybersécurité</strong></td>
+            <td>SecureTech</td>
+            <td><span class="tag-pill tag-stage">Stage</span></td>
+            <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+            <td><span class="tag-pill tag-lieu">Lille</span></td>
+            <td>1 100 €/mois</td>
+            <td>20/01/2026</td>
+            <td>4</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-offre" title="Voir" data-titre="Spécialiste Cybersécurité" data-entreprise="SecureTech" data-type="Stage" data-lieu="Lille" data-remu="1 100 €/mois" data-niveau="Bac+4/5" data-duree="6 mois" data-date="20/01/2026" data-desc="Protégez les systèmes d'information contre les menaces." data-missions="Audits de sécurité;Tests d'intrusion;Rédaction de rapports"><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Spécialiste Cybersécurité" data-entreprise="SecureTech" data-type="Stage" data-lieu="Lille" data-remu="1100" data-niveau="Bac+4/5" data-duree="6" data-desc="Protégez les systèmes d'information contre les menaces."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Spécialiste Cybersécurité"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Ingénieur DevOps</strong></td>
+            <td>Cloud Solutions</td>
+            <td><span class="tag-pill tag-stage">Stage</span></td>
+            <td><span class="tag-pill tag-bac">Bac+4/5</span></td>
+            <td><span class="tag-pill tag-lieu">Marseille</span></td>
+            <td>1 300 €/mois</td>
+            <td>25/01/2026</td>
+            <td>2</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-offre" title="Voir" data-titre="Ingénieur DevOps" data-entreprise="Cloud Solutions" data-type="Stage" data-lieu="Marseille" data-remu="1 300 €/mois" data-niveau="Bac+4/5" data-duree="6 mois" data-date="25/01/2026" data-desc="Automatisez les déploiements et assurez la fiabilité des systèmes." data-missions="Automatiser les déploiements;Gérer les infra cloud;Monitoring"><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Ingénieur DevOps" data-entreprise="Cloud Solutions" data-type="Stage" data-lieu="Marseille" data-remu="1300" data-niveau="Bac+4/5" data-duree="6" data-desc="Automatisez les déploiements et assurez la fiabilité des systèmes."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Ingénieur DevOps"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Ingénieur IA</strong></td>
+            <td>AI Labs</td>
+            <td><span class="tag-pill tag-alt">Alternance</span></td>
+            <td><span class="tag-pill tag-bac">Bac+5</span></td>
+            <td><span class="tag-pill tag-lieu">Bordeaux</span></td>
+            <td>1 500 €/mois</td>
+            <td>01/02/2026</td>
+            <td>5</td>
+            <td class="actions-cell">
+              <button class="btn-icon btn-view-offre" title="Voir" data-titre="Ingénieur IA" data-entreprise="AI Labs" data-type="Alternance" data-lieu="Bordeaux" data-remu="1 500 €/mois" data-niveau="Bac+5" data-duree="12 mois" data-date="01/02/2026" data-desc="Concevez et entraînez des modèles d'IA." data-missions="Concevoir des modèles;Entraîner des réseaux;Analyser les performances"><i class="fa-solid fa-eye"></i></button>
+              <button class="btn-icon btn-edit-offre" title="Modifier" data-titre="Ingénieur IA" data-entreprise="AI Labs" data-type="Alternance" data-lieu="Bordeaux" data-remu="1500" data-niveau="Bac+5" data-duree="12" data-desc="Concevez et entraînez des modèles d'IA."><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon btn-delete-offre" title="Supprimer" data-titre="Ingénieur IA"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="pagination">
+      <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="page-numbers">
+        <button class="page-number active">1</button>
+        <button class="page-number">2</button>
+        <button class="page-number">3</button>
+      </div>
+      <button class="page-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Features</h4><a href="#">A propos</a><a href="#">Les offres</a><a href="#">F.A.Q</a></div>
+        <div class="footer-col"><h4>Legal</h4><a href="#">Mentions légales</a><a href="#">Termes d'utilisations</a></div>
+        <div class="footer-col"><h4>Socials</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="footer-sep"></div>
+    <div class="footer-bottom"><span>Copyright © L.E.M.S 2026</span></div>
+  </footer>
+
+  <!-- DIALOG : VOIR offre -->
+  <dialog class="dialog" id="dialogViewOffre">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-briefcase"></i></div>
+        <div><h2 id="viewTitre">—</h2><p class="dialog-company" id="viewEntreprise">—</p></div>
+        <button class="dialog-close" id="btnCloseView" type="button">✕</button>
+      </header>
+      <div class="dialog-grid">
+        <section class="dialog-box">
+          <h3>Détails</h3>
+          <ul>
+            <li><strong>Type :</strong> <span id="vType"></span></li>
+            <li><strong>Lieu :</strong> <span id="vLieu"></span></li>
+            <li><strong>Niveau :</strong> <span id="vNiveau"></span></li>
+            <li><strong>Durée :</strong> <span id="vDuree"></span></li>
+            <li><strong>Rémunération :</strong> <span id="vRemu"></span></li>
+            <li><strong>Publiée le :</strong> <span id="vDate"></span></li>
+          </ul>
+        </section>
+        <section class="dialog-box">
+          <h3>Missions</h3>
+          <ul id="vMissions"></ul>
+        </section>
+        <section class="dialog-box dialog-full">
+          <h3>Description</h3>
+          <p id="vDesc"></p>
+        </section>
+      </div>
+      <footer class="dialog-actions"><button class="btn-secondary" id="btnCloseView2">Fermer</button></footer>
+    </div>
+  </dialog>
+
+  <!-- DIALOG : CRÉER offre -->
+  <dialog class="dialog" id="dialogCreateOffre">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-plus"></i></div>
+        <div><h2>Nouvelle offre</h2><p class="dialog-company">Renseignez les champs ci-dessous.</p></div>
+        <button class="dialog-close" id="btnCloseCreateOffre" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formCreateOffre" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="cOTitre">Titre <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-briefcase"></i><input id="cOTitre" type="text" placeholder="Titre du poste" required /></div>
+          </div>
+          <div class="field">
+            <label for="cOEntreprise">Entreprise <span class="required">*</span></label>
+            <div class="input">
+              <i class="fa-solid fa-building"></i>
+              <select id="cOEntreprise" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                <option value="">Sélectionner…</option>
+                <option>Tech Solutions</option><option>Data Insights</option><option>SecureTech</option><option>Cloud Solutions</option><option>AI Labs</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label for="cOType">Type</label>
+            <div class="input">
+              <i class="fa-solid fa-tag"></i>
+              <select id="cOType" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                <option>Stage</option><option>Alternance</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="cOLieu">Lieu</label>
+            <div class="input"><i class="fa-solid fa-location-dot"></i><input id="cOLieu" type="text" placeholder="Ville" /></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label for="cORemu">Rémunération (€/mois)</label>
+            <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="cORemu" type="number" placeholder="900" min="0" /></div>
+          </div>
+          <div class="field">
+            <label for="cODuree">Durée (mois)</label>
+            <div class="input"><i class="fa-solid fa-clock"></i><input id="cODuree" type="number" placeholder="6" min="1" /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cONiveau">Niveau requis</label>
+          <div class="input">
+            <i class="fa-solid fa-signal"></i>
+            <select id="cONiveau" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+              <option>Bac+2/3</option><option>Bac+3</option><option>Bac+4/5</option><option>Bac+5</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cODesc">Description <span class="required">*</span></label>
+          <textarea id="cODesc" rows="3" placeholder="Description du poste…" required></textarea>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelCreateOffre">Annuler</button>
+          <button class="btn-voir" type="submit">Créer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG : MODIFIER offre -->
+  <dialog class="dialog" id="dialogEditOffre">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+        <div><h2>Modifier l'offre</h2><p class="dialog-company" id="editOffreSubtitle">—</p></div>
+        <button class="dialog-close" id="btnCloseEditOffre" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formEditOffre" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="eOTitre">Titre <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-briefcase"></i><input id="eOTitre" type="text" required /></div>
+          </div>
+          <div class="field">
+            <label for="eOEntreprise">Entreprise</label>
+            <div class="input">
+              <i class="fa-solid fa-building"></i>
+              <select id="eOEntreprise" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                <option>Tech Solutions</option><option>Data Insights</option><option>SecureTech</option><option>Cloud Solutions</option><option>AI Labs</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label for="eOType">Type</label>
+            <div class="input">
+              <i class="fa-solid fa-tag"></i>
+              <select id="eOType" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                <option>Stage</option><option>Alternance</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="eOLieu">Lieu</label>
+            <div class="input"><i class="fa-solid fa-location-dot"></i><input id="eOLieu" type="text" /></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label for="eORemu">Rémunération (€/mois)</label>
+            <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="eORemu" type="number" min="0" /></div>
+          </div>
+          <div class="field">
+            <label for="eODuree">Durée (mois)</label>
+            <div class="input"><i class="fa-solid fa-clock"></i><input id="eODuree" type="number" min="1" /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="eODesc">Description</label>
+          <textarea id="eODesc" rows="3"></textarea>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelEditOffre">Annuler</button>
+          <button class="btn-voir" type="submit">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- DIALOG : SUPPRIMER offre -->
+  <dialog class="dialog dialog--sm" id="dialogDeleteOffre">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+        <div><h2>Supprimer l'offre</h2><p class="dialog-company" id="deleteOffreName">—</p></div>
+        <button class="dialog-close" id="btnCloseDeleteOffre" type="button">✕</button>
+      </header>
+      <div class="dialog-confirm-body"><p>Êtes-vous sûr de vouloir supprimer cette offre ? Cette action est <strong>irréversible</strong>.</p></div>
+      <footer class="dialog-actions">
+        <button class="btn-secondary" type="button" id="btnCancelDeleteOffre">Annuler</button>
+        <button class="btn-danger" type="button" id="btnConfirmDeleteOffre">Supprimer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    function open$(id){ document.getElementById(id).showModal(); }
+    function close$(id){ document.getElementById(id).close(); }
+    function backdrop(id){
+      const d = document.getElementById(id);
+      d.addEventListener('click', e => { const r=d.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) d.close(); });
+    }
+    ['dialogViewOffre','dialogCreateOffre','dialogEditOffre','dialogDeleteOffre'].forEach(backdrop);
+
+    /* VOIR */
+    document.querySelectorAll('.btn-view-offre').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('viewTitre').textContent = btn.dataset.titre;
+        document.getElementById('viewEntreprise').textContent = btn.dataset.entreprise;
+        document.getElementById('vType').textContent    = btn.dataset.type;
+        document.getElementById('vLieu').textContent    = btn.dataset.lieu;
+        document.getElementById('vNiveau').textContent  = btn.dataset.niveau;
+        document.getElementById('vDuree').textContent   = btn.dataset.duree;
+        document.getElementById('vRemu').textContent    = btn.dataset.remu;
+        document.getElementById('vDate').textContent    = btn.dataset.date;
+        document.getElementById('vDesc').textContent    = btn.dataset.desc;
+        const ul = document.getElementById('vMissions'); ul.innerHTML='';
+        (btn.dataset.missions||'').split(';').filter(Boolean).forEach(m => { const li=document.createElement('li'); li.textContent=m; ul.appendChild(li); });
+        open$('dialogViewOffre');
+      };
+    });
+    ['btnCloseView','btnCloseView2'].forEach(id => document.getElementById(id).onclick = () => close$('dialogViewOffre'));
+
+    /* CRÉER */
+    document.getElementById('btnCreateOffre').onclick = () => open$('dialogCreateOffre');
+    document.getElementById('btnCloseCreateOffre').onclick = () => close$('dialogCreateOffre');
+    document.getElementById('btnCancelCreateOffre').onclick = () => close$('dialogCreateOffre');
+    document.getElementById('formCreateOffre').onsubmit = e => { e.preventDefault(); alert('Offre créée (démo)'); close$('dialogCreateOffre'); };
+
+    /* MODIFIER */
+    document.querySelectorAll('.btn-edit-offre').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('editOffreSubtitle').textContent = btn.dataset.titre + ' — ' + btn.dataset.entreprise;
+        document.getElementById('eOTitre').value = btn.dataset.titre||'';
+        document.getElementById('eOLieu').value  = btn.dataset.lieu ||'';
+        document.getElementById('eORemu').value  = btn.dataset.remu ||'';
+        document.getElementById('eODuree').value = btn.dataset.duree||'';
+        document.getElementById('eODesc').value  = btn.dataset.desc ||'';
+        open$('dialogEditOffre');
+      };
+    });
+    document.getElementById('btnCloseEditOffre').onclick = () => close$('dialogEditOffre');
+    document.getElementById('btnCancelEditOffre').onclick = () => close$('dialogEditOffre');
+    document.getElementById('formEditOffre').onsubmit = e => { e.preventDefault(); alert('Modifications enregistrées (démo)'); close$('dialogEditOffre'); };
+
+    /* SUPPRIMER */
+    document.querySelectorAll('.btn-delete-offre').forEach(btn => {
+      btn.onclick = () => { document.getElementById('deleteOffreName').textContent = btn.dataset.titre; open$('dialogDeleteOffre'); };
+    });
+    document.getElementById('btnCloseDeleteOffre').onclick = () => close$('dialogDeleteOffre');
+    document.getElementById('btnCancelDeleteOffre').onclick = () => close$('dialogDeleteOffre');
+    document.getElementById('btnConfirmDeleteOffre').onclick = () => { alert('Offre supprimée (démo)'); close$('dialogDeleteOffre'); };
+  </script>
+</body>
+</html>

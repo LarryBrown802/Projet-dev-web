@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="../assets/main.css" />
+  <link rel="stylesheet" href="../assets/pages/connexion.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <title>Connexion</title>
+</head>
+
+<body>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header>
+    <nav class="navbar">
+        <a class="navbar-brand" href="accueil.html">LEMS</a>
+
+        <div class="navbar-right">
+            <a href="accueil.html">Accueil</a>
+            <a href="offres.html">Offres</a>
+            <a href="entreprise.html">Entreprise</a>
+            <a href="connexion.html" class="btn-connexion">Connexion</a> 
+
+                <div class="profile">
+                    <a class="profile-btn" href="profil.html" aria-label="Profil">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+
+                    <div class="profile-menu" role="menu">
+                        <a href="profil.html" role="menuitem">Mon profil</a>
+                        <a href="parametres.html" role="menuitem">Paramètres</a>
+                        <hr>
+                        <a href="deconnexion.html" role="menuitem" class="deco">Déconnexion</a>
+                    </div>
+                </div>
+        </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="auth-wrap">
+    <section class="auth-card" aria-label="Formulaire de connexion">
+      <header class="auth-head">
+        <div class="auth-badge" aria-hidden="true">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </div>
+        <div>
+          <h1>Connexion</h1>
+          <p>Accède à ton espace et retrouve tes candidatures.</p>
+        </div>
+      </header>
+
+      <form class="auth-form" action="#" method="post">
+        <div class="field">
+          <label for="email">Adresse email</label>
+          <div class="input">
+            <i class="fa-solid fa-envelope"></i>
+            <input id="email" name="email" type="email" placeholder="ex: mon.mail@viacesi.fr" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div>
+            <div class="label-row">
+                <label for="password">Mot de passe</label>
+            </div>
+
+            <div class="input">
+                <i class="fa-solid fa-lock"></i>
+                <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+            </div>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" name="remember" />
+          <span>Se souvenir de moi</span>
+        </label>
+
+        <button class="btn-primary" type="submit">Se connecter</button>
+      </form>
+    </section>
+  </main>
+
+    <!-- FOOTER -->
+  <footer>
+    <div class="footer-wrap">
+      <div class="footer-logo">LEMS</div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+            <h4>Features</h4>
+            <a href="#">A propos</a>
+            <a href="#">Les offres</a>
+            <a href="#">F.A.Q</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="#">Mentions légales</a>
+            <a href="#">Termes d'utilisations</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>Socials</h4>
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-sep"></div>
+    <div class="footer-bottom">
+        <span>Copyright © L.E.M.S 2026</span>
+    </div>
+  </footer>
+</body>
+</html>
+
