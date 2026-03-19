@@ -212,33 +212,31 @@
 
 {% block javascripts %}
     <script>
-        // --- 1. Logique des onglets (Déjà fait) ---
+        // 1. Logic for the Description / Entreprise Tabs
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-                tabContents.forEach(c => { c.classList.remove('active'); c.setAttribute('hidden', 'true'); });
+                // Remove 'active' class from all buttons and hide all contents
+                tabBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(c => {
+                    c.classList.remove('active');
+                    c.setAttribute('hidden', 'true');
+                });
 
+                // Add 'active' to the clicked button and show its content
                 btn.classList.add('active');
                 btn.setAttribute('aria-selected', 'true');
-                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-                document.getElementById('tab-' + btn.dataset.tab).removeAttribute('hidden');
+                
+                const targetId = 'tab-' + btn.dataset.tab;
+                const targetContent = document.getElementById(targetId);
+                targetContent.classList.add('active');
+                targetContent.removeAttribute('hidden');
             });
         });
-
-        // --- 2. Logique du bouton "Postuler" de la page d'accueil ---
-        const applyBtn = document.querySelector('.apply-btn');
-        if (applyBtn) {
-            applyBtn.addEventListener('click', () => {
-                // Récupère les textes depuis l'interface
-                const poste = document.querySelector('.detail-sub').textContent.trim();
-                const entreprise = document.querySelector('.detail-title').textContent.trim();
-                
-                // Redirige vers le formulaire avec les données
-                window.location.href = `/index.php?page=apply&poste=${encodeURIComponent(poste)}&entreprise=${encodeURIComponent(entreprise)}`;
-            });
-        }
     </script>
 {% endblock %}

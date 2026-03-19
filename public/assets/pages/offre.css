@@ -862,6 +862,7 @@
     opacity: 0;
   }
 }
+<<<<<<< HEAD
 
 .carousel-viewport {
     overflow: hidden; /* Caches whatever is outside the box */
@@ -873,3 +874,5 @@
 .stat-card {
     min-width: 100%; /* Makes sure 1 card = 1 full slide */
 }
+=======
+>>>>>>> 5593d4583684df76b884c75f436e10f810becbfe
