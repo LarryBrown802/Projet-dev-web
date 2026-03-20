@@ -17,8 +17,8 @@ use App\Controllers\OfferManagementController;
 use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
-use App\Controllers\OfferAdminController;
 use App\Controllers\PilotAdminController;
+use App\Controllers\ApplyController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -59,8 +59,8 @@ switch ($page) {
         break;
         
     case 'apply':
-        // requireRole('etudiant'); // We will uncomment this when login is fully ready!
-        $controller = new \App\Controllers\ApplyController($twig);
+        requireRole('etudiant'); // We will uncomment this when login is fully ready!
+        $controller = new ApplyController($twig);
         $controller->index();
         break;
 
@@ -88,6 +88,20 @@ switch ($page) {
         $controller->index();
         break;
 
+    // ===== ADMIN SEULEMENT =====
+    case 'dashboard_admin':
+        requireRole('admin');
+        $controller = new DashboardAdminController($twig);
+        $controller->index();
+        break;
+        
+    case 'pilot_admin':
+        requireRole('admin');
+        $controller = new PilotAdminController($twig);
+        $controller->index();
+        break;
+
+    // ===== ADMIN ET PILOTE =====
     case 'offer_management':
         requireRole('admin', 'pilote');
         $controller = new OfferManagementController($twig);
@@ -105,37 +119,6 @@ switch ($page) {
         $controller = new StudentManagementController($twig);
         $controller->index();
         break;
-
-    // ===== ADMIN SEULEMENT =====
-    case 'dashboard_admin':
-        requireRole('admin');
-        $controller = new DashboardAdminController($twig);
-        $controller->index();
-        break;
-
-    /*case 'offer_admin':
-        requireRole('admin');
-        $controller = new OfferAdminController($twig);
-        $controller->index();
-        break;*/
-
-    /*case 'company_admin':
-        requireRole('admin');
-        $controller = new CompanyAdminController($twig);
-        $controller->index();
-        break;*/
-        
-    case 'pilot_admin':
-        requireRole('admin');
-        $controller = new PilotAdminController($twig);
-        $controller->index();
-        break;
-
-    /*case 'student_admin':
-        requireRole('admin');
-        $controller = new StudentAdminController($twig);
-        $controller->index();
-        break;*/
 
     // ===== DECONNEXION =====
     case 'logout':
