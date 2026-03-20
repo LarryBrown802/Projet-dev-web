@@ -57,10 +57,21 @@ switch ($page) {
         $controller = new OfferController($twig);
         $controller->index();
         break;
+        
+    case 'apply':
+        // requireRole('etudiant'); // We will uncomment this when login is fully ready!
+        $controller = new \App\Controllers\ApplyController($twig);
+        $controller->index();
+        break;
 
     case 'company':
         $controller = new CompanyController($twig);
         $controller->index();
+        break;
+
+    case 'company_detail':
+        $controller = new CompanyController($twig);
+        $controller->detail();
         break;
 
      // ===== ETUDIANT SEULEMENT =====

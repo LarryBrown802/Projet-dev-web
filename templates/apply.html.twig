@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Postuler - {{ poste }}{% endblock %}
+
+{% block content %}
+    <main class="container" style="max-width: 650px; margin: 40px auto;">
+        
+        <div class="page-head" style="text-align: center; margin-bottom: 30px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: var(--primary-light); color: var(--primary); border-radius: 12px; margin-bottom: 16px; font-size: 24px;">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <h1 style="font-size: 24px;">Formulaire de candidature</h1>
+            <p class="page-subtitle">Vous postulez pour <strong>{{ poste }}</strong> chez <strong>{{ entreprise }}</strong>.</p>
+        </div>
+
+        <form action="/index.php?page=apply" method="POST" enctype="multipart/form-data" style="background: var(--card); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);">
+            
+            <input type="hidden" name="poste" value="{{ poste }}">
+            <input type="hidden" name="entreprise" value="{{ entreprise }}">
+
+            <h3 style="margin-bottom: 16px; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Informations personnelles</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <label for="prenom" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Prénom <span style="color: var(--danger);">*</span></label>
+                    <input type="text" id="prenom" name="prenom" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+                <div>
+                    <label for="nom" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Nom <span style="color: var(--danger);">*</span></label>
+                    <input type="text" id="nom" name="nom" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                <div>
+                    <label for="email" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Email <span style="color: var(--danger);">*</span></label>
+                    <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+                <div>
+                    <label for="tel" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Téléphone <span style="color: var(--danger);">*</span></label>
+                    <input type="tel" id="tel" name="tel" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 16px; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Votre profil</h3>
+
+            <div style="margin-bottom: 16px;">
+                <label for="linkedin" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Lien LinkedIn ou Portfolio</label>
+                <div style="position: relative;">
+                    <i class="fa-brands fa-linkedin" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted);"></i>
+                    <input type="url" id="linkedin" name="linkedin" placeholder="https://..." style="width: 100%; padding: 12px 14px 12px 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label for="cv" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Curriculum Vitae (PDF) <span style="color: var(--danger);">*</span></label>
+                <div style="position: relative;">
+                    <i class="fa-solid fa-file-pdf" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted);"></i>
+                    <input type="file" id="cv" name="cv" accept=".pdf" required style="width: 100%; padding: 12px 14px 12px 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <label for="lettre" style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--text);">Message / Lettre de motivation</label>
+                <textarea id="lettre" name="lettre" rows="5" placeholder="Expliquez pourquoi vous êtes le candidat idéal..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit; resize: vertical; outline: none;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <a href="/index.php?page=offers" class="btn-secondary" style="flex: 1; text-align: center; text-decoration: none;">Annuler</a>
+                <button type="submit" class="btn-voir" style="flex: 1; border: none; cursor: pointer;">Envoyer ma candidature</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}

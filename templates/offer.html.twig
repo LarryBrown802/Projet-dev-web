@@ -92,19 +92,8 @@
                     </select>
                 </div>
 
-                <div class="filter-block">
-                    <span class="filter-label">Type</span>
-                    <label class="check">
-                        <input type="checkbox" name="types[]" value="Stage"
-                            {% if types is defined and 'Stage' in types %}checked{% endif %}>
-                        <span>Stage</span>
-                    </label>
-                    <label class="check">
-                        <input type="checkbox" name="types[]" value="Alternance"
-                            {% if types is defined and 'Alternance' in types %}checked{% endif %}>
-                        <span>Alternance</span>
-                    </label>
-                </div>
+                <form action="/index.php" method="get">
+                    <input type="hidden" name="page" value="offers">
 
                 <div class="filter-block">
                     <span class="filter-label">Niveau</span>
@@ -130,110 +119,38 @@
                     </label>
                 </div>
 
-                <div class="filter-block">
-                    <span class="filter-label">Domaines & métiers</span>
+                    <div class="filters-actions">
+                        <a href="/index.php?page=offers" class="btn-secondary">Réinitialiser</a>
+                        <button class="btn-voir" type="submit">Appliquer</button>
+                    </div>
+                </form>
+            </aside>
 
-                    <details class="facet" open>
-                        <summary class="facet-title">
-                            <span><i class="fa-solid fa-laptop-code"></i> Informatique</span>
-                            <span class="facet-count">6</span>
-                        </summary>
-                        <div class="facet-body">
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Développement"
-                                    {% if categories is defined and 'Développement' in categories %}checked{% endif %}>
-                                <span>Développement</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Réseau / Systèmes"
-                                    {% if categories is defined and 'Réseau / Systèmes' in categories %}checked{% endif %}>
-                                <span>Réseau / Systèmes</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Cybersécurité"
-                                    {% if categories is defined and 'Cybersécurité' in categories %}checked{% endif %}>
-                                <span>Cybersécurité</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Data / BI"
-                                    {% if categories is defined and 'Data / BI' in categories %}checked{% endif %}>
-                                <span>Data / BI</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="DevOps / Cloud"
-                                    {% if categories is defined and 'DevOps / Cloud' in categories %}checked{% endif %}>
-                                <span>DevOps / Cloud</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Support IT"
-                                    {% if categories is defined and 'Support IT' in categories %}checked{% endif %}>
-                                <span>Support IT</span>
-                            </label>
-                        </div>
-                    </details>
+            <!-- ===== RESULTATS ===== -->
+            <section class="results" aria-label="Résultats des offres">
+                <div class="results-bar">
+                    <form class="results-search" action="/index.php" method="get">
+                        <input type="hidden" name="page" value="offers">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input
+                            type="search"
+                            name="search"
+                            value="{{ search|default('') }}"
+                            placeholder="Rechercher un poste, une entreprise…"
+                            aria-label="Rechercher"
+                        />
+                    </form>
 
-                    <details class="facet">
-                        <summary class="facet-title">
-                            <span><i class="fa-solid fa-briefcase"></i> Généraliste</span>
-                            <span class="facet-count">5</span>
-                        </summary>
-                        <div class="facet-body">
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Gestion de projet"
-                                    {% if categories is defined and 'Gestion de projet' in categories %}checked{% endif %}>
-                                <span>Gestion de projet</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="RH"
-                                    {% if categories is defined and 'RH' in categories %}checked{% endif %}>
-                                <span>RH</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Marketing / Com"
-                                    {% if categories is defined and 'Marketing / Com' in categories %}checked{% endif %}>
-                                <span>Marketing / Com</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Finance"
-                                    {% if categories is defined and 'Finance' in categories %}checked{% endif %}>
-                                <span>Finance</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Commercial"
-                                    {% if categories is defined and 'Commercial' in categories %}checked{% endif %}>
-                                <span>Commercial</span>
-                            </label>
-                        </div>
-                    </details>
-
-                    <details class="facet">
-                        <summary class="facet-title">
-                            <span><i class="fa-solid fa-person-digging"></i> BTP</span>
-                            <span class="facet-count">4</span>
-                        </summary>
-                        <div class="facet-body">
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Conduite de travaux"
-                                    {% if categories is defined and 'Conduite de travaux' in categories %}checked{% endif %}>
-                                <span>Conduite de travaux</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Génie civil"
-                                    {% if categories is defined and 'Génie civil' in categories %}checked{% endif %}>
-                                <span>Génie civil</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="Topographie"
-                                    {% if categories is defined and 'Topographie' in categories %}checked{% endif %}>
-                                <span>Topographie</span>
-                            </label>
-                            <label class="check">
-                                <input type="checkbox" name="categories[]" value="HSE / Sécurité"
-                                    {% if categories is defined and 'HSE / Sécurité' in categories %}checked{% endif %}>
-                                <span>HSE / Sécurité</span>
-                            </label>
-                        </div>
-                    </details>
+                    <div class="results-sort">
+                        <label class="sr-only" for="sort">Trier</label>
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                        <select id="sort">
+                            <option value="pertinence">Pertinence</option>
+                            <option value="recent">Plus récent</option>
+                            <option value="remu">Rémunération</option>
+                            <option value="az">A → Z</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="filters-actions">
@@ -403,4 +320,162 @@
     </form>
 </dialog>
 
+            <footer class="dialog-actions">
+                <button class="btn-voir btn-full" type="button">Postuler</button>
+            </footer>
+        </form>
+    </dialog>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        // ==========================================
+        // 1. MODAL LOGIC (VOIR PLUS)
+        // ==========================================
+        const dialog = document.getElementById('offreDialog');
+
+        function initModals() {
+            const openBtns = document.querySelectorAll('.open-dialog');
+            openBtns.forEach(btn => {
+                // Remove old listeners to avoid duplicates when paginating
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                newBtn.addEventListener('click', () => {
+                    document.getElementById('dialogTitle').textContent = newBtn.dataset.poste;
+                    document.getElementById('dialogCompany').textContent = newBtn.dataset.entreprise;
+                    document.getElementById('dialogLieu').textContent = newBtn.dataset.lieu;
+                    document.getElementById('dialogType').textContent = newBtn.dataset.type;
+                    document.getElementById('dialogNiveau').textContent = newBtn.dataset.niveau;
+                    document.getElementById('dialogDuree').textContent = newBtn.dataset.duree;
+                    document.getElementById('dialogRemu').textContent = newBtn.dataset.remu;
+                    document.getElementById('dialogEntrepriseDesc').textContent = newBtn.dataset.entreprisedesc;
+                    
+                    document.getElementById('dialogIcon').innerHTML = `<i class="fa-solid ${newBtn.dataset.icon}"></i>`;
+                    
+                    const ul = document.getElementById('dialogMissions');
+                    ul.innerHTML = '';
+                    (newBtn.dataset.missions||'').split(';').filter(Boolean).forEach(m => {
+                        const li = document.createElement('li'); li.textContent = m; ul.appendChild(li);
+                    });
+                    
+                    dialog.showModal();
+                });
+            });
+
+            // Postuler button logic inside modal
+            const btnApplyAction = document.querySelector('.dialog-actions .btn-voir');
+            if (btnApplyAction) {
+                const newApplyBtn = btnApplyAction.cloneNode(true);
+                btnApplyAction.parentNode.replaceChild(newApplyBtn, btnApplyAction);
+                
+                newApplyBtn.addEventListener('click', () => {
+                    const poste = encodeURIComponent(document.getElementById('dialogTitle').textContent);
+                    const entreprise = encodeURIComponent(document.getElementById('dialogCompany').textContent);
+                    window.location.href = `/index.php?page=apply&poste=${poste}&entreprise=${entreprise}`;
+                });
+            }
+        }
+
+        // Initialize Modals on first load
+        initModals();
+
+        // Close modal on backdrop click
+        dialog.addEventListener('click', e => {
+            const r = dialog.getBoundingClientRect();
+            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+                dialog.close();
+            }
+        });
+
+
+        // ==========================================
+        // 2. CAROUSEL STATISTIQUES
+        // ==========================================
+        const track = document.querySelector('.carousel-track');
+        const cards = document.querySelectorAll('.stat-card');
+        const prevBtn = document.querySelector('.carousel-btn.prev');
+        const nextBtn = document.querySelector('.carousel-btn.next');
+        const dots = document.querySelectorAll('.carousel-dots .dot');
+
+        if (track && cards.length > 0) {
+            let currentIndex = 0;
+
+            function updateCarousel() {
+                // Calculate width to slide (Card width + CSS gap)
+                const cardWidth = cards[0].offsetWidth;
+                const style = window.getComputedStyle(track);
+                const gap = parseFloat(style.gap) || 0;
+                
+                const moveAmount = (cardWidth + gap) * currentIndex;
+                
+                // Apply smooth sliding
+                track.style.transform = `translateX(-${moveAmount}px)`;
+                track.style.transition = 'transform 0.4s ease-in-out';
+
+                // Update active dot
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < cards.length - 1) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+        }
+
+
+        // ==========================================
+        // 3. INSTANT PAGINATION (AJAX)
+        // ==========================================
+        document.addEventListener('click', async function(e) {
+            const paginationLink = e.target.closest('.pagination a');
+            if (!paginationLink) return;
+
+            // Stop the page from doing a hard reload
+            e.preventDefault(); 
+            const url = paginationLink.href;
+            
+            try {
+                // Fetch the next page silently
+                const response = await fetch(url);
+                const html = await response.text();
+                
+                // Convert response to DOM
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Instantly swap the offers container
+                const newOffersContent = doc.querySelector('.offres').innerHTML;
+                document.querySelector('.offres').innerHTML = newOffersContent;
+                
+                // Update the URL bar silently so history/bookmarks still work
+                window.history.pushState({path: url}, '', url);
+                
+                // Re-initialize modals for the newly loaded offers
+                initModals();
+                
+            } catch(err) {
+                console.error("AJAX Pagination Error:", err);
+                // Fallback if network fails: load normally
+                window.location.href = url; 
+            }
+        });
+    </script>
 {% endblock %}
