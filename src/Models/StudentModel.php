@@ -89,6 +89,46 @@ class StudentModel
                 'promotion' => 'BTP',
                 'pilote_id' => 4,
                 'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Gambu',
+                'prenom' => 'Auguste',
+                'email' => 'auguste.gambu@viacesi.fr',
+                'candidatures' => 10000000000000,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Goutier',
+                'prenom' => 'Galaad',
+                'email' => 'galaad.goutier@viacesi.fr',
+                'candidatures' => 67,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Colson',
+                'prenom' => 'Paul',
+                'email' => 'paul.colson@viacesi.fr',
+                'candidatures' => 0,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Belleux',
+                'prenom' => 'Maxence',
+                'email' => 'maxence.belleux@viacesi.fr',
+                'candidatures' => -100,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
             ]
         ];
     }
