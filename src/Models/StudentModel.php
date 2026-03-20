@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class StudentModel
+class StudentModel extends PaginationModel
 {
     private array $students;
-    private int $parPage = 5;
+    protected int $parPage = 5;
 
     public function __construct()
     {
@@ -136,17 +136,6 @@ class StudentModel
     public function getAllStudents(): array
     {
         return $this->students;
-    }
-
-    public function getPage(array $students, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($students, $offset, $this->parPage);
-    }
-
-    public function totalPages(array $students): int
-    {
-        return (int) ceil(count($students) / $this->parPage);
     }
 
     public function getStudentsByPilote(int $piloteId): array
