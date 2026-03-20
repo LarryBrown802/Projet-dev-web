@@ -28,12 +28,14 @@ class StudentManagementController
         $totalPages   = $this->studentModel->totalPages($allStudents);
         $pageCourante = max(1, min((int)($_GET['p'] ?? 1), $totalPages ?: 1));
         $students     = $this->studentModel->getPage($allStudents, $pageCourante);
+        $pages        = $this->studentModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
         echo $this->twig->render('student_management.html.twig', [
             'current_page' => 'student_management',
             'students'     => $students,
             'pageCourante' => $pageCourante,
             'totalPages'   => $totalPages,
+            'pages'          => $pages,
         ]);
     }
 }

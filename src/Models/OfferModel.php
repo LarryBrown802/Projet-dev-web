@@ -2,29 +2,17 @@
 
 namespace App\Models;
 
-class OfferModel
+class OfferModel extends PaginationModel
 {
-    private array $offers;
-    private int $parPage = 4; 
-
-    public function getPage(array $offers, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($offers, $offset, $this->parPage);
-    }
-
-    public function totalPages(array $offers): int
-    {
-        return (int) ceil(count($offers) / $this->parPage);
-    }
-
-
+    protected array $offers;
+    protected int $parPage = 4; 
 
     public function __construct()
     {
         $this->offers = [
             [
             'id' => 1,
+            'pilot_id' => 3,
             'poste' => 'Développeur Web',
             'entreprise' => 'Tech Solutions',
             'lieu' => 'Lyon',
@@ -42,6 +30,7 @@ class OfferModel
         ],
         [
             'id' => 2,
+            'pilot_id' => 3,
             'poste' => 'Data Analyst',
             'entreprise' => 'Data Insights',
             'lieu' => 'Paris',
@@ -59,6 +48,7 @@ class OfferModel
         ],
         [
             'id' => 3,
+            'pilot_id' => 3,
             'poste' => 'Spécialiste Cybersécurité',
             'entreprise' => 'SecureTech',
             'lieu' => 'Lille',
@@ -76,6 +66,7 @@ class OfferModel
         ],
         [
             'id' => 4,
+            'pilot_id' => 3,
             'poste' => 'Développeur Mobile',
             'entreprise' => 'App Innovate',
             'lieu' => 'Toulouse',
@@ -93,6 +84,7 @@ class OfferModel
         ],
         [
             'id' => 5,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur IA',
             'entreprise' => 'AI Labs',
             'lieu' => 'Bordeaux',
@@ -110,6 +102,7 @@ class OfferModel
         ],
         [
             'id' => 6,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur DevOps',
             'entreprise' => 'Cloud Solutions',
             'lieu' => 'Marseille',
@@ -127,6 +120,7 @@ class OfferModel
         ],
         [
             'id' => 7,
+            'pilot_id' => 3,
             'poste' => 'Développeur Backend PHP',
             'entreprise' => 'WebAgency',
             'lieu' => 'Nantes',
@@ -144,6 +138,7 @@ class OfferModel
         ],
         [
             'id' => 8,
+            'pilot_id' => 3,
             'poste' => 'UX/UI Designer',
             'entreprise' => 'Creative Studio',
             'lieu' => 'Lyon',
@@ -161,6 +156,7 @@ class OfferModel
         ],
         [
             'id' => 9,
+            'pilot_id' => 3,
             'poste' => 'Administrateur Réseau',
             'entreprise' => 'NetWork Pro',
             'lieu' => 'Strasbourg',
@@ -178,6 +174,7 @@ class OfferModel
         ],
         [
             'id' => 10,
+            'pilot_id' => 3,
             'poste' => 'Chef de Projet IT',
             'entreprise' => 'Innova Group',
             'lieu' => 'Paris',
@@ -195,6 +192,7 @@ class OfferModel
         ],
         [
             'id' => 11,
+            'pilot_id' => 3,
             'poste' => 'Développeur Full Stack',
             'entreprise' => 'StartupX',
             'lieu' => 'Bordeaux',
@@ -212,6 +210,7 @@ class OfferModel
         ],
         [
             'id' => 12,
+            'pilot_id' => 3,
             'poste' => 'Technicien Support IT',
             'entreprise' => 'HelpDesk Plus',
             'lieu' => 'Rennes',
@@ -226,7 +225,187 @@ class OfferModel
             'candidatures' => 4,
             'date' => '15/02/2026',
             'icon' => 'fa-headset'
-            ],
+        ],
+        [
+            'id' => 13,
+            'pilot_id' => 3,
+            'poste' => 'Consultant en Transformation Digitale',
+            'entreprise' => 'Digital Experts',
+            'lieu' => 'Paris',
+            'type' => 'Alternance',
+            'niveau' => 'Bac+5',
+            'categorie' => 'Conseil',
+            'remuneration' => '1300€/mois',
+            'duree' => '12 mois',
+            'description' => 'Accompagnez les entreprises dans leur transformation digitale.',
+            'entrepriseDesc' => 'Digital Experts est un cabinet de conseil spécialisé en transformation digitale.',
+            'missions' => ['Analyser les besoins clients', 'Proposer des solutions digitales', 'Piloter des projets de transformation', 'Former les équipes', 'Suivre les résultats'],
+            'candidatures' => 5,
+            'date' => '20/02/2026',
+            'icon' => 'fa-lightbulb'
+        ],
+        [
+            'id' => 14,
+            'pilot_id' => 3,
+            'poste' => 'Développeur Frontend',
+            'entreprise' => 'Creative Studio',
+            'lieu' => 'Lyon',
+            'type' => 'Stage',
+            'niveau' => 'Bac+3',
+            'categorie' => 'Développement',
+            'remuneration' => '900€/mois',
+            'duree' => '4 mois',
+            'description' => 'Créez des interfaces utilisateur modernes et réactives.',
+            'entrepriseDesc' => 'Creative Studio est une agence de design spécialisée en expérience utilisateur.',
+            'missions' => ['Développer des interfaces en React', 'Collaborer avec les designers UX/UI', 'Optimiser les performances frontend', 'Participer aux revues de code', 'Tester les applications'],
+            'candidatures' => 7,
+            'date' => '25/02/2026',
+            'icon' => 'fa-desktop'
+        ],
+        [
+            'id' => 15,
+            'pilot_id' => 3,
+            'poste' => 'Analyste de Données',
+            'entreprise' => 'Data Insights',
+            'lieu' => 'Paris',
+            'type' => 'Alternance',
+            'niveau' => 'Bac+3',
+            'categorie' => 'Data / BI',
+            'remuneration' => '1200€/mois',
+            'duree' => '12 mois',
+            'description' => 'Analysez des données pour aider à la décision stratégique.',
+            'entrepriseDesc' => 'Data Insights accompagne des PME avec des dashboards décisionnels.',
+            'missions' => ['Préparer et nettoyer les données', 'Créer des dashboards', 'Analyser des KPI', 'Présenter les résultats', 'Automatiser des rapports'],
+            'candidatures' => 3,
+            'date' => '15/01/2026',
+            'icon' => 'fa-chart-line'
+        ],
+        [
+            'id' => 16,
+            'pilot_id' => 3,
+            'poste' => 'Spécialiste Cybersécurité',
+            'entreprise' => 'SecureTech',
+            'lieu' => 'Lille',
+            'type' => 'Stage',
+            'niveau' => 'Bac+4/5',
+            'categorie' => 'Cybersécurité',
+            'remuneration' => '1100€/mois',
+            'duree' => '6 mois',
+            'description' => 'Protégez les systèmes d\'information contre les menaces et attaques.',
+            'entrepriseDesc' => 'SecureTech audite et sécurise les SI des grandes entreprises.',
+            'missions' => ['Participer à des audits', 'Analyser des vulnérabilités', 'Mettre en place des recommandations', 'Rédiger des rapports', 'Suivre des incidents'],
+            'candidatures' => 4,
+            'date' => '20/01/2026',
+            'icon' => 'fa-shield-halved'
+        ],
+        [
+            'id' => 17,
+            'pilot_id' => 3,
+            'poste' => 'Développeur Mobile',
+            'entreprise' => 'App Innovate',
+            'lieu' => 'Toulouse',
+            'type' => 'Stage',
+            'niveau' => 'Bac+3',
+            'categorie' => 'Développement',
+            'remuneration' => '1000€/mois',
+            'duree' => '4 mois',
+            'description' => 'Participez au développement d\'applications mobiles innovantes.',
+            'entrepriseDesc' => 'App Innovate conçoit des applications mobiles pour la santé et le sport.',
+            'missions' => ['Développer des fonctionnalités mobiles', 'Corriger des bugs', 'Participer aux revues de code', 'Collaborer avec le designer', 'Tester les applications'],
+            'candidatures' => 5,
+            'date' => '22/01/2026',
+            'icon' => 'fa-mobile-screen-button'
+        ],
+        [
+            'id' => 18,
+            'pilot_id' => 3,
+            'poste' => 'Ingénieur IA',
+            'entreprise' => 'AI Labs',
+            'lieu' => 'Bordeaux',
+            'type' => 'Alternance',
+            'niveau' => 'Bac+5',
+            'categorie' => 'Data / BI',
+            'remuneration' => '1500€/mois',
+            'duree' => '12 mois',
+            'description' => 'Concevez et entraînez des modèles d\'intelligence artificielle.',
+            'entrepriseDesc' => 'AI Labs développe des solutions d\'IA pour l\'industrie et les services.',
+            'missions' => ['Concevoir des modèles d\'IA', 'Entraîner des réseaux de neurones', 'Analyser les performances', 'Collaborer avec les équipes produit', 'Rester à jour sur les avancées en IA'],
+            'candidatures' => 8,
+            'date' => '25/01/2026',
+            'icon' => 'fa-robot'
+        ],
+        [
+            'id' => 19,
+            'pilot_id' => 3,
+            'poste' => 'Ingénieur DevOps',
+            'entreprise' => 'Cloud Solutions',
+            'lieu' => 'Marseille',
+            'type' => 'Stage',
+            'niveau' => 'Bac+4/5',
+            'categorie' => 'DevOps / Cloud',
+            'remuneration' => '1300€/mois',
+            'duree' => '6 mois',
+            'description' => 'Automatisez les déploiements et assurez la fiabilité des systèmes.',
+            'entrepriseDesc' => 'Cloud Solutions accompagne les entreprises dans leur transformation cloud.',
+            'missions' => ['Automatiser les déploiements', 'Gérer les infrastructures cloud', 'Surveiller les performances', 'Collaborer avec les équipes dev', 'Assurer la sécurité des systèmes'],
+            'candidatures' => 2,
+            'date' => '25/01/2026',
+            'icon' => 'fa-cogs'
+        ],
+        [
+            'id' => 20,
+            'pilot_id' => 4,
+            'poste' => 'Charpentier BTP',
+            'entreprise' => 'BTP Services',
+            'lieu' => 'Lyon',
+            'type' => 'Stage',
+            'niveau' => 'Bac+2/3',
+            'categorie' => 'BTP',
+            'remuneration' => '900€/mois',
+            'duree' => '6 mois',
+            'description' => 'Participez à la construction de bâtiments en tant que charpentier.',
+            'entrepriseDesc' => 'BTP Services est une entreprise de construction spécialisée dans les bâtiments résidentiels et commerciaux.',
+            'missions' => ['Assembler des structures en bois', 'Lire des plans de construction', 'Utiliser des outils de charpente', 'Travailler en équipe sur les chantiers', 'Respecter les normes de sécurité'],
+            'candidatures' => 5,
+            'date' => '28/01/2026',
+            'icon' => 'fa-hammer'
+        ],
+        [
+            'id' => 21,
+            'pilot_id' => 4,
+            'poste' => 'Chef de Projet BTP',
+            'entreprise' => 'Vinci Construction',
+            'lieu' => 'Paris',
+            'type' => 'Alternance',
+            'niveau' => 'Bac+5',
+            'categorie' => 'BTP',
+            'remuneration' => '1400€/mois',
+            'duree' => '12 mois',
+            'description' => 'Pilotez des projets de construction en tant que chef de projet BTP.',
+            'entrepriseDesc' => 'Chef de projet BTP est une entreprise de gestion de projets de construction pour les secteurs résidentiel et commercial.',
+            'missions' => ['Planifier les étapes du projet', 'Coordonner les équipes de construction', 'Gérer les budgets et les ressources', 'Assurer la communication avec les clients', 'Veiller au respect des délais et des normes de sécurité'],
+            'candidatures' => 4,
+            'date' => '30/01/2026',
+            'icon' => 'fa-project-diagram'
+        ],
+        [
+            'id' => 22,
+            'pilot_id' => 4,
+            'poste' => 'Carreleur',
+            'entreprise' => 'Carrelage Expert',
+            'lieu' => 'Marseille',
+            'type' => 'Stage',
+            'niveau' => 'Bac+2/3',
+            'categorie' => 'BTP',
+            'remuneration' => '850€/mois',
+            'duree' => '4 mois',
+            'description' => 'Posez des carreaux pour des projets de construction et de rénovation.',
+            'entrepriseDesc' => 'Carrelage Expert est une entreprise spécialisée dans la pose de carrelage pour les projets résidentiels et commerciaux.',
+            'missions' => ['Préparer les surfaces pour la pose de carrelage', 'Mesurer et couper les carreaux', 'Poser les carreaux avec précision', 'Utiliser des outils de carrelage', 'Travailler en équipe sur les chantiers'],
+            'candidatures' => 3,
+            'date' => '02/02/2026',
+            'icon' => 'fa-th'
+        ]
         ];
     }
 

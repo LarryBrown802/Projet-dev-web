@@ -92,26 +92,30 @@
         </table>
     </div>
 
-    <nav class="pagination" aria-label="Pagination des étudiants">
+    <nav class="pagination" aria-label="Pagination des offres">
         <button class="page-arrow" type="button"
             {% if pageCourante <= 1 %}disabled{% endif %}
-            onclick="window.location='?page=student_management&p={{ pageCourante - 1 }}'">
+            onclick="window.location='?page=student_management&p={{ pageCourante - 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
 
         <div class="page-numbers">
-            {% for i in 1..totalPages %}
-                <button class="page-number {% if i == pageCourante %}active{% endif %}"
-                    type="button"
-                    onclick="window.location='?page=student_management&p={{ i }}'">
-                    {{ i }}
-                </button>
+            {% for p in pages %}
+                {% if p == '...' %}
+                    <span class="page-ellipsis">…</span>
+                {% else %}
+                    <button class="page-number {% if p == pageCourante %}active{% endif %}"
+                        type="button"
+                        onclick="window.location='?page=student_management&p={{ p }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                        {{ p }}
+                    </button>
+                {% endif %}
             {% endfor %}
         </div>
 
         <button class="page-arrow" type="button"
             {% if pageCourante >= totalPages %}disabled{% endif %}
-            onclick="window.location='?page=student_management&p={{ pageCourante + 1 }}'">
+            onclick="window.location='?page=student_management&p={{ pageCourante + 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
     </nav>

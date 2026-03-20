@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class StudentModel
+class StudentModel extends PaginationModel
 {
     private array $students;
-    private int $parPage = 5;
+    protected int $parPage = 5;
 
     public function __construct()
     {
@@ -89,6 +89,46 @@ class StudentModel
                 'promotion' => 'BTP',
                 'pilote_id' => 4,
                 'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Gambu',
+                'prenom' => 'Auguste',
+                'email' => 'auguste.gambu@viacesi.fr',
+                'candidatures' => 10000000000000,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Goutier',
+                'prenom' => 'Galaad',
+                'email' => 'galaad.goutier@viacesi.fr',
+                'candidatures' => 67,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Colson',
+                'prenom' => 'Paul',
+                'email' => 'paul.colson@viacesi.fr',
+                'candidatures' => 0,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
+            ],
+            [
+                'nom' => 'Belleux',
+                'prenom' => 'Maxence',
+                'email' => 'maxence.belleux@viacesi.fr',
+                'candidatures' => -100,
+                'statut' => 'wait',
+                'promotion' => 'informatique',
+                'pilote_id' => 3,
+                'candidatures_detail' => '[...]'
             ]
         ];
     }
@@ -96,17 +136,6 @@ class StudentModel
     public function getAllStudents(): array
     {
         return $this->students;
-    }
-
-    public function getPage(array $students, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($students, $offset, $this->parPage);
-    }
-
-    public function totalPages(array $students): int
-    {
-        return (int) ceil(count($students) / $this->parPage);
     }
 
     public function getStudentsByPilote(int $piloteId): array

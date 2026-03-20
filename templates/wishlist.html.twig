@@ -172,33 +172,33 @@
       </article>
 
       <!-- Pagination -->
-      <nav class="pagination" aria-label="Pagination des favoris">
-        <button class="page-arrow" type="button" aria-label="Page précédente" disabled>
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
+       <nav class="pagination" aria-label="Pagination des offres">
+          <button class="page-arrow" type="button"
+            {% if pageCourante <= 1 %}disabled{% endif %}
+                onclick="window.location='?page=offers&p={{ pageCourante - 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                <i class="fa-solid fa-chevron-left"></i>
+          </button>
 
-        <div class="page-numbers" aria-live="polite" aria-label="Numéros de pages">
-          <button class="page-number active" type="button" aria-current="page">1</button>
-          <button class="page-number" type="button">2</button>
-          <button class="page-number" type="button">3</button>
-          <span class="page-ellipsis" aria-hidden="true">…</span>
-          <button class="page-number" type="button">10</button>
-        </div>
+          <div class="page-numbers">
+            {% for p in pages %}
+                {% if p == '...' %}
+                  <span class="page-ellipsis">…</span>
+                {% else %}
+                  <button class="page-number {% if p == pageCourante %}active{% endif %}"
+                    type="button"
+                    onclick="window.location='?page=offers&p={{ p }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                    {{ p }}
+                  </button>
+                {% endif %}
+            {% endfor %}
+          </div>
 
-        <button class="page-arrow" type="button" aria-label="Page suivante">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      </nav>
-
-      <!-- ===== ETAT VIDE ===== -->
-    <!--
-      <div class="empty-state" role="status" aria-live="polite">
-        <div class="empty-icon"><i class="fa-regular fa-heart"></i></div>
-        <h2>Aucun favori</h2>
-        <p>Tu n’as pas encore ajouté d’offres à ta wishlist.</p>
-        <a class="btn-voir" href="offres.html">Découvrir les offres</a>
-      </div>
-      -->
+          <button class="page-arrow" type="button"
+            {% if pageCourante >= totalPages %}disabled{% endif %}
+              onclick="window.location='?page=offers&p={{ pageCourante + 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+              <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </nav>
 
     </section>
   </main>

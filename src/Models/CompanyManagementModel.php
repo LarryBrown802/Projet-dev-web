@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class CompanyManagementModel
+class CompanyManagementModel extends PaginationModel
 {
     private array $companies;
-    private int $parPage = 5;
+    protected int $parPage = 5;
 
     public function __construct()
     {
@@ -120,16 +120,5 @@ class CompanyManagementModel
     public function getAllCompanies(): array
     {
         return $this->companies;
-    }
-
-    public function getPage(array $companies, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($companies, $offset, $this->parPage);
-    }
-
-    public function totalPages(array $companies): int
-    {
-        return (int) ceil(count($companies) / $this->parPage);
     }
 }
