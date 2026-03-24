@@ -4,7 +4,7 @@ namespace App\Models;
 
 class OfferManagementModel extends OfferModel
 {
-    protected int $parPage = 5; // ← surcharge uniquement le perPage
+    protected int $parPage = 5;
 
     public function getOffersByPilot(int $pilotId): array
     {
