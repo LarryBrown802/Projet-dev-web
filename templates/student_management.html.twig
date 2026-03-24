@@ -119,6 +119,199 @@
             <i class="fa-solid fa-chevron-right"></i>
         </button>
     </nav>
-
 </main>
+<!-- ===== DIALOG : VOIR candidatures étudiant ===== -->
+  <dialog class="dialog" id="dialogViewEtu" aria-labelledby="viewEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo kpi-blue"><i class="fa-solid fa-user-graduate"></i></div>
+        <div>
+          <h2 id="viewEtuTitle">—</h2>
+          <p class="dialog-company" id="viewEtuEmail">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseViewEtu" type="button">✕</button>
+      </header>
+      <div style="margin-top:14px">
+        <h3 style="margin:0 0 10px;font-size:15px">Candidatures envoyées</h3>
+        <div class="table-wrap">
+          <table class="dash-table" id="viewEtuTable">
+            <thead>
+              <tr>
+                <th>Offre</th>
+                <th>Entreprise</th>
+                <th>Date</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="viewEtuTbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="dialog-actions" style="margin-top:14px">
+        <button class="btn-secondary" id="btnCloseViewEtu2" type="button">Fermer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : CRÉER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogCreateEtu" aria-labelledby="createEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-user-plus"></i></div>
+        <div>
+          <h2 id="createEtuTitle">Nouvel étudiant</h2>
+          <p class="dialog-company">Créer un compte étudiant.</p>
+        </div>
+        <button class="dialog-close" id="btnCloseCreateEtu" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formCreateEtu" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="cENom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cENom" type="text" placeholder="Nom de famille" required /></div>
+          </div>
+          <div class="field">
+            <label for="cEPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="cEPrenom" type="text" placeholder="Prénom" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cEEmail">Email <span class="required">*</span></label>
+          <div class="input"><i class="fa-solid fa-envelope"></i><input id="cEEmail" type="email" placeholder="prenom.nom@viacesi.fr" required /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelCreateEtu">Annuler</button>
+          <button class="btn-voir" type="submit">Créer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : MODIFIER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogEditEtu" aria-labelledby="editEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+        <div>
+          <h2 id="editEtuTitle">Modifier l'étudiant</h2>
+          <p class="dialog-company" id="editEtuSubtitle">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseEditEtu" type="button">✕</button>
+      </header>
+      <form class="dialog-form" id="formEditEtu" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <label for="eENom">Nom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="eENom" type="text" required /></div>
+          </div>
+          <div class="field">
+            <label for="eEPrenom">Prénom <span class="required">*</span></label>
+            <div class="input"><i class="fa-solid fa-user"></i><input id="eEPrenom" type="text" required /></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="eEEmail">Email <span class="required">*</span></label>
+          <div class="input"><i class="fa-solid fa-envelope"></i><input id="eEEmail" type="email" required /></div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="btn-secondary" type="button" id="btnCancelEditEtu">Annuler</button>
+          <button class="btn-voir" type="submit">Enregistrer</button>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===== DIALOG : SUPPRIMER étudiant ===== -->
+  <dialog class="dialog dialog--sm" id="dialogDeleteEtu" aria-labelledby="deleteEtuTitle">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+        <div>
+          <h2 id="deleteEtuTitle">Supprimer un étudiant</h2>
+          <p class="dialog-company" id="deleteEtuName">—</p>
+        </div>
+        <button class="dialog-close" id="btnCloseDeleteEtu" type="button">✕</button>
+      </header>
+      <div class="dialog-confirm-body">
+        <p>Cette action est <strong>irréversible</strong>. Le compte et toutes les données de cet étudiant seront supprimés.</p>
+      </div>
+      <footer class="dialog-actions">
+        <button class="btn-secondary" type="button" id="btnCancelDeleteEtu">Annuler</button>
+        <button class="btn-danger" type="button" id="btnConfirmDeleteEtu">Supprimer</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    function openDialog(id) { document.getElementById(id).showModal(); }
+    function closeDialog(id) { document.getElementById(id).close(); }
+    function closeOnBackdrop(dialogEl) {
+      dialogEl.addEventListener('click', e => {
+        const r = dialogEl.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)
+          dialogEl.close();
+      });
+    }
+    ['dialogViewEtu','dialogCreateEtu','dialogEditEtu','dialogDeleteEtu'].forEach(id => {
+      closeOnBackdrop(document.getElementById(id));
+    });
+
+    const statusLabels = { ok: 'Accepté', wait: 'En attente', no: 'Refusé' };
+    const statusClass  = { ok: 'badge--ok', wait: 'badge--wait', no: 'badge--no' };
+
+    /* VOIR */
+    document.querySelectorAll('.btn-view-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('viewEtuTitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        document.getElementById('viewEtuEmail').textContent = btn.dataset.email;
+        const tbody = document.getElementById('viewEtuTbody');
+        tbody.innerHTML = '';
+        const cands = JSON.parse(btn.dataset.candidatures || '[]');
+        cands.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td><strong>${c.offre}</strong></td><td>${c.entreprise}</td><td>${c.date}</td><td><span class="badge ${statusClass[c.statut]}">${statusLabels[c.statut]}</span></td>`;
+          tbody.appendChild(tr);
+        });
+        openDialog('dialogViewEtu');
+      });
+    });
+    ['btnCloseViewEtu','btnCloseViewEtu2'].forEach(id => document.getElementById(id).addEventListener('click', () => closeDialog('dialogViewEtu')));
+
+    /* CRÉER */
+    document.getElementById('btnCreateEtudiant').addEventListener('click', () => openDialog('dialogCreateEtu'));
+    document.getElementById('btnCloseCreateEtu').addEventListener('click', () => closeDialog('dialogCreateEtu'));
+    document.getElementById('btnCancelCreateEtu').addEventListener('click', () => closeDialog('dialogCreateEtu'));
+    document.getElementById('formCreateEtu').addEventListener('submit', e => {
+      e.preventDefault(); alert('Étudiant créé (démo)'); closeDialog('dialogCreateEtu');
+    });
+
+    /* MODIFIER */
+    document.querySelectorAll('.btn-edit-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('editEtuSubtitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        document.getElementById('eENom').value    = btn.dataset.nom    || '';
+        document.getElementById('eEPrenom').value = btn.dataset.prenom || '';
+        document.getElementById('eEEmail').value  = btn.dataset.email  || '';
+        openDialog('dialogEditEtu');
+      });
+    });
+    document.getElementById('btnCloseEditEtu').addEventListener('click', () => closeDialog('dialogEditEtu'));
+    document.getElementById('btnCancelEditEtu').addEventListener('click', () => closeDialog('dialogEditEtu'));
+    document.getElementById('formEditEtu').addEventListener('submit', e => {
+      e.preventDefault(); alert('Modifications enregistrées (démo)'); closeDialog('dialogEditEtu');
+    });
+
+    /* SUPPRIMER */
+    document.querySelectorAll('.btn-delete-etu').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('deleteEtuName').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+        openDialog('dialogDeleteEtu');
+      });
+    });
+    document.getElementById('btnCloseDeleteEtu').addEventListener('click', () => closeDialog('dialogDeleteEtu'));
+    document.getElementById('btnCancelDeleteEtu').addEventListener('click', () => closeDialog('dialogDeleteEtu'));
+    document.getElementById('btnConfirmDeleteEtu').addEventListener('click', () => {
+      alert('Étudiant supprimé (démo)'); closeDialog('dialogDeleteEtu');
+    });
+  </script>
 {% endblock %}
