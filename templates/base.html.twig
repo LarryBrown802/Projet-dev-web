@@ -20,7 +20,7 @@
             <div class="navbar-right">
 
                 {# ===== LIENS ADMIN ===== #}
-                {% if session.role == 'admin' %}
+                {% if session.role == 'administrateur' %}
                     <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
                     <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
                     <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
