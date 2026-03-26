@@ -862,3 +862,14 @@
     opacity: 0;
   }
 }
+
+.carousel-viewport {
+    overflow: hidden; /* Caches whatever is outside the box */
+}
+.carousel-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out; /* The smooth slide animation */
+}
+.stat-card {
+    min-width: 100%; /* Makes sure 1 card = 1 full slide */
+}

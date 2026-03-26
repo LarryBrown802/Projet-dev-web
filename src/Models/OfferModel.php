@@ -4,7 +4,7 @@ namespace App\Models;
 
 class OfferModel extends PaginationModel
 {
-    private array $offers;
+    protected array $offers;
     protected int $parPage = 4; 
 
     public function __construct()
@@ -12,6 +12,7 @@ class OfferModel extends PaginationModel
         $this->offers = [
             [
             'id' => 1,
+            'pilot_id' => 3,
             'poste' => 'Développeur Web',
             'entreprise' => 'Tech Solutions',
             'lieu' => 'Lyon',
@@ -29,6 +30,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 2,
+            'pilot_id' => 3,
             'poste' => 'Data Analyst',
             'entreprise' => 'Data Insights',
             'lieu' => 'Paris',
@@ -46,6 +48,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 3,
+            'pilot_id' => 3,
             'poste' => 'Spécialiste Cybersécurité',
             'entreprise' => 'SecureTech',
             'lieu' => 'Lille',
@@ -63,6 +66,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 4,
+            'pilot_id' => 3,
             'poste' => 'Développeur Mobile',
             'entreprise' => 'App Innovate',
             'lieu' => 'Toulouse',
@@ -80,6 +84,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 5,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur IA',
             'entreprise' => 'AI Labs',
             'lieu' => 'Bordeaux',
@@ -97,6 +102,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 6,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur DevOps',
             'entreprise' => 'Cloud Solutions',
             'lieu' => 'Marseille',
@@ -114,6 +120,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 7,
+            'pilot_id' => 3,
             'poste' => 'Développeur Backend PHP',
             'entreprise' => 'WebAgency',
             'lieu' => 'Nantes',
@@ -131,6 +138,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 8,
+            'pilot_id' => 3,
             'poste' => 'UX/UI Designer',
             'entreprise' => 'Creative Studio',
             'lieu' => 'Lyon',
@@ -148,6 +156,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 9,
+            'pilot_id' => 3,
             'poste' => 'Administrateur Réseau',
             'entreprise' => 'NetWork Pro',
             'lieu' => 'Strasbourg',
@@ -165,6 +174,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 10,
+            'pilot_id' => 3,
             'poste' => 'Chef de Projet IT',
             'entreprise' => 'Innova Group',
             'lieu' => 'Paris',
@@ -182,6 +192,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 11,
+            'pilot_id' => 3,
             'poste' => 'Développeur Full Stack',
             'entreprise' => 'StartupX',
             'lieu' => 'Bordeaux',
@@ -199,6 +210,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 12,
+            'pilot_id' => 3,
             'poste' => 'Technicien Support IT',
             'entreprise' => 'HelpDesk Plus',
             'lieu' => 'Rennes',
@@ -216,6 +228,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 13,
+            'pilot_id' => 3,
             'poste' => 'Consultant en Transformation Digitale',
             'entreprise' => 'Digital Experts',
             'lieu' => 'Paris',
@@ -233,6 +246,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 14,
+            'pilot_id' => 3,
             'poste' => 'Développeur Frontend',
             'entreprise' => 'Creative Studio',
             'lieu' => 'Lyon',
@@ -250,6 +264,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 15,
+            'pilot_id' => 3,
             'poste' => 'Analyste de Données',
             'entreprise' => 'Data Insights',
             'lieu' => 'Paris',
@@ -267,6 +282,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 16,
+            'pilot_id' => 3,
             'poste' => 'Spécialiste Cybersécurité',
             'entreprise' => 'SecureTech',
             'lieu' => 'Lille',
@@ -284,6 +300,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 17,
+            'pilot_id' => 3,
             'poste' => 'Développeur Mobile',
             'entreprise' => 'App Innovate',
             'lieu' => 'Toulouse',
@@ -301,6 +318,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 18,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur IA',
             'entreprise' => 'AI Labs',
             'lieu' => 'Bordeaux',
@@ -318,6 +336,7 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 19,
+            'pilot_id' => 3,
             'poste' => 'Ingénieur DevOps',
             'entreprise' => 'Cloud Solutions',
             'lieu' => 'Marseille',
@@ -335,54 +354,57 @@ class OfferModel extends PaginationModel
         ],
         [
             'id' => 20,
-            'poste' => 'Développeur Backend PHP',
-            'entreprise' => 'WebAgency',
-            'lieu' => 'Nantes',
-            'type' => 'Stage',
-            'niveau' => 'Bac+3',
-            'categorie' => 'Développement',
-            'remuneration' => '950€/mois',
-            'duree' => '3 mois',
-            'description' => 'Développez des APIs robustes et performantes en PHP.',
-            'entrepriseDesc' => 'WebAgency crée des solutions web sur mesure pour les PME françaises.',
-            'missions' => ['Développer des APIs REST', 'Optimiser les requêtes SQL', 'Écrire des tests unitaires', 'Documenter le code', 'Travailler en méthode Agile'],
-            'candidatures' => 7,
-            'date' => '01/02/2026',
-            'icon' => 'fa-server'
-        ],
-        [
-            'id' => 21,
-            'poste' => 'UX/UI Designer',
-            'entreprise' => 'Creative Studio',
+            'pilot_id' => 4,
+            'poste' => 'Charpentier BTP',
+            'entreprise' => 'BTP Services',
             'lieu' => 'Lyon',
             'type' => 'Stage',
             'niveau' => 'Bac+2/3',
-            'categorie' => 'Développement',
-            'remuneration' => '800€/mois',
-            'duree' => '4 mois',
-            'description' => 'Concevez des interfaces intuitives et esthétiques pour nos clients.',
-            'entrepriseDesc' => 'Creative Studio est une agence de design spécialisée en expérience utilisateur.',
-            'missions' => ['Réaliser des wireframes', 'Créer des maquettes Figma', 'Conduire des tests utilisateurs', 'Collaborer avec les développeurs', 'Présenter les designs aux clients'],
-            'candidatures' => 9,
-            'date' => '03/02/2026',
-            'icon' => 'fa-pen-ruler'
+            'categorie' => 'BTP',
+            'remuneration' => '900€/mois',
+            'duree' => '6 mois',
+            'description' => 'Participez à la construction de bâtiments en tant que charpentier.',
+            'entrepriseDesc' => 'BTP Services est une entreprise de construction spécialisée dans les bâtiments résidentiels et commerciaux.',
+            'missions' => ['Assembler des structures en bois', 'Lire des plans de construction', 'Utiliser des outils de charpente', 'Travailler en équipe sur les chantiers', 'Respecter les normes de sécurité'],
+            'candidatures' => 5,
+            'date' => '28/01/2026',
+            'icon' => 'fa-hammer'
+        ],
+        [
+            'id' => 21,
+            'pilot_id' => 4,
+            'poste' => 'Chef de Projet BTP',
+            'entreprise' => 'Vinci Construction',
+            'lieu' => 'Paris',
+            'type' => 'Alternance',
+            'niveau' => 'Bac+5',
+            'categorie' => 'BTP',
+            'remuneration' => '1400€/mois',
+            'duree' => '12 mois',
+            'description' => 'Pilotez des projets de construction en tant que chef de projet BTP.',
+            'entrepriseDesc' => 'Chef de projet BTP est une entreprise de gestion de projets de construction pour les secteurs résidentiel et commercial.',
+            'missions' => ['Planifier les étapes du projet', 'Coordonner les équipes de construction', 'Gérer les budgets et les ressources', 'Assurer la communication avec les clients', 'Veiller au respect des délais et des normes de sécurité'],
+            'candidatures' => 4,
+            'date' => '30/01/2026',
+            'icon' => 'fa-project-diagram'
         ],
         [
             'id' => 22,
-            'poste' => 'Administrateur Réseau',
-            'entreprise' => 'NetWork Pro',
-            'lieu' => 'Strasbourg',
-            'type' => 'Alternance',
+            'pilot_id' => 4,
+            'poste' => 'Carreleur',
+            'entreprise' => 'Carrelage Expert',
+            'lieu' => 'Marseille',
+            'type' => 'Stage',
             'niveau' => 'Bac+2/3',
-            'categorie' => 'Réseau / Systèmes',
-            'remuneration' => '1050€/mois',
-            'duree' => '12 mois',
-            'description' => 'Administrez et sécurisez l\'infrastructure réseau de l\'entreprise.',
-            'entrepriseDesc' => 'NetWork Pro gère les infrastructures réseau de plus de 50 entreprises en Alsace.',
-            'missions' => ['Configurer des équipements réseau', 'Surveiller le trafic', 'Gérer les incidents', 'Mettre à jour les firewalls', 'Documenter l\'infrastructure'],
+            'categorie' => 'BTP',
+            'remuneration' => '850€/mois',
+            'duree' => '4 mois',
+            'description' => 'Posez des carreaux pour des projets de construction et de rénovation.',
+            'entrepriseDesc' => 'Carrelage Expert est une entreprise spécialisée dans la pose de carrelage pour les projets résidentiels et commerciaux.',
+            'missions' => ['Préparer les surfaces pour la pose de carrelage', 'Mesurer et couper les carreaux', 'Poser les carreaux avec précision', 'Utiliser des outils de carrelage', 'Travailler en équipe sur les chantiers'],
             'candidatures' => 3,
-            'date' => '05/02/2026',
-            'icon' => 'fa-network-wired'
+            'date' => '02/02/2026',
+            'icon' => 'fa-th'
         ]
         ];
     }

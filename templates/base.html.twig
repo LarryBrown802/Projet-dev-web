@@ -22,7 +22,7 @@
                 {# ===== LIENS ADMIN ===== #}
                 {% if session.role == 'administrateur' %}
                     <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
-                    <a href="/index.php?page=offer_admin" class="{% if current_page == 'offer_admin' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
                     <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=pilot_admin"   class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
                     <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
@@ -30,7 +30,7 @@
                 {# ===== LIENS PILOTE ===== #}
                 {% elseif session.role == 'pilote' %}
                     <a href="/index.php?page=dashboard_pilot"     class="{% if current_page == 'dashboard_pilot' %}active{% endif %}">Dashboard</a>
-                    <a href="/index.php?page=offer_pilot" class="{% if current_page == 'offer_pilot' %}active{% endif %}">Gérer offres</a>
+                    <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
                     <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
 
@@ -81,9 +81,9 @@
             <div class="footer-cols">
                 <div class="footer-col">
                     <h4>Features</h4>
-                    <a href="/index.php?page=apropos">A propos</a>
                     <a href="/index.php?page=offers">Les offres</a>
-                    <a href="/index.php?page=faq">F.A.Q</a>
+                    <a href="/index.php?page=company">Les Entreprise</a>
+                    <a href="/index.php?page=">Mon compte</a>
                 </div>
 
                 <div class="footer-col">
@@ -94,9 +94,9 @@
 
                 <div class="footer-col">
                     <h4>Socials</h4>
-                    <a href="#">Instagram</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">LinkedIn</a>
+                    <a href="https://www.instagram.com/cesi_officiel/" target='balnk_' rel='noopener'>Instagram</a>
+                    <a href="https://www.facebook.com/CESIingenieurs/" target='balnk_' rel='noopener'>Facebook</a>
+                    <a href="https://www.linkedin.com/school/cesi-officiel/" target='balnk_' rel='noopener'>LinkedIn</a>
                 </div>
             </div>
         </div>

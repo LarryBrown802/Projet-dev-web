@@ -1,116 +1,129 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Company{% endblock %}
+{% block title %}Entreprises{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/assets/pages/entreprise.css">
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="entreprise-section">
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                    <h3>Entreprise 1</h3>
-                    <div class="avis">
-                        <!-- Afficher les étoiles d'une entreprise -->
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <!-- Afficher le numéro de téléphone  ainsi que le mail -->
-                    <div class="contact-info">
-                        <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                        <p><i class="fa-solid fa-envelope"></i> contact@entreprise1.fr</p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                    <p>6 élèves ont déjà postulé</p>
-                    <!-- Changer la page une fois qu'elle sera faite -->
-                    <a href="offres.html" class="btn-voir">Découvrir</a>
-            </article>
+    <main class="container">
+        
+        <div class="page-head" style="text-align: center; margin: 40px 0;">
+            <h1>Nos Entreprises Partenaires</h1>
+            <p class="page-subtitle">Découvrez les entreprises qui recrutent actuellement.</p>
+        </div>
 
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                    <h3>Entreprise 2</h3>
-                    <div class="avis">
-                        <!-- Afficher les étoiles d'une entreprise -->
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <!-- Afficher le numéro de téléphone  ainsi que le mail -->
-                    <div class="contact-info">
-                        <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                        <p><i class="fa-solid fa-envelope"></i> contact@entreprise2.fr</p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                    <!-- Changer la page une fois qu'elle sera faite -->
-                    <a href="offres.html" class="btn-voir">Découvrir</a>
-            </article>
+        <div id="company-list-container">
+            <section class="entreprise-section">
+                
+                {% for company in companies %}
+                    <article class="entreprise-card">
+                        <div class="entreprise-logo" style="background-image: url('{{ company.logo }}'); background-size: cover; background-position: center; height: 120px; border-radius: 8px 8px 0 0;"></div>
+                        
+                        <div style="padding: 20px;">
+                            <h3 style="margin-top: 0;">{{ company.nom }}</h3>
+                            
+                            <div class="avis" style="color: #c8a000; margin-bottom: 15px;">
+                                {% for i in 1..5 %}
+                                    {% if i <= company.note %}
+                                        <i class="fa-solid fa-star"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="contact-info" style="font-size: 14px; margin-bottom: 15px;">
+                                <p style="margin: 5px 0;"><i class="fa-solid fa-phone" style="width: 20px;"></i> {{ company.tel }}</p>
+                                <p style="margin: 5px 0;"><i class="fa-solid fa-envelope" style="width: 20px;"></i> {{ company.email }}</p>
+                            </div>
+                            
+                            <p style="font-size: 14px; line-height: 1.5; color: var(--text); height: 65px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                {{ company.desc }}
+                            </p>
+                            
+                            <p style="font-size: 13px; font-weight: bold; color: var(--primary);">
+                                {{ company.offres_count }} offres disponibles
+                            </p>
+                            
+                            <a href="/index.php?page=company_detail&id={{ company.id }}" class="btn-voir" style="display: block; text-align: center; text-decoration: none; margin-top: 15px;">
+                                Découvrir
+                            </a>
+                        </div>
+                    </article>
+                {% else %}
+                    <p style="grid-column: 1 / -1; text-align: center;">Aucune entreprise trouvée.</p>
+                {% endfor %}
 
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                    <h3>Entreprise 3</h3>
-                    <div class="avis">
-                        <!-- Afficher les étoiles d'une entreprise -->
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <!-- Afficher le numéro de téléphone  ainsi que le mail -->
-                    <div class="contact-info">
-                        <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                        <p><i class="fa-solid fa-envelope"></i> contact@entreprise3.fr</p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                    <!-- Changer la page une fois qu'elle sera faite -->
-                    <a href="offres.html" class="btn-voir">Découvrir</a>
-            </article>
+            </section>
 
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                    <h3>Entreprise 4</h3>
-                    <div class="avis">
-                        <!-- Afficher les étoiles d'une entreprise -->
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <!-- Afficher le numéro de téléphone  ainsi que le mail -->
-                    <div class="contact-info">
-                        <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                        <p><i class="fa-solid fa-envelope"></i> contact@entreprise4.fr</p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                    <!-- Changer la page une fois qu'elle sera faite -->
-                    <a href="offres.html" class="btn-voir">Découvrir</a>
-            </article>
+            <nav class="pagination" aria-label="Pagination des entreprises" style="margin-top: 40px; justify-content: center;">
+                {% if pageCourante > 1 %}
+                    <a href="?page=company&p={{ pageCourante - 1 }}" class="page-arrow" aria-label="Page précédente">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% else %}
+                    <button class="page-arrow" type="button" disabled aria-label="Page précédente">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                {% endif %}
 
-            <article class="entreprise-card">
-                <div class="entreprise-logo"></div>
-                    <h3>Entreprise 5</h3>
-                    <div class="avis">
-                        <!-- Afficher les étoiles d'une entreprise -->
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <!-- Afficher le numéro de téléphone  ainsi que le mail -->
-                    <div class="contact-info">
-                        <p><i class="fa-solid fa-phone"></i> 01 23 45 67 89</p>
-                        <p><i class="fa-solid fa-envelope"></i> contact@entreprise5.fr</p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur.</p>
-                    <!-- Changer la page une fois qu'elle sera faite -->
-                    <a href="offres.html" class="btn-voir">Découvrir</a>
-            </article>
+                <div class="page-numbers">
+                    {% for i in 1..totalPages %}
+                        <a href="?page=company&p={{ i }}" class="page-number {% if i == pageCourante %}active{% endif %}">
+                            {{ i }}
+                        </a>
+                    {% endfor %}
+                </div>
 
-        </section>
+                {% if pageCourante < totalPages %}
+                    <a href="?page=company&p={{ pageCourante + 1 }}" class="page-arrow" aria-label="Page suivante">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% else %}
+                    <button class="page-arrow" type="button" disabled aria-label="Page suivante">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                {% endif %}
+            </nav>
+        </div>
 
     </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // PAGINATION SANS RECHARGEMENT (AJAX)
+        document.addEventListener('click', function(e) {
+            const paginationLink = e.target.closest('.pagination a');
+            if (!paginationLink) return;
+
+            e.preventDefault(); // Empêche le rechargement blanc
+            const url = paginationLink.href;
+            
+            const container = document.getElementById('company-list-container');
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Remplace le contenu de la grille et de la pagination
+                    const newContent = doc.getElementById('company-list-container').innerHTML;
+                    container.innerHTML = newContent;
+                    
+                    // Met à jour l'URL sans recharger
+                    window.history.pushState({path: url}, '', url);
+                    
+                    // Remonte en douceur vers le haut de la grille
+                    window.scrollTo({ top: container.offsetTop - 50, behavior: 'smooth' });
+                })
+                .catch(error => {
+                    console.error("Erreur pagination:", error);
+                    window.location.href = url;
+                });
+        });
+    </script>
 {% endblock %}
