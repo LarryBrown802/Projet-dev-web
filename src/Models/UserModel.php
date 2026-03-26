@@ -91,4 +91,40 @@ class UserModel
         $stmt = $this->db->prepare('DELETE FROM User WHERE ID_user = :id');
         return $stmt->execute([':id' => $id]);
     }
+
+
+    public function createWithRole(string $email, string $password, string $role): int|false
+    {
+        $stmt = $this->db->prepare('
+            INSERT INTO User (email, password, ID_role)
+            VALUES (:email, :password, (SELECT ID_role FROM Role WHERE name_role = :role))
+        ');
+        $result = $stmt->execute([
+            ':email'    => $email,
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':role'     => $role,
+        ]);
+        return $result ? (int) $this->db->lastInsertId() : false;
+    }
+
+    public function getAllByRole(string $role): array
+{
+    $stmt = $this->db->prepare('
+        SELECT u.ID_user, u.email, p.name, p.surname, pr.name AS promotion, COUNT(DISTINCT s.ID_profile) AS nb_etudiants
+        FROM User u
+        LEFT JOIN Profile p ON u.ID_user = p.ID_user
+        LEFT JOIN Promotion pr ON u.ID_user = pr.ID_user
+        LEFT JOIN Profile s ON s.ID_user IN (
+            SELECT ID_user FROM User u2
+            JOIN Role r2 ON u2.ID_role = r2.ID_role
+            WHERE r2.name_role = "etudiant"
+        )
+        JOIN Role r ON u.ID_role = r.ID_role
+        WHERE r.name_role = :role
+        GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name
+        ORDER BY p.name ASC
+    ');
+    $stmt->execute([':role' => $role]);
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+}
 }
