@@ -32,6 +32,12 @@
   gap: 10px;
 }
 
+@media (max-width: 768px) {
+  .navbar-right {
+    display: none;
+  }
+}
+
 header nav a{
   color: var(--textnav);
   text-decoration: none;
@@ -134,3 +140,4 @@ nav a.active{
   display: block;
 
 }
+

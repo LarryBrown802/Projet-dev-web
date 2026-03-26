@@ -76,8 +76,6 @@
 }
 
 
-/* Responsive */
-/*
 @media (max-width: 950px){
   .entreprise-section{
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -92,4 +90,4 @@
   .entreprise-section{
     grid-template-columns: 1fr;
   }
-}*/
+}
