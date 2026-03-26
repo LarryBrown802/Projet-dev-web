@@ -47,8 +47,9 @@ class OfferModel
 
         // Filtre de recherche texte (Mots-clés)
         if (!empty($search)) {
-            $sql .= " AND (o.title LIKE :search OR c.name LIKE :search)";
-            $params['search'] = "%$search%";
+            $sql .= " AND (o.title LIKE :search1 OR c.name LIKE :search2)";
+            $params['search1'] = "%$search%";
+            $params['search2'] = "%$search%";
         }
 
         // Filtre de lieu
