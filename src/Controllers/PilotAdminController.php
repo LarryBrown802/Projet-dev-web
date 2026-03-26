@@ -16,7 +16,7 @@ class PilotAdminController
     public function index(): void
     {
         echo $this->twig->render('pilot_admin.html.twig', [
-            'current_page' => 'pilot',
+            'current_page' => 'pilot_admin',
         ]);
         
     }

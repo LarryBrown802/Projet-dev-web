@@ -2,9 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\PaginationModel;
 use Twig\Environment;
 
-class WishlistController
+class WishlistController 
 {
     private Environment $twig;
 

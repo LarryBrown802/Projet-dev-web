@@ -42,6 +42,7 @@ header nav a{
   gap: 10px;
   transition: transform .12s ease, background-color .12s ease;
   font-weight: 700;
+  font-size:  clamp(0.85rem, 0.8rem + 0.3vw, 1.1rem);
 }
 
 .navbar-right .btn-connexion > a:hover{
