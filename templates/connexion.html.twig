@@ -19,6 +19,10 @@
                 </div>
             </header>
 
+            {% if error %}
+                <p class="alert alert-error">{{ error }}</p>
+            {% endif %}
+
             <form class="auth-form" action="/index.php?page=connexion" method="post">
                 <div class="field">
                     <label for="email">Adresse email</label>

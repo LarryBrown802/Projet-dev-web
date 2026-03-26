@@ -2,61 +2,59 @@
 
 namespace App\Controllers;
 
+use App\Models\UserModel;
 use Twig\Environment;
 
 class ConnexionController
 {
     private Environment $twig;
+    private \PDO $bdd;
+    private UserModel $userModel;
 
-    private array $users = [
-        // Admins
-        ['id' => 1, 'email' => 'admin1@test.com',  'password' => 'admin123',   'role' => 'admin'],
-        ['id' => 2, 'email' => 'admin2@test.com',  'password' => 'admin456',   'role' => 'admin'],
-
-        // Pilotes
-        ['id' => 3, 'email' => 'pilote1@test.com', 'password' => 'pilote123',  'role' => 'pilote'],
-        ['id' => 4, 'email' => 'pilote2@test.com', 'password' => 'pilote456',  'role' => 'pilote'],
-
-        // Etudiants
-        ['id' => 5, 'email' => 'etudiant@test.com','password' => 'etudiant123','role' => 'etudiant'],
-    ];
-
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, \PDO $bdd)
     {
-        $this->twig = $twig;
+        $this->twig      = $twig;
+        $this->bdd       = $bdd;
+        $this->userModel = new UserModel($bdd);
     }
 
     public function index(): void
     {
-        session_start();
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
+            $email    = trim($_POST['email']    ?? '');
+            $password = trim($_POST['password'] ?? '');
 
-            //Cherche l'utilisateur dans les faux comptes créers au dessus
-            $found = null;
-            foreach ($this->users as $user) {
-                if ($user['email'] === $email && $user['password'] === $password) {
-                    $found = $user;
-                    break;
+            $user = $this->userModel->findByEmail($email);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['ID_user'];
+                $_SESSION['email']   = $user['email'];
+                $_SESSION['role']    = $user['name_role'];
+
+                session_write_close(); // Assure que les données de session sont enregistrées avant la redirection
+                switch ($user['name_role']) {
+                    case 'administrateur':
+                        header('Location: /index.php?page=dashboard_admin');
+                        break;
+                    case 'pilote':
+                        header('Location: /index.php?page=dashboard_pilot');
+                        break;
+                    case 'etudiant':
+                    default:
+                        header('Location: /index.php?page=accueil');
+                        break;
                 }
-            }
-            if ($found) {
-                $_SESSION['role'] = $found['role'];
-                $_SESSION['email'] = $found['email'];
-                $_SESSION['id'] = $found['id'];
-                header('Location: /index.php?page=accueil');
                 exit;
             }
 
-            $error = 'Identifiants incorrects.';
+            $error = 'Email ou mot de passe incorrect.';
         }
 
         echo $this->twig->render('connexion.html.twig', [
             'current_page' => 'connexion',
-            'error' => $error
+            'error'        => $error,
         ]);
     }
 }
