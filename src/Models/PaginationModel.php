@@ -4,17 +4,17 @@ namespace App\Models;
 
 class PaginationModel
 {
-    protected int $parPage = 5;
+    protected int $perPage = 5;
 
     public function getPage(array $items, int $page): array
     {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($items, $offset, $this->parPage);
+        $offset = ($page - 1) * $this->perPage;
+        return array_slice($items, $offset, $this->perPage);
     }
 
     public function totalPages(array $items): int
     {
-        return (int) ceil(count($items) / $this->parPage);
+        return (int) ceil(count($items) / $this->perPage);
     }
 
     public function getPageNumbers(int $current, int $total): array

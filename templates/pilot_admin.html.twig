@@ -19,12 +19,14 @@
         </button>
     </div>
 
-    <div class="search-bar-wrap">
+    <form method="get" action="/index.php" class="search-bar-wrap">
+        <input type="hidden" name="page" value="pilot_admin">
+        <input type="hidden" name="p" value="1">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Rechercher un pilote par nom ou prénom…" id="searchPilote" />
+            <input type="search" name="search" value="{{ search|default('') }}" placeholder="Rechercher un pilote par nom ou prénom…" />
         </div>
-    </div>
+    </form>
 
     <div class="table-wrap">
         <table class="dash-table">
@@ -70,14 +72,44 @@
         </table>
     </div>
 
-    <nav class="pagination">
-        <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
-        <div class="page-numbers">
-            <button class="page-number active">1</button>
-        </div>
-        <button class="page-arrow" disabled><i class="fa-solid fa-chevron-right"></i></button>
-    </nav>
+    <nav class="pagination" aria-label="Pagination des pilotes">
 
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="pilot_admin">
+            <input type="hidden" name="p" value="{{ pageCourante - 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante <= 1 %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </form>
+
+        <div class="page-numbers">
+            {% for p in pages %}
+                {% if p == '...' %}
+                    <span class="page-ellipsis">…</span>
+                {% else %}
+                    <form method="get" action="/index.php">
+                        <input type="hidden" name="page" value="pilot_admin">
+                        <input type="hidden" name="p" value="{{ p }}">
+                        <input type="hidden" name="search" value="{{ search|default('') }}">
+                        <button class="page-number {% if p == pageCourante %}active{% endif %}" type="submit">
+                            {{ p }}
+                        </button>
+                    </form>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="pilot_admin">
+            <input type="hidden" name="p" value="{{ pageCourante + 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante >= totalPages %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+
+    </nav>
 </main>
 
 <!-- ===== DIALOG CRÉER ===== -->
@@ -224,13 +256,5 @@
     });
     document.getElementById('btnCloseDeletePilote').onclick  = () => closeDialog('dialogDeletePilote');
     document.getElementById('btnCancelDeletePilote').onclick = () => closeDialog('dialogDeletePilote');
-
-    // ===== RECHERCHE =====
-    document.getElementById('searchPilote').addEventListener('input', function() {
-        const val = this.value.toLowerCase();
-        document.querySelectorAll('.dash-table tbody tr').forEach(tr => {
-            tr.style.display = tr.textContent.toLowerCase().includes(val) ? '' : 'none';
-        });
-    });
 </script>
 {% endblock %}
