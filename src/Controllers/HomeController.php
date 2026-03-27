@@ -10,10 +10,10 @@ class HomeController
     private Environment $twig;
     private OfferModel $offerModel;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, \PDO $db)
     {
         $this->twig = $twig;
-        $this->offerModel = new OfferModel();
+        $this->offerModel = new OfferModel($db);
     }
 
     public function index(): void

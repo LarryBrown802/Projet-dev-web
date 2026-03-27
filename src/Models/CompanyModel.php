@@ -2,39 +2,115 @@
 
 namespace App\Models;
 
-class CompanyModel
+class CompanyModel extends PaginationModel
 {
-    private array $companies;
-    private int $parPage = 6;
+    private \PDO $db;
+    protected int $parPage = 5;
 
-    public function __construct()
+    public function __construct(\PDO $db)
     {
-        // J'ai ajouté un lien d'image aléatoire pour chaque entreprise pour tester !
-        $this->companies = [
-            ['id' => 1, 'nom' => 'Tech Solutions', 'note' => 4, 'tel' => '01 23 45 67 89', 'email' => 'contact@techsolutions.fr', 'desc' => 'Spécialiste dans le développement web et mobile. Nous créons des applications sur-mesure.', 'offres_count' => 6, 'logo' => 'https://picsum.photos/seed/tech/400/200'],
-            ['id' => 2, 'nom' => 'Data Insights', 'note' => 5, 'tel' => '01 34 56 78 90', 'email' => 'jobs@datainsights.fr', 'desc' => 'Leader de l\'analyse de données décisionnelles. Accompagnement dans la transformation Data.', 'offres_count' => 3, 'logo' => 'https://picsum.photos/seed/data/400/200'],
-            ['id' => 3, 'nom' => 'SecureTech', 'note' => 3, 'tel' => '01 45 67 89 01', 'email' => 'rh@securetech.fr', 'desc' => 'Experts en cybersécurité et protection des systèmes d\'information contre les menaces.', 'offres_count' => 4, 'logo' => 'https://picsum.photos/seed/sec/400/200'],
-            ['id' => 4, 'nom' => 'Cloud Solutions', 'note' => 4, 'tel' => '01 56 78 90 12', 'email' => 'hello@cloudsol.fr', 'desc' => 'Solutions cloud et DevOps pour les entreprises en pleine transformation numérique.', 'offres_count' => 2, 'logo' => 'https://picsum.photos/seed/cloud/400/200'],
-            ['id' => 5, 'nom' => 'AI Labs', 'note' => 5, 'tel' => '01 67 89 01 23', 'email' => 'contact@ailabs.fr', 'desc' => 'Développement de solutions d\'intelligence artificielle de pointe pour l\'industrie.', 'offres_count' => 8, 'logo' => 'https://picsum.photos/seed/ai/400/200'],
-            ['id' => 6, 'nom' => 'WebAgency', 'note' => 4, 'tel' => '02 40 50 60 70', 'email' => 'recrutement@webagency.fr', 'desc' => 'Agence de communication digitale, création de sites vitrines et e-commerce.', 'offres_count' => 5, 'logo' => 'https://picsum.photos/seed/web/400/200'],
-            ['id' => 7, 'nom' => 'Creative Studio', 'note' => 5, 'tel' => '04 78 90 12 34', 'email' => 'design@creativestudio.fr', 'desc' => 'Studio de design UX/UI centré sur l\'expérience utilisateur et l\'accessibilité.', 'offres_count' => 2, 'logo' => 'https://picsum.photos/seed/design/400/200'],
-            ['id' => 8, 'nom' => 'NetWork Pro', 'note' => 3, 'tel' => '03 88 99 00 11', 'email' => 'admin@networkpro.fr', 'desc' => 'Installation et maintenance d\'infrastructures réseau pour les PME.', 'offres_count' => 1, 'logo' => 'https://picsum.photos/seed/net/400/200']
-        ];
+        $this->db = $db;
     }
 
-    public function getAll(): array { return $this->companies; }
-    public function getPage(array $companies, int $page): array { return array_slice($companies, ($page - 1) * $this->parPage, $this->parPage); }
-    public function totalPages(array $companies): int { return (int) ceil(count($companies) / $this->parPage); }
-
-    // NOUVELLE MÉTHODE : Trouver une entreprise par son ID
-    public function getById(int $id): ?array
+    public function getAll(?string $search = null): array
     {
-        foreach ($this->companies as $company) {
-            if ($company['id'] === $id) {
-                return $company;
-            }
+        $sql = '
+            SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
+                   COUNT(DISTINCT a.ID_profile) AS stagiaires
+            FROM Company c
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND c.name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
         }
-        return null; // Si l'entreprise n'existe pas
+
+        $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-    
+
+    public function create(string $name, string $email, string $number, string $description): bool
+    {
+        $stmt = $this->db->prepare('
+            INSERT INTO Company (name, email, number, description)
+            VALUES (:name, :email, :number, :description)
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+        ]);
+    }
+
+    public function update(int $id, string $name, string $email, string $number, string $description): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            WHERE ID = :id
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+            ':id'          => $id,
+        ]);
+    }
+
+    public function updateMark(int $id, float $mark): bool
+    {
+        $stmt = $this->db->prepare('UPDATE Company SET average_mark = :mark WHERE ID = :id');
+        return $stmt->execute([':mark' => $mark, ':id' => $id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Supprime d'abord les candidatures liées aux offres de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Apply WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            // Supprime ensuite les wishlists liées aux offres
+            $this->db->prepare('
+                DELETE FROM Save_wishlist WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            // Supprime les offres de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Offer WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            // Supprime les notes de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Note WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            // Supprime enfin l'entreprise
+            $this->db->prepare('
+                DELETE FROM Company WHERE ID = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
 }
