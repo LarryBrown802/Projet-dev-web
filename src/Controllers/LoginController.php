@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use Twig\Environment;
 
-class ConnexionController
+class LoginController
 {
     private Environment $twig;
     private \PDO $bdd;

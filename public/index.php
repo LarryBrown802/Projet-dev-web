@@ -7,7 +7,7 @@ session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Controllers\ConnexionController;
+use App\Controllers\LoginController;
 use App\Controllers\HomeController;
 use App\Controllers\OfferController;
 use App\Controllers\CompanyController;
@@ -137,7 +137,7 @@ switch ($page) {
         requireRole('administrateur');
         $controller = new StudentAdminController($twig, $bdd);
         $controller->index();
-        break;
+        break;*/
 
     // ===== DECONNEXION =====
     case 'logout':
