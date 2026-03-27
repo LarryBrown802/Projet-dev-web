@@ -659,6 +659,57 @@ details[open] summary .plus::before{
   color: #444;
   line-height: 1.5;
 }
+
+.mini-logo {
+  width: 38px; height: 38px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  /* NOUVEAU : Centrage parfait de l'icône */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #5E92A6; /* Couleur de ton thème */
+}
+
+.detail-img {
+  width: 58px; height: 58px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  /* NOUVEAU : Centrage parfait de l'icône */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  color: #5E92A6;
+}
+
+.apply-btn {
+  width: 100%;
+  border: none;
+  background: #5E92A6;
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+  /* NOUVEAU : Animation douce */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.apply-btn:hover {
+  background: #4c788a; /* Une teinte légèrement plus foncée */
+  transform: translateY(-2px); /* Soulève le bouton */
+  box-shadow: 0 8px 15px rgba(94, 146, 166, 0.4); /* Ombre plus grande et colorée */
+}
+
+.apply-btn:active {
+  transform: translateY(1px); /* Effet d'enfoncement au clic */
+  box-shadow: 0 2px 4px rgba(94, 146, 166, 0.3);
+}
 /*@media (max-width: 900px){
   .offers-grid{
     grid-template-columns: 1fr;

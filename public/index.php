@@ -13,11 +13,10 @@ use App\Controllers\OfferController;
 use App\Controllers\CompanyController;
 use App\Controllers\WishlistController;
 use App\Controllers\DashboardPilotController;
-use App\Controllers\OfferPilotController;
+use App\Controllers\OfferManagementController;
 use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
-use App\Controllers\OfferAdminController;
 use App\Controllers\PilotAdminController;
 use App\Models\Database;
 use Twig\Environment;
@@ -60,10 +59,21 @@ switch ($page) {
         $controller = new OfferController($twig, $bdd);
         $controller->index();
         break;
+        
+    case 'apply':
+        requireRole('etudiant'); // We will uncomment this when login is fully ready!
+        $controller = new ApplyController($twig);
+        $controller->index();
+        break;
 
     case 'company':
         $controller = new CompanyController($twig, $bdd);
         $controller->index();
+        break;
+
+    case 'company_detail':
+        $controller = new CompanyController($twig);
+        $controller->detail();
         break;
 
      // ===== ETUDIANT SEULEMENT =====
@@ -127,7 +137,7 @@ switch ($page) {
         requireRole('administrateur');
         $controller = new StudentAdminController($twig, $bdd);
         $controller->index();
-        break;*/
+        break;
 
     // ===== DECONNEXION =====
     case 'logout':
