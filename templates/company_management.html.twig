@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Company{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/pages/Pilote.css">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <div class="page-head">
+        <div>
+            <h1>Gestion des entreprises</h1>
+            <p class="page-subtitle">Créer, modifier, évaluer ou supprimer des fiches entreprises.</p>
+        </div>
+        <button class="btn-add" type="button" id="btnCreateEntreprise">
+            <i class="fa-solid fa-plus"></i> Nouvelle entreprise
+        </button>
+    </div>
+
+    <!-- Barre recherche -->
+    <div class="search-bar-wrap">
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Rechercher une entreprise par nom…" aria-label="Rechercher une entreprise" />
+        </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="table-wrap">
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Stagiaires ayant postulé</th>
+                    <th>Note moy.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td><strong>{{ company.nom }}</strong></td>
+                    <td>{{ company.email }}</td>
+                    <td>{{ company.tel }}</td>
+                    <td>{{ company.stagiaires }}</td>
+                    <td>
+                        <span class="stars">
+                            {% for i in 1..5 %}
+                                {% if i <= company.note %}
+                                    <i class="fa-solid fa-star"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span style="margin-left:4px;font-weight:800">{{ company.note }}/5</span>
+                        </span>
+                    </td>
+                    <td class="actions-cell">
+                        <button class="btn-icon btn-edit" title="Modifier"
+                            data-nom="{{ company.nom }}"
+                            data-email="{{ company.email }}"
+                            data-tel="{{ company.tel }}"
+                            data-desc="{{ company.desc }}">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon btn-rate" title="Évaluer"
+                            data-nom="{{ company.nom }}">
+                            <i class="fa-solid fa-star"></i>
+                        </button>
+                        <button class="btn-icon btn-delete" title="Supprimer"
+                            data-nom="{{ company.nom }}">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                    <tr><td colspan="6">Aucune entreprise trouvée.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination" aria-label="Pagination des offres">
+        <button class="page-arrow" type="button"
+            {% if pageCourante <= 1 %}disabled{% endif %}
+            onclick="window.location='?page=company_management&p={{ pageCourante - 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="page-numbers">
+            {% for p in pages %}
+                {% if p == '...' %}
+                    <span class="page-ellipsis">…</span>
+                {% else %}
+                    <button class="page-number {% if p == pageCourante %}active{% endif %}"
+                        type="button"
+                        onclick="window.location='?page=company_management&p={{ p }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                        {{ p }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <button class="page-arrow" type="button"
+            {% if pageCourante >= totalPages %}disabled{% endif %}
+            onclick="window.location='?page=company_management&p={{ pageCourante + 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </nav>
+
+</main>
+{% endblock %}
