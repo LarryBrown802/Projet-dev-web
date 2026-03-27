@@ -59,7 +59,7 @@ switch ($page) {
         break;
         
     case 'apply':
-        // requireRole('etudiant'); // We will uncomment this when login is fully ready!
+        requireRole('etudiant'); // We will uncomment this when login is fully ready!
         $controller = new \App\Controllers\ApplyController($twig);
         $controller->index();
         break;
