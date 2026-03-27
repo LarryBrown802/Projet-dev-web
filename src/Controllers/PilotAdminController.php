@@ -74,11 +74,22 @@ class PilotAdminController
             exit;
         }
 
-        $pilots = $this->userModel->getAllByRole('pilote');
+        $search = trim($_GET['search'] ?? '');
+        $allPilots = $this->userModel->getAllByRole('pilote', $search);
+        $totalPages = $this->userModel->totalPages($allPilots);
+        $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
+        $pilots = $this->userModel->getPage($allPilots, $pageCourante);
+        $pages = $this->userModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
         echo $this->twig->render('pilot_admin.html.twig', [
             'current_page' => 'pilot_admin',
             'pilots'       => $pilots,
+            'totalUsers' => count($allPilots),
+            'pageCourante' => $pageCourante,
+            'totalPages' => $totalPages,
+            'pages' => $pages,
+            'search' => $search,
+
         ]);
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-class UserModel
+class UserModel extends PaginationModel
 {
     private \PDO $db;
+    protected int $perPage = 5;
 
     public function __construct(\PDO $db)
     {
@@ -107,10 +108,11 @@ class UserModel
         return $result ? (int) $this->db->lastInsertId() : false;
     }
 
-    public function getAllByRole(string $role): array
-{
-    $stmt = $this->db->prepare('
-        SELECT u.ID_user, u.email, p.name, p.surname, pr.name AS promotion, COUNT(DISTINCT s.ID_profile) AS nb_etudiants
+    public function getAllByRole(string $role, ?string $search = null): array
+    {
+    $sql = '
+        SELECT u.ID_user, u.email, p.name, p.surname, pr.name AS promotion,
+               COUNT(DISTINCT s.ID_profile) AS nb_etudiants
         FROM User u
         LEFT JOIN Profile p ON u.ID_user = p.ID_user
         LEFT JOIN Promotion pr ON u.ID_user = pr.ID_user
@@ -121,10 +123,18 @@ class UserModel
         )
         JOIN Role r ON u.ID_role = r.ID_role
         WHERE r.name_role = :role
-        GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name
-        ORDER BY p.name ASC
-    ');
-    $stmt->execute([':role' => $role]);
+    ';
+    $params = [':role' => $role];
+
+    if (!empty($search)) {
+        $sql .= ' AND (p.name LIKE :search OR p.surname LIKE :search OR u.email LIKE :search)';
+        $params[':search'] = '%' . $search . '%';
+    }
+
+    $sql .= ' GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name ORDER BY p.name ASC';
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-}
+    }
 }
