@@ -284,7 +284,7 @@
                                 </div>
 
                                 <label class="ui-bookmark" title="Ajouter aux favoris">
-                                    <input type="checkbox" aria-label="Ajouter aux favoris" />
+                                    <input type="checkbox" aria-label="Ajouter aux favoris" data-offer-id="{{ offer.id }}" class="bookmark-checkbox"/>
                                     <div class="bookmark" aria-hidden="true">
                                         <svg viewBox="0 0 32 32">
                                             <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
@@ -515,5 +515,35 @@
                 });
             });
         }
+
+        // ==========================================
+        // 4. LOGIQUE DE LA WISHLIST (AJAX)
+        // ==========================================
+        document.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', async function() {
+                const offerId = this.dataset.offerId;
+                if (!offerId) return;
+
+                try {
+                    // On envoie discrètement l'ID au serveur PHP
+                    const response = await fetch('/index.php?page=toggle_wishlist', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ offer_id: offerId })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    // Si l'étudiant n'est pas connecté, on annule l'animation visuelle et on l'avertit
+                    if (!result.success) {
+                        this.checked = !this.checked;
+                        alert(result.error);
+                    }
+                } catch (e) {
+                    this.checked = !this.checked;
+                    console.error("Erreur d'enregistrement", e);
+                }
+            });
+        });
     </script>
 {% endblock %}

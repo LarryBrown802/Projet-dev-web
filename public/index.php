@@ -59,7 +59,7 @@ switch ($page) {
         break;
         
     case 'apply':
-        requireRole('etudiant'); // We will uncomment this when login is fully ready!
+        requireRole('etudiant'); 
         $controller = new \App\Controllers\ApplyController($twig);
         $controller->index();
         break;
@@ -79,6 +79,12 @@ switch ($page) {
         requireRole('etudiant');
         $controller = new WishlistController($twig);
         $controller->index();
+        break;
+
+    case 'toggle_wishlist':
+        requireRole('etudiant');
+        $controller = new \App\Controllers\WishlistController($twig);
+        $controller->toggleAjax();
         break;
 
     // ===== PILOTE SEULEMENT =====
