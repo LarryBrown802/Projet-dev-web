@@ -32,14 +32,17 @@ class PilotAdminController
                 'pilote'
             );
             if ($id_user) {
-                $this->profileModel->create(
-                    $_POST['name']    ?? '',
-                    $_POST['surname'] ?? '',
-                    $id_user
-                );
-                // Crée la promotion si renseignée
-                if (!empty($_POST['promotion'])) {
-                    $this->promotionModel->create($_POST['promotion'], $id_user);
+                $this->profileModel->create($_POST['name'] ?? '', $_POST['surname'] ?? '', $id_user);
+
+                if (!empty($_POST['id_promotion'])) {
+                    // ← Rejoindre une promotion existante
+                    $this->profileModel->setPromotion($id_user, (int) $_POST['id_promotion']);
+                } elseif (!empty($_POST['promotion'])) {
+                    // ← Créer une nouvelle promotion
+                    $id_promotion = $this->promotionModel->create($_POST['promotion']);
+                    if ($id_promotion) {
+                        $this->profileModel->setPromotion($id_user, $id_promotion);
+                    }
                 }
             }
             header('Location: /index.php?page=pilot_admin');
@@ -52,14 +55,19 @@ class PilotAdminController
             $this->userModel->updateEmail($id_user, $_POST['email'] ?? '');
             $this->profileModel->update($id_user, $_POST['name'] ?? '', $_POST['surname'] ?? '');
 
-            // Met à jour ou crée la promotion
-            $promotion = $this->promotionModel->getByUser($id_user);
-            if ($promotion) {
-                $this->promotionModel->update($promotion['ID_promotion'], $_POST['promotion'] ?? '');
-            } elseif (!empty($_POST['promotion'])) {
-                $this->promotionModel->create($_POST['promotion'], $id_user);
+            if (!empty($_POST['promotion'])) {
+                // Vérifie si le pilote a déjà une promotion
+                $pilot = $this->userModel->getAllByRole('pilote');
+                $existing = $this->promotionModel->findById((int)($_POST['id_promotion'] ?? 0));
+                if ($existing) {
+                    $this->promotionModel->update($existing['ID_promotion'], $_POST['promotion']);
+                } else {
+                    $id_promotion = $this->promotionModel->create($_POST['promotion']);
+                    if ($id_promotion) {
+                        $this->profileModel->setPromotion($id_user, $id_promotion);
+                    }
+                }
             }
-
             header('Location: /index.php?page=pilot_admin');
             exit;
         }
@@ -67,29 +75,28 @@ class PilotAdminController
         // ===== SUPPRIMER =====
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete') {
             $id_user = (int) $_POST['id_user'];
-            $this->promotionModel->deleteByUser($id_user); // ← supprime la promotion d'abord
             $this->profileModel->delete($id_user);
             $this->userModel->delete($id_user);
             header('Location: /index.php?page=pilot_admin');
             exit;
         }
 
-        $search = trim($_GET['search'] ?? '');
-        $allPilots = $this->userModel->getAllByRole('pilote', $search);
-        $totalPages = $this->userModel->totalPages($allPilots);
+        $promotions = $this->promotionModel->getAll();
+        $search     = trim($_GET['search'] ?? '');
+        $allUsers   = $this->userModel->getAllByRole('pilote', $search);
+        $totalPages  = $this->userModel->totalPages($allUsers);
         $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
-        $pilots = $this->userModel->getPage($allPilots, $pageCourante);
-        $pages = $this->userModel->getPageNumbers($pageCourante, $totalPages ?: 1);
+        $pilots      = $this->userModel->getPage($allUsers, $pageCourante);
+        $pages       = $this->userModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
         echo $this->twig->render('pilot_admin.html.twig', [
             'current_page' => 'pilot_admin',
             'pilots'       => $pilots,
-            'totalUsers' => count($allPilots),
+            'promotions'   => $promotions,
             'pageCourante' => $pageCourante,
-            'totalPages' => $totalPages,
-            'pages' => $pages,
-            'search' => $search,
-
+            'totalPages'   => $totalPages,
+            'pages'        => $pages,
+            'search'       => $search,
         ]);
     }
 }

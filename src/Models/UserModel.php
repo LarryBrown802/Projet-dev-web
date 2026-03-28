@@ -110,31 +110,34 @@ class UserModel extends PaginationModel
 
     public function getAllByRole(string $role, ?string $search = null): array
     {
-    $sql = '
-        SELECT u.ID_user, u.email, p.name, p.surname, pr.name AS promotion,
-               COUNT(DISTINCT s.ID_profile) AS nb_etudiants
-        FROM User u
-        LEFT JOIN Profile p ON u.ID_user = p.ID_user
-        LEFT JOIN Promotion pr ON u.ID_user = pr.ID_user
-        LEFT JOIN Profile s ON s.ID_user IN (
-            SELECT ID_user FROM User u2
-            JOIN Role r2 ON u2.ID_role = r2.ID_role
-            WHERE r2.name_role = "etudiant"
-        )
-        JOIN Role r ON u.ID_role = r.ID_role
-        WHERE r.name_role = :role
-    ';
-    $params = [':role' => $role];
+        $sql = '
+            SELECT u.ID_user, u.email, p.name, p.surname,
+                pr.name AS promotion, pr.ID_promotion,
+                COUNT(DISTINCT s.ID_profile) AS nb_etudiants
+            FROM User u
+            LEFT JOIN Profile p ON u.ID_user = p.ID_user
+            LEFT JOIN Promotion pr ON p.ID_promotion = pr.ID_promotion
+            LEFT JOIN Profile s ON s.ID_promotion = pr.ID_promotion
+                AND s.ID_user IN (
+                    SELECT ID_user FROM User u2
+                    JOIN Role r2 ON u2.ID_role = r2.ID_role
+                    WHERE r2.name_role = "etudiant"
+                )
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE r.name_role = :role
+        ';
+        $params = [':role' => $role];
 
-    if (!empty($search)) {
-        $sql .= ' AND (p.name LIKE :search OR p.surname LIKE :search OR u.email LIKE :search)';
-        $params[':search'] = '%' . $search . '%';
-    }
+        if (!empty($search)) {
+            $sql .= ' AND (p.name LIKE :search OR p.surname LIKE :search OR u.email LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
+        }
 
-    $sql .= ' GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name ORDER BY p.name ASC';
+        $sql .= ' GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name, pr.ID_promotion
+                ORDER BY p.name ASC';
 
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute($params);
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
