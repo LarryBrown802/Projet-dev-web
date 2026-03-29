@@ -7,6 +7,17 @@
 {% endblock %}
 
 {% block content %}
+
+{% if message %}
+        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-check"></i> {{ message }}
+        </div>
+    {% endif %}
+    {% if error %}
+        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
 <main class="container">
 
     <div class="page-head">
@@ -21,9 +32,9 @@
             <p class="page-subtitle">Consultez les profils, les candidatures et l'état de la recherche de stage.</p>
         </div>
         {% if session.role == 'admin' or session.role == 'pilote' %}
-            <button class="btn-add" type="button" id="btnCreateEtudiant">
-                <i class="fa-solid fa-plus"></i> Nouvel étudiant
-            </button>
+            <button class="btn-add" type="button" id="btn-open-create-student">
+            <i class="fa-solid fa-plus"></i> Nouvel étudiant
+        </button>
         {% endif %}
     </div>
 
@@ -53,7 +64,7 @@
                     <td><strong>{{ student.nom }}</strong></td>
                     <td>{{ student.prenom }}</td>
                     <td>{{ student.email }}</td>
-                    <td>{{ student.promotion }}</td>
+                    <td>{{ student.promotion | default('Non défini') }}</td>
                     <td>{{ student.candidatures }}</td>
                     <td>
                         {% if student.statut == 'ok' %}
@@ -121,4 +132,89 @@
     </nav>
 
 </main>
+
+<dialog class="dialog" id="createStudentDialog" aria-labelledby="createStudentTitle" style="padding: 0; border-radius: 14px; overflow: hidden; max-width: 600px; width: 100%; border: 1px solid var(--border);">
+    <form method="POST" action="/index.php?page=student_management" style="display: flex; flex-direction: column;">
+        <input type="hidden" name="action" value="create_student">
+        
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: 24px; border-bottom: 1px solid var(--border); background: var(--card);">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: #e0f2f1; color: #5E92A6; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h2 id="createStudentTitle" style="margin: 0; font-size: 20px;">Créer un compte étudiant</h2>
+                    <p style="color: var(--muted); margin: 4px 0 0 0; font-size: 14px;">Il pourra se connecter pour postuler aux offres.</p>
+                </div>
+            </div>
+            <button type="button" class="dialog-close" id="btn-close-student" aria-label="Fermer" style="position: static; margin: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
+        </header>
+
+        <div style="padding: 24px; background: var(--bg); display: grid; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Nom <span style="color: #d8000c;">*</span></label>
+                    <input type="text" name="nom" required placeholder="Ex: Dupont" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Prénom <span style="color: #d8000c;">*</span></label>
+                    <input type="text" name="prenom" required placeholder="Ex: Jean" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Email <span style="color: #d8000c;">*</span></label>
+                    <input type="email" name="email" required placeholder="jean.dupont@viacesi.fr" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Mot de passe provisoire <span style="color: #d8000c;">*</span></label>
+                    <input type="password" name="password" required placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Centre CESI</label>
+                    <select name="id_center" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="">Sélectionner...</option>
+                        {% for center in centers %}
+                            <option value="{{ center.ID_center }}">{{ center.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Promotion</label>
+                    <select name="id_promotion" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="">Sélectionner...</option>
+                        {% for promo in promotions %}
+                            <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <footer style="padding: 20px 24px; border-top: 1px solid var(--border); background: var(--card); display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="button" class="btn-secondary" id="btn-cancel-student" style="padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid var(--border); background: var(--bg);">Annuler</button>
+            <button type="submit" class="btn-primary" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Créer le compte</button>
+        </footer>
+    </form>
+</dialog>
+
+<script>
+    const studentDialog = document.getElementById('createStudentDialog');
+    const openStudentBtn = document.getElementById('btn-open-create-student');
+    
+    if(openStudentBtn) openStudentBtn.addEventListener('click', () => studentDialog.showModal());
+    document.getElementById('btn-close-student')?.addEventListener('click', () => studentDialog.close());
+    document.getElementById('btn-cancel-student')?.addEventListener('click', () => studentDialog.close());
+
+    studentDialog.addEventListener('click', e => {
+        const r = studentDialog.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+            studentDialog.close();
+        }
+    });
+</script>
 {% endblock %}
