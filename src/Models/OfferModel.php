@@ -61,11 +61,11 @@ class OfferModel extends PaginationModel
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getAllOffers(?string $search = null, ?string $type = null): array
+    public function getAllOffers(?string $search = null, ?string $type = null, ?int $limit = null): array
     {
         $sql = '
             SELECT o.*, c.name AS entreprise, l.city AS lieu,
-                   COUNT(DISTINCT a.ID_profile) AS candidatures
+                COUNT(DISTINCT a.ID_profile) AS candidatures
             FROM Offer o
             LEFT JOIN Company c ON o.ID_company = c.ID
             LEFT JOIN Location l ON o.ID_location = l.ID_location
@@ -84,6 +84,10 @@ class OfferModel extends PaginationModel
         }
 
         $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
+
+        if ($limit !== null) {
+            $sql .= ' LIMIT ' . (int) $limit; // ← cast en int directement dans la requête, pas de bind
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -164,5 +168,11 @@ class OfferModel extends PaginationModel
             $this->db->rollBack();
             return false;
         }
+    }
+
+    public function countAllApplications(): int
+    {
+        $stmt = $this->db->query('SELECT COUNT(*) FROM Apply');
+        return (int) $stmt->fetchColumn();
     }
 }
