@@ -60,11 +60,11 @@ switch ($page) {
         $controller->index();
         break;
         
-    case 'apply':
+    /*case 'apply':
         requireRole('etudiant'); // We will uncomment this when login is fully ready!
         $controller = new ApplyController($twig);
         $controller->index();
-        break;
+        break;*/
 
     case 'company':
         $controller = new CompanyController($twig, $bdd);
@@ -90,17 +90,17 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'offer_pilot':
+    /*case 'offer_pilot':
         requireRole('pilote');
         $controller = new OfferPilotController($twig, $bdd);
         $controller->index();
         break;
-
-    case 'company_management':
+        */
+    /*case 'company_management':
         requireRole('administrateur', 'pilote');
-        $controller = new CompanyManagementController($twig, $bdd);
+        $controller = new CompanyAdminController($twig, $bdd);
         $controller->index();
-        break;
+        break;*/
 
     case 'student_management':
         requireRole('administrateur', 'pilote'); // Admin peut aussi voir tous les étudiants
@@ -115,11 +115,18 @@ switch ($page) {
         $controller->index();
         break;
 
-    case 'offer_admin':
+    case 'company_management':
+        requireRole('administrateur');
+        $controller = new CompanyManagementController($twig, $bdd);
+        $controller->index();
+        break;
+
+    /*case 'offer_admin':
         requireRole('administrateur');
         $controller = new OfferAdminController($twig, $bdd);
         $controller->index();
         break;
+        */
 
     /*case 'company_admin':
         requireRole('administrateur');
@@ -137,7 +144,7 @@ switch ($page) {
         requireRole('administrateur');
         $controller = new StudentAdminController($twig, $bdd);
         $controller->index();
-        break;
+        break;*/
 
     // ===== DECONNEXION =====
     case 'logout':
