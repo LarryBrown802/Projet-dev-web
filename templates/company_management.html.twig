@@ -14,15 +14,26 @@
             <h1>Gestion des entreprises</h1>
             <p class="page-subtitle">Créer, modifier, évaluer ou supprimer des fiches entreprises.</p>
         </div>
-        <button class="btn-add" type="button" id="btnCreateEntreprise">
+        {# On ajoute l'ID 'btn-open-create-company' ici pour le JS #}
+        <button class="btn-add" type="button" id="btn-open-create-company">
             <i class="fa-solid fa-plus"></i> Nouvelle entreprise
         </button>
     </div>
 
-    {# ===== BARRE DE RECHERCHE ===== #}
-    <form method="get" action="/index.php" class="search-bar-wrap">
-        <input type="hidden" name="page" value="company_management">
-        <input type="hidden" name="p" value="1">
+    {# --- AFFICHAGE DES MESSAGES SUCCÈS / ERREUR --- #}
+    {% if message %}
+        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-check"></i> {{ message }}
+        </div>
+    {% endif %}
+    {% if error %}
+        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
+    {# --------------------------------------------- #}
+
+    <div class="search-bar-wrap">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" name="search" value="{{ search|default('') }}"
@@ -30,7 +41,6 @@
         </div>
     </form>
 
-    {# ===== TABLEAU ===== #}
     <div class="table-wrap">
         <table class="dash-table">
             <thead>
@@ -46,13 +56,15 @@
             <tbody>
                 {% for company in companies %}
                 <tr>
+                    {# Note: on utilise company.name car c'est le vrai nom de la colonne MySQL #}
                     <td><strong>{{ company.name }}</strong></td>
                     <td>{{ company.email }}</td>
-                    <td>{{ company.number ?? '—' }}</td>
-                    <td>{{ company.stagiaires ?? 0 }}</td>
+                    <td>{{ company.number }}</td>
+                    <td>0</td> {# Les stagiaires ayant postulé devront être calculés via une jointure SQL plus tard si tu le souhaites #}
                     <td>
                         <span class="stars">
-                            {% set note = company.average_mark ?? 0 %}
+                            {# Exemple de notation par défaut si average_mark est null #}
+                            {% set note = company.average_mark|default(3) %}
                             {% for i in 1..5 %}
                                 {% if i <= note %}
                                     <i class="fa-solid fa-star"></i>
@@ -65,27 +77,24 @@
                     </td>
                     <td class="actions-cell">
                         <button class="btn-icon btn-edit" title="Modifier"
-                            data-id="{{ company.ID }}"
-                            data-name="{{ company.name }}"
+                            data-nom="{{ company.name }}"
                             data-email="{{ company.email }}"
-                            data-number="{{ company.number ?? '' }}"
-                            data-description="{{ company.description ?? '' }}">
+                            data-tel="{{ company.number }}"
+                            data-desc="{{ company.description }}">
                             <i class="fa-solid fa-pen"></i>
                         </button>
                         <button class="btn-icon btn-rate" title="Évaluer"
-                            data-id="{{ company.ID }}"
-                            data-name="{{ company.name }}">
+                            data-nom="{{ company.name }}">
                             <i class="fa-solid fa-star"></i>
                         </button>
                         <button class="btn-icon btn-delete" title="Supprimer"
-                            data-id="{{ company.ID }}"
-                            data-name="{{ company.name }}">
+                            data-nom="{{ company.name }}">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
                 {% else %}
-                    <tr><td colspan="6">Aucune entreprise trouvée.</td></tr>
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Aucune entreprise trouvée.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

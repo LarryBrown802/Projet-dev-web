@@ -14,10 +14,21 @@
             <h1>Gestion des offres</h1>
             <p class="page-subtitle">Créer, modifier ou supprimer des offres de stage et d'alternance.</p>
         </div>
-        <button class="btn-add" type="button" id="btnCreateOffre">
+        <button class="btn-add" type="button" id="btn-open-create">
             <i class="fa-solid fa-plus"></i> Nouvelle offre
         </button>
     </div>
+
+    {% if message %}
+    <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <i class="fa-solid fa-check"></i> {{ message }}
+    </div>
+{% endif %}
+{% if error %}
+    <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+    </div>
+{% endif %}
 
     <!-- Barre recherche + filtre -->
     <div class="search-bar-wrap" style="display:grid;grid-template-columns:1fr 200px;gap:12px">
@@ -133,4 +144,116 @@
     </nav>
 
   </main>
+
+ <dialog class="dialog" id="createOfferDialog" aria-labelledby="createTitle" style="padding: 0; border-radius: 14px; overflow: hidden; max-width: 650px; width: 100%; border: 1px solid var(--border);">
+    <form method="POST" action="/index.php?page=offer_management" style="display: flex; flex-direction: column; max-height: 90vh;">
+        <input type="hidden" name="action" value="create">
+        
+        <header style="display: flex; justify-content: space-between; align-items: center; padding: 24px; border-bottom: 1px solid var(--border); background: var(--card);">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: #e0f2f1; color: #5E92A6; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <div>
+                    <h2 id="createTitle" style="margin: 0; font-size: 20px;">Créer une nouvelle offre</h2>
+                    <p style="color: var(--muted); margin: 4px 0 0 0; font-size: 14px;">Publiez une offre pour l'une de vos entreprises.</p>
+                </div>
+            </div>
+            <button type="button" class="dialog-close" id="btn-close-create" aria-label="Fermer" style="position: static; margin: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">✕</button>
+        </header>
+
+        <div style="padding: 24px; overflow-y: auto; background: var(--bg);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                
+                <div style="grid-column: 1 / -1;">
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Titre du poste <span style="color: #d8000c;">*</span></label>
+                    <input type="text" name="title" required placeholder="Ex: Développeur Full-Stack" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Entreprise <span style="color: #d8000c;">*</span></label>
+                    <select name="id_company" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="">Sélectionner...</option>
+                        {% for company in companies %}
+                            <option value="{{ company.ID | default(company.id) }}">{{ company.name | default(company.nom) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Lieu <span style="color: #d8000c;">*</span></label>
+                    <select name="id_location" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        {% for loc in locations %}
+                            <option value="{{ loc.ID_location }}">{{ loc.city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Type de contrat</label>
+                    <select name="type" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="Stage">Stage</option>
+                        <option value="Alternance">Alternance</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Niveau requis</label>
+                    <select name="level" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="Bac+2/3">Bac+2/3</option>
+                        <option value="Bac+3">Bac+3</option>
+                        <option value="Bac+4/5">Bac+4/5</option>
+                        <option value="Bac+5">Bac+5</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Domaine</label>
+                    <select name="domain" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fff;">
+                        <option value="Développement">Développement</option>
+                        <option value="Data / BI">Data / BI</option>
+                        <option value="Cybersécurité">Cybersécurité</option>
+                        <option value="DevOps / Cloud">DevOps / Cloud</option>
+                        <option value="Gestion de projet">Gestion de projet</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Rémunération mensuelle (€)</label>
+                    <input type="number" name="remuneration" placeholder="Ex: 1200" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                </div>
+
+                <div style="grid-column: 1 / -1;">
+                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Description détaillée</label>
+                    <textarea name="description" rows="4" placeholder="Décrivez les missions, le profil recherché..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; resize: vertical; outline: none;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <footer style="padding: 20px 24px; border-top: 1px solid var(--border); background: var(--card); display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="button" class="btn-secondary" id="btn-cancel-create" style="padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none;">Annuler</button>
+            <button type="submit" class="btn-voir" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Publier l'offre</button>
+        </footer>
+    </form>
+</dialog>
+
+<script>
+    // Logique d'ouverture / fermeture de la modale
+    const createDialog = document.getElementById('createOfferDialog');
+    const openCreateBtn = document.getElementById('btn-open-create');
+    const closeCreateBtn = document.getElementById('btn-close-create');
+    const cancelCreateBtn = document.getElementById('btn-cancel-create');
+
+    if(openCreateBtn) openCreateBtn.addEventListener('click', () => createDialog.showModal());
+    if(closeCreateBtn) closeCreateBtn.addEventListener('click', () => createDialog.close());
+    if(cancelCreateBtn) cancelCreateBtn.addEventListener('click', () => createDialog.close());
+
+    // Fermer en cliquant en dehors
+    createDialog.addEventListener('click', e => {
+        const r = createDialog.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+            createDialog.close();
+        }
+    });
+</script>
 {% endblock %}

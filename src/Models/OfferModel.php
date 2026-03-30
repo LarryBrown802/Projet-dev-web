@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class OfferModel extends PaginationModel
+use PDO;
+
+class OfferModel
 {
     private \PDO $db;
     protected int $parPage = 5;
