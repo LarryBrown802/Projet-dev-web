@@ -146,6 +146,14 @@ switch ($page) {
         $controller->index();
         break;*/
 
+    case 'mentions-legales':
+        echo $twig->render('mentions-legales.html.twig');
+        break;
+
+    case 'conditions-utilisation':
+        echo $twig->render('conditions-utilisation.html.twig');
+        break;
+
     // ===== DECONNEXION =====
     case 'logout':
         session_destroy();
