@@ -2,93 +2,115 @@
 
 namespace App\Models;
 
-use PDO;
-
-class CompanyModel
+class CompanyModel extends PaginationModel
 {
-    private int $parPage = 6;
+    private \PDO $db;
+    protected int $parPage = 5;
 
-    /**
-     * Récupère toutes les entreprises et compte le nombre d'offres pour chacune
-     */
-    public function getAll(): array
+    public function __construct(\PDO $db)
     {
-        $pdo = Database::getConnection();
-        
-        // Requête avancée : On joint Company avec Offer pour compter (COUNT) les offres
-        $sql = "
-            SELECT 
-                c.ID as id, 
-                c.name as nom, 
-                c.average_mark as note, 
-                c.number as tel, 
-                c.email, 
-                c.description as `desc`, 
-                COUNT(o.ID_offer) as offres_count
+        $this->db = $db;
+    }
+
+    public function getAll(?string $search = null): array
+    {
+        $sql = '
+            SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
+                   COUNT(DISTINCT a.ID_profile) AS stagiaires
             FROM Company c
-            LEFT JOIN Offer o ON c.ID = o.ID_company
-            GROUP BY c.ID
-            ORDER BY c.name ASC
-        ";
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
 
-        $stmt = $pdo->query($sql);
-        $companies = $stmt->fetchAll();
-
-        // On recrée l'image dynamique (le placeholder) en se basant sur le nom de l'entreprise
-        foreach ($companies as &$company) {
-            $seed = urlencode(strtolower(str_replace(' ', '', $company['nom'])));
-            $company['logo'] = "https://picsum.photos/seed/{$seed}/400/200";
+        if (!empty($search)) {
+            $sql .= ' AND c.name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
         }
 
-        return $companies;
+        $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère une seule entreprise par son ID (pour la page "Découvrir")
-     */
-    public function getById(int $id): ?array
+    public function create(string $name, string $email, string $number, string $description): bool
     {
-        $pdo = Database::getConnection();
-        
-        $sql = "
-            SELECT 
-                c.ID as id, 
-                c.name as nom, 
-                c.average_mark as note, 
-                c.number as tel, 
-                c.email, 
-                c.description as `desc`, 
-                COUNT(o.ID_offer) as offres_count
-            FROM Company c
-            LEFT JOIN Offer o ON c.ID = o.ID_company
-            WHERE c.ID = :id
-            GROUP BY c.ID
-        ";
+        $stmt = $this->db->prepare('
+            INSERT INTO Company (name, email, number, description)
+            VALUES (:name, :email, :number, :description)
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+        ]);
+    }
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        $company = $stmt->fetch();
+    public function update(int $id, string $name, string $email, string $number, string $description): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            WHERE ID = :id
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+            ':id'          => $id,
+        ]);
+    }
 
-        if ($company) {
-            $seed = urlencode(strtolower(str_replace(' ', '', $company['nom'])));
-            $company['logo'] = "https://picsum.photos/seed/{$seed}/400/200";
-            return $company;
+    public function updateMark(int $id, float $mark): bool
+    {
+        $stmt = $this->db->prepare('UPDATE Company SET average_mark = :mark WHERE ID = :id');
+        return $stmt->execute([':mark' => $mark, ':id' => $id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Supprime d'abord les candidatures liées aux offres de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Apply WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            // Supprime ensuite les wishlists liées aux offres
+            $this->db->prepare('
+                DELETE FROM Save_wishlist WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            // Supprime les offres de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Offer WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            // Supprime les notes de l'entreprise
+            $this->db->prepare('
+                DELETE FROM Note WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            // Supprime enfin l'entreprise
+            $this->db->prepare('
+                DELETE FROM Company WHERE ID = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            return false;
         }
-
-        return null;
-    }
-
-    /**
-     * Fonctions de pagination
-     */
-    public function getPage(array $companies, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($companies, $offset, $this->parPage);
-    }
-
-    public function totalPages(array $companies): int
-    {
-        return (int) ceil(count($companies) / $this->parPage);
     }
 }

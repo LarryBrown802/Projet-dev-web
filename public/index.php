@@ -17,13 +17,15 @@ use App\Controllers\OfferManagementController;
 use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
-use App\Controllers\OfferAdminController;
 use App\Controllers\PilotAdminController;
+use App\Models\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 $loader = new FilesystemLoader(__DIR__ . '/../templates');
 $twig   = new Environment($loader);
+
+$bdd = Database::connect();
 
 // Rend la session disponible dans tous les templates Twig
 $twig->addGlobal('session', $_SESSION);
@@ -44,17 +46,17 @@ switch ($page) {
 
     // ===== ACCESSIBLE À TOUS =====
     case 'accueil':
-        $controller = new HomeController($twig);
+        $controller = new HomeController($twig, $bdd);
         $controller->index();
         break;
 
     case 'connexion':
-        $controller = new ConnexionController($twig);
+        $controller = new ConnexionController($twig, $bdd);
         $controller->index();
         break;
 
     case 'offers':
-        $controller = new OfferController($twig);
+        $controller = new OfferController($twig, $bdd);
         $controller->index();
         break;
         
@@ -62,10 +64,10 @@ switch ($page) {
         requireRole('etudiant'); 
         $controller = new \App\Controllers\ApplyController($twig);
         $controller->index();
-        break;
+        break;*/
 
     case 'company':
-        $controller = new CompanyController($twig);
+        $controller = new CompanyController($twig, $bdd);
         $controller->index();
         break;
 
@@ -77,7 +79,7 @@ switch ($page) {
      // ===== ETUDIANT SEULEMENT =====
     case 'wishlist':
         requireRole('etudiant');
-        $controller = new WishlistController($twig);
+        $controller = new WishlistController($twig, $bdd);
         $controller->index();
         break;
 
@@ -90,56 +92,63 @@ switch ($page) {
     // ===== PILOTE SEULEMENT =====
     case 'dashboard_pilot':
         requireRole('pilote');
-        $controller = new DashboardPilotController($twig);
+        $controller = new DashboardPilotController($twig, $bdd);
         $controller->index();
         break;
 
-    case 'offer_management':
-        requireRole('admin', 'pilote');
-        $controller = new OfferManagementController($twig);
+    /*case 'offer_pilot':
+        requireRole('pilote');
+        $controller = new OfferPilotController($twig, $bdd);
         $controller->index();
         break;
-
-    case 'company_management':
-        requireRole('admin', 'pilote');
-        $controller = new CompanyManagementController($twig);
+        */
+    /*case 'company_management':
+        requireRole('administrateur', 'pilote');
+        $controller = new CompanyAdminController($twig, $bdd);
         $controller->index();
-        break;
+        break;*/
 
     case 'student_management':
-        requireRole('admin', 'pilote'); // Admin peut aussi voir tous les étudiants
-        $controller = new StudentManagementController($twig);
+        requireRole('administrateur', 'pilote'); // Admin peut aussi voir tous les étudiants
+        $controller = new StudentManagementController($twig, $bdd);
         $controller->index();
         break;
 
     // ===== ADMIN SEULEMENT =====
     case 'dashboard_admin':
-        requireRole('admin');
-        $controller = new DashboardAdminController($twig);
+        requireRole('administrateur');
+        $controller = new DashboardAdminController($twig, $bdd);
+        $controller->index();
+        break;
+
+    case 'company_management':
+        requireRole('administrateur');
+        $controller = new CompanyManagementController($twig, $bdd);
         $controller->index();
         break;
 
     /*case 'offer_admin':
-        requireRole('admin');
-        $controller = new OfferAdminController($twig);
+        requireRole('administrateur');
+        $controller = new OfferAdminController($twig, $bdd);
         $controller->index();
-        break;*/
+        break;
+        */
 
     /*case 'company_admin':
-        requireRole('admin');
-        $controller = new CompanyAdminController($twig);
+        requireRole('administrateur');
+        $controller = new CompanyAdminController($twig, $bdd);
         $controller->index();
         break;*/
         
     case 'pilot_admin':
-        requireRole('admin');
-        $controller = new PilotAdminController($twig);
+        requireRole('administrateur');
+        $controller = new PilotAdminController($twig, $bdd);
         $controller->index();
         break;
 
     /*case 'student_admin':
-        requireRole('admin');
-        $controller = new StudentAdminController($twig);
+        requireRole('administrateur');
+        $controller = new StudentAdminController($twig, $bdd);
         $controller->index();
         break;*/
 

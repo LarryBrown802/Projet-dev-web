@@ -6,205 +6,175 @@ use PDO;
 
 class OfferModel
 {
-    private int $parPage = 6;
+    private \PDO $db;
+    protected int $parPage = 5;
 
-    /**
-     * Récupère TOUTES les offres (méthode de base)
-     */
-    public function getAll(): array
+    public function __construct(\PDO $db)
     {
-        return $this->searchOffers(); // On redirige vers searchOffers avec des paramètres vides
+        $this->db = $db;
     }
 
-    /**
-     * Récupère les offres en fonction des filtres (Recherche, Lieu, etc.)
-     */
-    public function searchOffers(string $search = '', string $location = '', array $categories = [], array $types = [], array $levels = []): array
-    {
-        $pdo = Database::getConnection();
-
-        // La base de la requête SQL
-        $sql = "
-            SELECT 
-                o.ID_offer as id,
-                o.title as poste,
-                c.name as entreprise,
-                l.city as lieu,
-                o.type,
-                o.level as niveau,
-                o.duration as duree,
-                o.remuneration,
-                o.description,
-                c.description as entrepriseDesc,
-                o.domain
+    public function searchOffers(
+        ?string $search = null,
+        ?string $location = null,
+        array $types = [],
+        array $levels = [],
+        array $categories = []
+    ): array {
+        $sql = '
+            SELECT o.*, c.name AS entreprise, c.description AS entrepriseDesc,
+                   l.city AS lieu, COUNT(DISTINCT a.ID_profile) AS candidatures
             FROM Offer o
             LEFT JOIN Company c ON o.ID_company = c.ID
             LEFT JOIN Location l ON o.ID_location = l.ID_location
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
             WHERE 1=1
-        ";
-
+        ';
         $params = [];
 
-        // Filtre de recherche texte (Mots-clés)
         if (!empty($search)) {
-            $sql .= " AND (o.title LIKE :search1 OR c.name LIKE :search2)";
-            $params['search1'] = "%$search%";
-            $params['search2'] = "%$search%";
+            $sql .= ' AND (o.title LIKE :search OR c.name LIKE :search OR o.domain LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
         }
-
-        // Filtre de lieu
         if (!empty($location)) {
-            $sql .= " AND l.city = :location";
-            $params['location'] = $location;
+            $sql .= ' AND l.city = :location';
+            $params[':location'] = $location;
         }
-
-        // Filtre de catégories (domaines)
-        if (!empty($categories)) {
-            $placeholders = [];
-            foreach ($categories as $i => $cat) {
-                $key = "cat$i";
-                $placeholders[] = ":$key";
-                $params[$key] = $cat;
-            }
-            $sql .= " AND o.domain IN (" . implode(',', $placeholders) . ")";
-        }
-
-        // Filtre de types (Stage, Alternance)
         if (!empty($types)) {
-            $placeholders = [];
-            foreach ($types as $i => $type) {
-                $key = "type$i";
-                $placeholders[] = ":$key";
-                $params[$key] = $type;
-            }
-            $sql .= " AND o.type IN (" . implode(',', $placeholders) . ")";
+            $placeholders = implode(',', array_map(fn($i) => ":type$i", array_keys($types)));
+            $sql .= " AND o.type IN ($placeholders)";
+            foreach ($types as $i => $type) $params[":type$i"] = $type;
         }
-
-        // Filtre de niveaux (Bac+3, Bac+5...)
         if (!empty($levels)) {
-            $placeholders = [];
-            foreach ($levels as $i => $level) {
-                $key = "level$i";
-                $placeholders[] = ":$key";
-                $params[$key] = $level;
-            }
-            $sql .= " AND o.level IN (" . implode(',', $placeholders) . ")";
+            $placeholders = implode(',', array_map(fn($i) => ":level$i", array_keys($levels)));
+            $sql .= " AND o.level IN ($placeholders)";
+            foreach ($levels as $i => $level) $params[":level$i"] = $level;
+        }
+        if (!empty($categories)) {
+            $placeholders = implode(',', array_map(fn($i) => ":cat$i", array_keys($categories)));
+            $sql .= " AND o.domain IN ($placeholders)";
+            foreach ($categories as $i => $cat) $params[":cat$i"] = $cat;
         }
 
-        // On trie toujours les plus récentes en premier
-        $sql .= " ORDER BY o.publication_date DESC";
+        $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
 
-        // Exécution de la requête sécurisée
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        $offres = $stmt->fetchAll();
-
-        // Ajout des icônes dynamiques
-        foreach ($offres as &$offre) {
-            $offre['icon'] = $this->getIconForDomain($offre['domain']);
-        }
-
-        return $offres;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère les 4 dernières offres pour la page d'accueil
-     */
-    public function getLatestOffers(): array
+    public function getAllOffers(?string $search = null, ?string $type = null, ?int $limit = null): array
     {
-        $pdo = Database::getConnection();
-        $sql = "
-            SELECT 
-                o.ID_offer as id,
-                o.title as poste,
-                c.name as entreprise,
-                l.city as lieu,
-                o.type,
-                o.level as niveau,
-                o.duration as duree,
-                o.remuneration,
-                o.description,
-                c.description as entrepriseDesc,
-                o.domain
+        $sql = '
+            SELECT o.*, c.name AS entreprise, l.city AS lieu,
+                COUNT(DISTINCT a.ID_profile) AS candidatures
+            FROM Offer o
+            LEFT JOIN Company c ON o.ID_company = c.ID
+            LEFT JOIN Location l ON o.ID_location = l.ID_location
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND (o.title LIKE :search OR c.name LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
+        }
+        if (!empty($type)) {
+            $sql .= ' AND o.type = :type';
+            $params[':type'] = $type;
+        }
+
+        $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
+
+        if ($limit !== null) {
+            $sql .= ' LIMIT ' . (int) $limit; // ← cast en int directement dans la requête, pas de bind
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getLatestOffers(int $limit = 4): array
+    {
+        $stmt = $this->db->prepare('
+            SELECT o.*, c.name AS entreprise, c.description AS entrepriseDesc, l.city AS lieu
             FROM Offer o
             LEFT JOIN Company c ON o.ID_company = c.ID
             LEFT JOIN Location l ON o.ID_location = l.ID_location
             ORDER BY o.publication_date DESC
-            LIMIT 4
-        ";
-
-        $stmt = $pdo->query($sql);
-        $offres = $stmt->fetchAll();
-
-        foreach ($offres as &$offre) {
-            $offre['icon'] = $this->getIconForDomain($offre['domain']);
-        }
-
-        return $offres;
+            LIMIT :limit
+        ');
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Pagination et utilitaires
-     */
-    public function getPage(array $offers, int $page): array
-    {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($offers, $offset, $this->parPage);
+    public function create(
+        string $title, string $description, string $duration,
+        float $remuneration, string $type, string $level, string $domain,
+        string $publication_date, int $id_company, int $id_location
+    ): bool {
+        $stmt = $this->db->prepare('
+            INSERT INTO Offer (title, description, duration, remuneration, type, level, domain, publication_date, ID_company, ID_location)
+            VALUES (:title, :description, :duration, :remuneration, :type, :level, :domain, :publication_date, :id_company, :id_location)
+        ');
+        return $stmt->execute([
+            ':title'            => $title,
+            ':description'      => $description,
+            ':duration'         => $duration,
+            ':remuneration'     => $remuneration,
+            ':type'             => $type,
+            ':level'            => $level,
+            ':domain'           => $domain,
+            ':publication_date' => $publication_date,
+            ':id_company'       => $id_company,
+            ':id_location'      => $id_location,
+        ]);
     }
 
-    public function totalPages(array $offers): int
-    {
-        return (int) ceil(count($offers) / $this->parPage);
+    public function update(
+        int $id, string $title, string $description, string $duration,
+        float $remuneration, string $type, string $level, string $domain
+    ): bool {
+        $stmt = $this->db->prepare('
+            UPDATE Offer SET title = :title, description = :description, duration = :duration,
+            remuneration = :remuneration, type = :type, level = :level, domain = :domain
+            WHERE ID_offer = :id
+        ');
+        return $stmt->execute([
+            ':title'        => $title,
+            ':description'  => $description,
+            ':duration'     => $duration,
+            ':remuneration' => $remuneration,
+            ':type'         => $type,
+            ':level'        => $level,
+            ':domain'       => $domain,
+            ':id'           => $id,
+        ]);
     }
 
-    private function getIconForDomain(?string $domain): string
+    public function delete(int $id): bool
     {
-        return match($domain) {
-            'Développement' => 'fa-laptop-code',
-            'Data / BI' => 'fa-database',
-            'Cybersécurité' => 'fa-shield-halved',
-            'DevOps / Cloud' => 'fa-cloud',
-            'Réseau / Systèmes' => 'fa-network-wired',
-            'Support IT' => 'fa-headset',
-            'Gestion de projet' => 'fa-tasks',
-            'RH' => 'fa-users',
-            'Marketing / Com' => 'fa-bullhorn',
-            'Finance' => 'fa-chart-line',
-            'Commercial' => 'fa-handshake',
-            'Conduite de travaux' => 'fa-helmet-safety',
-            'Génie civil' => 'fa-building',
-            'Topographie' => 'fa-map',
-            'HSE / Sécurité' => 'fa-triangle-exclamation',
-            default => 'fa-briefcase'
-        };
+        try {
+            $this->db->beginTransaction();
+
+            $this->db->prepare('DELETE FROM Apply WHERE ID_offer = :id')->execute([':id' => $id]);
+            $this->db->prepare('DELETE FROM Save_wishlist WHERE ID_offer = :id')->execute([':id' => $id]);
+            $this->db->prepare('DELETE FROM Offer WHERE ID_offer = :id')->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
 
-    /**
-     * Génère la liste des pages pour la pagination (avec les "...")
-     */
-    public function getPageNumbers(int $totalPages, int $currentPage = 1): array
+    public function countAllApplications(): int
     {
-        // S'il n'y a pas d'offres ou 1 seule page
-        if ($totalPages <= 1) {
-            return [1];
-        }
-
-        // Si on a 5 pages ou moins, on affiche tout [1, 2, 3, 4, 5]
-        if ($totalPages <= 5) {
-            return range(1, $totalPages);
-        }
-
-        // Si on est au début (ex: page 1, 2 ou 3) -> [1, 2, 3, 4, '...', 10]
-        if ($currentPage <= 3) {
-            return [1, 2, 3, 4, '...', $totalPages];
-        }
-
-        // Si on est à la fin (ex: page 8, 9 ou 10) -> [1, '...', 7, 8, 9, 10]
-        if ($currentPage >= $totalPages - 2) {
-            return [1, '...', $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
-        }
-
-        // Si on est au milieu (ex: page 5) -> [1, '...', 4, 5, 6, '...', 10]
-        return [1, '...', $currentPage - 1, $currentPage, $currentPage + 1, '...', $totalPages];
+        $stmt = $this->db->query('SELECT COUNT(*) FROM Apply');
+        return (int) $stmt->fetchColumn();
     }
 }

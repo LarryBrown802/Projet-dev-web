@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Company{% endblock %}
+{% block title %}Gestion des entreprises{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/assets/pages/Pilote.css">
@@ -36,9 +36,10 @@
     <div class="search-bar-wrap">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Rechercher une entreprise par nom…" aria-label="Rechercher une entreprise" />
+            <input type="search" name="search" value="{{ search|default('') }}"
+                   placeholder="Rechercher une entreprise par nom…" aria-label="Rechercher une entreprise" />
         </div>
-    </div>
+    </form>
 
     <div class="table-wrap">
         <table class="dash-table">
@@ -99,106 +100,227 @@
         </table>
     </div>
 
-    <nav class="pagination" aria-label="Pagination des offres">
-        <button class="page-arrow" type="button"
-            {% if pageCourante <= 1 %}disabled{% endif %}
-            onclick="window.location='?page=company_management&p={{ pageCourante - 1 }}'">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+    {# ===== PAGINATION ===== #}
+    <nav class="pagination" aria-label="Pagination des entreprises">
+
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="company_management">
+            <input type="hidden" name="p" value="{{ pageCourante - 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante <= 1 %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </form>
 
         <div class="page-numbers">
             {% for p in pages %}
                 {% if p == '...' %}
                     <span class="page-ellipsis">…</span>
                 {% else %}
-                    <button class="page-number {% if p == pageCourante %}active{% endif %}"
-                        type="button"
-                        onclick="window.location='?page=company_management&p={{ p }}'">
-                        {{ p }}
-                    </button>
+                    <form method="get" action="/index.php">
+                        <input type="hidden" name="page" value="company_management">
+                        <input type="hidden" name="p" value="{{ p }}">
+                        <input type="hidden" name="search" value="{{ search|default('') }}">
+                        <button class="page-number {% if p == pageCourante %}active{% endif %}" type="submit">
+                            {{ p }}
+                        </button>
+                    </form>
                 {% endif %}
             {% endfor %}
         </div>
 
-        <button class="page-arrow" type="button"
-            {% if pageCourante >= totalPages %}disabled{% endif %}
-            onclick="window.location='?page=company_management&p={{ pageCourante + 1 }}'">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="company_management">
+            <input type="hidden" name="p" value="{{ pageCourante + 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante >= totalPages %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+
     </nav>
 
 </main>
 
-<dialog class="dialog" id="createCompanyDialog" aria-labelledby="createCompanyTitle" style="padding: 0; border-radius: 14px; overflow: hidden; max-width: 600px; width: 100%; border: 1px solid var(--border);">
-    <form method="POST" action="/index.php?page=company_management" style="display: flex; flex-direction: column;">
-        <input type="hidden" name="action" value="create_company">
-        
-        <header style="display: flex; justify-content: space-between; align-items: center; padding: 24px; border-bottom: 1px solid var(--border); background: var(--card);">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div style="width: 48px; height: 48px; border-radius: 12px; background: #e0f2f1; color: #5E92A6; display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                    <i class="fa-solid fa-building"></i>
-                </div>
-                <div>
-                    <h2 id="createCompanyTitle" style="margin: 0; font-size: 20px;">Ajouter une entreprise</h2>
-                    <p style="color: var(--muted); margin: 4px 0 0 0; font-size: 14px;">Cette entreprise sera ajoutée à votre portefeuille.</p>
-                </div>
-            </div>
-            <button type="button" class="dialog-close" id="btn-close-company" aria-label="Fermer" style="position: static; margin: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
+{# ===== DIALOG CRÉER ===== #}
+<dialog class="dialog dialog--sm" id="dialogCreateEnt">
+    <div class="dialog-inner">
+        <header class="dialog-header">
+            <div class="dialog-logo"><i class="fa-solid fa-building"></i></div>
+            <div><h2>Nouvelle entreprise</h2><p class="dialog-company">Remplissez la fiche.</p></div>
+            <button class="dialog-close" id="btnCloseCreateEnt" type="button">✕</button>
         </header>
-
-        <div style="padding: 24px; background: var(--bg); display: grid; gap: 16px;">
-            <div>
-                <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Nom de l'entreprise <span style="color: #d8000c;">*</span></label>
-                <input type="text" name="name" required placeholder="Ex: Tech Solutions" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <div>
-                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Email de contact</label>
-                    <input type="email" name="email" placeholder="contact@entreprise.com" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+        <form class="dialog-form" method="post" action="/index.php?page=company_management">
+            <input type="hidden" name="action" value="create">
+            <div class="field-group">
+                <div class="field">
+                    <label for="cENom">Nom <span class="required">*</span></label>
+                    <div class="input"><i class="fa-solid fa-building"></i><input id="cENom" name="name" type="text" placeholder="Nom de l'entreprise" required /></div>
                 </div>
-                <div>
-                    <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Téléphone</label>
-                    <input type="tel" name="tel" placeholder="01 23 45 67 89" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit;">
+                <div class="field">
+                    <label for="cEEmail">Email <span class="required">*</span></label>
+                    <div class="input"><i class="fa-solid fa-envelope"></i><input id="cEEmail" name="email" type="email" placeholder="contact@entreprise.fr" required /></div>
                 </div>
             </div>
-
-            <div>
-                <label style="font-weight: 700; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text);">Description</label>
-                <textarea name="description" rows="4" placeholder="Présentation de l'entreprise..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; resize: vertical; outline: none;"></textarea>
+            <div class="field">
+                <label for="cETel">Téléphone</label>
+                <div class="input"><i class="fa-solid fa-phone"></i><input id="cETel" name="number" type="tel" placeholder="01 23 45 67 89" /></div>
             </div>
-        </div>
-
-        <footer style="padding: 20px 24px; border-top: 1px solid var(--border); background: var(--card); display: flex; justify-content: flex-end; gap: 12px;">
-            <button type="button" class="btn-secondary" id="btn-cancel-company" style="padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid var(--border); background: var(--bg);">Annuler</button>
-            <button type="submit" class="btn-primary" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Ajouter l'entreprise</button>
-        </footer>
-    </form>
+            <div class="field">
+                <label for="cEDesc">Description</label>
+                <textarea id="cEDesc" name="description" rows="3" placeholder="Activité, valeurs…"></textarea>
+            </div>
+            <footer class="dialog-actions">
+                <button class="btn-secondary" type="button" id="btnCancelCreateEnt">Annuler</button>
+                <button class="btn-voir" type="submit">Créer</button>
+            </footer>
+        </form>
+    </div>
 </dialog>
+
+{# ===== DIALOG MODIFIER ===== #}
+<dialog class="dialog dialog--sm" id="dialogEditEnt">
+    <div class="dialog-inner">
+        <header class="dialog-header">
+            <div class="dialog-logo"><i class="fa-solid fa-pen"></i></div>
+            <div><h2>Modifier l'entreprise</h2><p class="dialog-company" id="editEntName">—</p></div>
+            <button class="dialog-close" id="btnCloseEditEnt" type="button">✕</button>
+        </header>
+        <form class="dialog-form" method="post" action="/index.php?page=company_management">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="id" id="eEId">
+            <div class="field-group">
+                <div class="field">
+                    <label for="eENom">Nom <span class="required">*</span></label>
+                    <div class="input"><i class="fa-solid fa-building"></i><input id="eENom" name="name" type="text" required /></div>
+                </div>
+                <div class="field">
+                    <label for="eEEmail">Email <span class="required">*</span></label>
+                    <div class="input"><i class="fa-solid fa-envelope"></i><input id="eEEmail" name="email" type="email" required /></div>
+                </div>
+            </div>
+            <div class="field">
+                <label for="eETel">Téléphone</label>
+                <div class="input"><i class="fa-solid fa-phone"></i><input id="eETel" name="number" type="tel" /></div>
+            </div>
+            <div class="field">
+                <label for="eEDesc">Description</label>
+                <textarea id="eEDesc" name="description" rows="3"></textarea>
+            </div>
+            <footer class="dialog-actions">
+                <button class="btn-secondary" type="button" id="btnCancelEditEnt">Annuler</button>
+                <button class="btn-voir" type="submit">Enregistrer</button>
+            </footer>
+        </form>
+    </div>
+</dialog>
+
+{# ===== DIALOG ÉVALUER ===== #}
+<dialog class="dialog dialog--sm" id="dialogRateEnt">
+    <div class="dialog-inner">
+        <header class="dialog-header">
+            <div class="dialog-logo" style="background:rgba(245,197,24,.15);border-color:rgba(245,197,24,.3);color:#c8a000"><i class="fa-solid fa-star"></i></div>
+            <div><h2>Évaluer l'entreprise</h2><p class="dialog-company" id="rateEntName">—</p></div>
+            <button class="dialog-close" id="btnCloseRateEnt" type="button">✕</button>
+        </header>
+        <form class="dialog-form" method="post" action="/index.php?page=company_management">
+            <input type="hidden" name="action" value="rate">
+            <input type="hidden" name="id" id="rateEId">
+            <div class="field">
+                <label>Note <span class="required">*</span></label>
+                <div class="star-picker" role="group">
+                    <input type="radio" name="note" id="s5" value="5"/><label for="s5"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" name="note" id="s4" value="4"/><label for="s4"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" name="note" id="s3" value="3"/><label for="s3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" name="note" id="s2" value="2"/><label for="s2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" name="note" id="s1" value="1"/><label for="s1"><i class="fa-solid fa-star"></i></label>
+                </div>
+            </div>
+            <footer class="dialog-actions">
+                <button class="btn-secondary" type="button" id="btnCancelRateEnt">Annuler</button>
+                <button class="btn-voir" type="submit">Envoyer</button>
+            </footer>
+        </form>
+    </div>
+</dialog>
+
+{# ===== DIALOG SUPPRIMER ===== #}
+<dialog class="dialog dialog--sm" id="dialogDeleteEnt">
+    <div class="dialog-inner">
+        <header class="dialog-header">
+            <div class="dialog-logo dialog-logo--danger"><i class="fa-solid fa-trash"></i></div>
+            <div><h2>Supprimer l'entreprise</h2><p class="dialog-company" id="deleteEntName">—</p></div>
+            <button class="dialog-close" id="btnCloseDeleteEnt" type="button">✕</button>
+        </header>
+        <div class="dialog-confirm-body">
+            <p>Êtes-vous sûr de vouloir supprimer cette entreprise ? Cette action est <strong>irréversible</strong>.</p>
+        </div>
+        <form method="post" action="/index.php?page=company_management">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="id" id="dEId">
+            <footer class="dialog-actions">
+                <button class="btn-secondary" type="button" id="btnCancelDeleteEnt">Annuler</button>
+                <button class="btn-danger" type="submit">Supprimer</button>
+            </footer>
+        </form>
+    </div>
+</dialog>
+
 {% endblock %}
 
 {% block javascripts %}
 <script>
-    const companyDialog = document.getElementById('createCompanyDialog');
-    const openCompanyBtn = document.getElementById('btn-open-create-company');
-    
-    // Ouvrir le modal
-    if(openCompanyBtn) {
-        openCompanyBtn.addEventListener('click', () => {
-            companyDialog.showModal();
-        });
-    }
-    
-    // Fermer le modal
-    document.getElementById('btn-close-company')?.addEventListener('click', () => companyDialog.close());
-    document.getElementById('btn-cancel-company')?.addEventListener('click', () => companyDialog.close());
+    function openDialog(id) { document.getElementById(id).showModal(); }
+    function closeDialog(id) { document.getElementById(id).close(); }
 
-    // Fermer en cliquant à l'extérieur
-    companyDialog.addEventListener('click', e => {
-        const r = companyDialog.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
-            companyDialog.close();
-        }
+    ['dialogCreateEnt', 'dialogEditEnt', 'dialogRateEnt', 'dialogDeleteEnt'].forEach(id => {
+        const d = document.getElementById(id);
+        d.addEventListener('click', e => {
+            const r = d.getBoundingClientRect();
+            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
+        });
     });
+
+    // ===== CRÉER =====
+    document.getElementById('btnCreateEntreprise').onclick  = () => openDialog('dialogCreateEnt');
+    document.getElementById('btnCloseCreateEnt').onclick    = () => closeDialog('dialogCreateEnt');
+    document.getElementById('btnCancelCreateEnt').onclick   = () => closeDialog('dialogCreateEnt');
+
+    // ===== MODIFIER =====
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.onclick = () => {
+            document.getElementById('editEntName').textContent  = btn.dataset.name;
+            document.getElementById('eEId').value               = btn.dataset.id;
+            document.getElementById('eENom').value              = btn.dataset.name        || '';
+            document.getElementById('eEEmail').value            = btn.dataset.email       || '';
+            document.getElementById('eETel').value              = btn.dataset.number      || '';
+            document.getElementById('eEDesc').value             = btn.dataset.description || '';
+            openDialog('dialogEditEnt');
+        };
+    });
+    document.getElementById('btnCloseEditEnt').onclick  = () => closeDialog('dialogEditEnt');
+    document.getElementById('btnCancelEditEnt').onclick = () => closeDialog('dialogEditEnt');
+
+    // ===== ÉVALUER =====
+    document.querySelectorAll('.btn-rate').forEach(btn => {
+        btn.onclick = () => {
+            document.getElementById('rateEntName').textContent = btn.dataset.name;
+            document.getElementById('rateEId').value           = btn.dataset.id;
+            openDialog('dialogRateEnt');
+        };
+    });
+    document.getElementById('btnCloseRateEnt').onclick  = () => closeDialog('dialogRateEnt');
+    document.getElementById('btnCancelRateEnt').onclick = () => closeDialog('dialogRateEnt');
+
+    // ===== SUPPRIMER =====
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.onclick = () => {
+            document.getElementById('deleteEntName').textContent = btn.dataset.name;
+            document.getElementById('dEId').value                = btn.dataset.id;
+            openDialog('dialogDeleteEnt');
+        };
+    });
+    document.getElementById('btnCloseDeleteEnt').onclick  = () => closeDialog('dialogDeleteEnt');
+    document.getElementById('btnCancelDeleteEnt').onclick = () => closeDialog('dialogDeleteEnt');
 </script>
 {% endblock %}

@@ -2,50 +2,142 @@
 
 namespace App\Models;
 
-use PDO;
-
-class UserModel
+class UserModel extends PaginationModel
 {
-    /**
-     * Vérifie si l'email et le mot de passe correspondent à un utilisateur en base
-     */
-    public function authenticate(string $email, string $password): ?array
+    private \PDO $db;
+    protected int $perPage = 5;
+
+    public function __construct(\PDO $db)
     {
-        $pdo = Database::getConnection();
-        
-        // On cherche l'utilisateur par son email et on récupère le nom de son rôle
-        $sql = "
-            SELECT 
-                u.ID_user as id, 
-                u.email, 
-                u.password, 
-                r.name_role as role
+        $this->db = $db;
+    }
+
+    // ===== READ =====
+
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->db->prepare('
+            SELECT u.*, r.name_role
             FROM User u
-            LEFT JOIN Role r ON u.ID_role = r.ID_role
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE u.ID_user = :id
+        ');
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function findByEmail(string $email): array|false
+    {
+        $stmt = $this->db->prepare('
+            SELECT u.*, r.name_role
+            FROM User u
+            JOIN Role r ON u.ID_role = r.ID_role
             WHERE u.email = :email
-        ";
+        ');
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
+    public function getAll(): array
+    {
+        $stmt = $this->db->query('
+            SELECT u.*, r.name_role
+            FROM User u
+            JOIN Role r ON u.ID_role = r.ID_role
+            ORDER BY u.ID_user ASC
+        ');
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
-        // Si on trouve un utilisateur avec cet email
-        if ($user) {
-            /* * ⚠️ NOTE DE SÉCURITÉ :
-             * Dans ton fichier SQL, les mots de passe sont "en clair" (ex: 'etudiant123').
-             * On compare donc directement les textes. 
-             * Plus tard, pour un projet pro, il faudra utiliser password_verify() et hasher les mots de passe !
-             */
-            if ($password === $user['password']) {
-                // On supprime le mot de passe du tableau avant de le renvoyer, par sécurité
-                unset($user['password']);
-                if ($user['role'] === 'administrateur') {
-                    $user['role'] = 'admin';
-                }
-                return $user; // Retourne [id => 3, email => 'etudiant1@test.com', role => 'etudiant']
-            }
+    // ===== CREATE =====
+
+    public function create(string $email, string $password, int $id_role): bool
+    {
+        $stmt = $this->db->prepare('
+            INSERT INTO User (email, password, ID_role)
+            VALUES (:email, :password, :id_role)
+        ');
+        return $stmt->execute([
+            ':email'   => $email,
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':id_role' => $id_role,
+        ]);
+    }
+
+    // ===== UPDATE =====
+
+    public function updateEmail(int $id, string $email): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE User SET email = :email WHERE ID_user = :id
+        ');
+        return $stmt->execute([':email' => $email, ':id' => $id]);
+    }
+
+    public function updatePassword(int $id, string $password): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE User SET password = :password WHERE ID_user = :id
+        ');
+        return $stmt->execute([
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':id' => $id,
+        ]);
+    }
+
+    // ===== DELETE =====
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM User WHERE ID_user = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+
+    public function createWithRole(string $email, string $password, string $role): int|false
+    {
+        $stmt = $this->db->prepare('
+            INSERT INTO User (email, password, ID_role)
+            VALUES (:email, :password, (SELECT ID_role FROM Role WHERE name_role = :role))
+        ');
+        $result = $stmt->execute([
+            ':email'    => $email,
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':role'     => $role,
+        ]);
+        return $result ? (int) $this->db->lastInsertId() : false;
+    }
+
+    public function getAllByRole(string $role, ?string $search = null): array
+    {
+        $sql = '
+            SELECT u.ID_user, u.email, p.name, p.surname,
+                pr.name AS promotion, pr.ID_promotion,
+                COUNT(DISTINCT s.ID_profile) AS nb_etudiants
+            FROM User u
+            LEFT JOIN Profile p ON u.ID_user = p.ID_user
+            LEFT JOIN Promotion pr ON p.ID_promotion = pr.ID_promotion
+            LEFT JOIN Profile s ON s.ID_promotion = pr.ID_promotion
+                AND s.ID_user IN (
+                    SELECT ID_user FROM User u2
+                    JOIN Role r2 ON u2.ID_role = r2.ID_role
+                    WHERE r2.name_role = "etudiant"
+                )
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE r.name_role = :role
+        ';
+        $params = [':role' => $role];
+
+        if (!empty($search)) {
+            $sql .= ' AND (p.name LIKE :search OR p.surname LIKE :search OR u.email LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
         }
 
-        return null; // Échec de la connexion
+        $sql .= ' GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name, pr.ID_promotion
+                ORDER BY p.name ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
