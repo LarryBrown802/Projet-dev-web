@@ -3,7 +3,6 @@
 {% block title %}Accueil - LEMS{% endblock %}
 
 {% block stylesheets %}
-    {# On charge ton CSS original, il doit être dans /public/assets/pages/accueil.css #}
     <link rel="stylesheet" href="/assets/pages/accueil.css">
 {% endblock %}
 
@@ -11,41 +10,25 @@
     <section class="hero">
         <div class="hero-bg">
             <div class="hero-overlay"></div>
-
             <div class="hero-content">
                 <span class="hero-text">Notre job, vous aider</span>
                 <span class="hero-text">à choisir le vôtre parmi</span>
-                <span class="hero-big">{{ latestOffers|length }} offres</span> 
+                <span class="hero-big">{{ latestOffers|length }} offres</span>
             </div>
         </div>
 
         <form class="hero-search" action="/index.php" method="GET">
-            {# Dis au routeur d'aller vers la page 'offers' #}
             <input type="hidden" name="page" value="offers">
-
             <div class="searchbox">
                 <div class="searchbox-field">
                     <label for="q">QUOI ?</label>
-                    <input
-                        id="q"
-                        name="search" {# Le nom attendu par OfferController #}
-                        type="text"
-                        placeholder="Métier, entreprise, compétence..."
-                    />
+                    <input id="q" name="search" type="text" placeholder="Métier, entreprise, compétence..." />
                 </div>
-
                 <div class="searchbox-divider"></div>
-
                 <div class="searchbox-field">
                     <label for="where">OÙ ?</label>
-                    <input
-                        id="where"
-                        name="location" {# Le nom attendu par OfferController #}
-                        type="text"
-                        placeholder="Ville, département, code postal..."
-                    />
+                    <input id="where" name="location" type="text" placeholder="Ville, département, code postal..." />
                 </div>
-
                 <button class="searchbox-btn" type="submit" aria-label="Rechercher">
                     <i class="fas fa-search"></i>
                 </button>
@@ -59,52 +42,48 @@
         <aside class="list">
             <div class="list-cards">
                 {% for offer in latestOffers %}
-                    {# AJOUT LOGIQUE : 'js-offer-trigger' pour le JS, 'active' sur la première, et les data-attributes #}
                     <article class="mini-card js-offer-trigger {% if loop.first %}active{% endif %}"
-                        data-poste="{{ offer.poste }}"
+                        data-id="{{ offer.ID_offer }}"
+                        data-poste="{{ offer.title }}"
                         data-entreprise="{{ offer.entreprise }}"
                         data-lieu="{{ offer.lieu }}"
                         data-type="{{ offer.type }}"
-                        data-niveau="{{ offer.niveau }}"
-                        data-duree="{{ offer.duree }}"
+                        data-niveau="{{ offer.level }}"
+                        data-duree="{{ offer.duration }}"
                         data-desc="{{ offer.description }}"
-                        data-entdesc="{{ offer.entrepriseDesc }}"
-                        data-icon="{{ offer.icon }}"
+                        data-entdesc="{{ offer.entrepriseDesc ?? '' }}"
                     >
-                        {# Utilisation de l'icône dynamique de l'offre #}
                         <div class="mini-logo">
-                            <i class="fa-solid {{ offer.icon }}"></i>
+                            <i class="fa-solid fa-briefcase"></i>
                         </div>
 
                         <div>
                             <p class="mini-title">
                                 {{ offer.entreprise }}<br>
-                                {{ offer.poste }}
+                                {{ offer.title }}
                             </p>
-
                             <p class="mini-info">
                                 <i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>{{ offer.type }}
                                 <i class="fa-solid fa-location-dot"></i>{{ offer.lieu }}
-                                <i class="fa-solid fa-ranking-star"></i>{{ offer.niveau }}
+                                <i class="fa-solid fa-ranking-star"></i>{{ offer.level }}
                             </p>
                         </div>
 
-                        {# Bookmark (statique pour l'instant) #}
+                        {% if session.role == 'etudiant' %}
                         <label class="ui-bookmark">
-                            <input type="checkbox">
+                            <input type="checkbox" class="bookmark-checkbox" data-offer-id="{{ offer.ID_offer }}"
+                                {% if wishlistIds is defined and offer.ID_offer in wishlistIds %}checked{% endif %}>
                             <div class="bookmark">
                                 <svg viewBox="0 0 32 32">
-                                    <g>
-                                        <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
-                                    </g>
+                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
                                 </svg>
                             </div>
                         </label>
+                        {% endif %}
 
                         <div class="separateur"></div>
-
                         <div class="mini-meta">
-                            <span class="pill">{{ offer.duree }}</span>
+                            <span class="pill">{{ offer.duration }}</span>
                         </div>
                     </article>
                 {% else %}
@@ -118,97 +97,82 @@
         </aside>
 
         {% if latestOffers is not empty %}
-            {# Par défaut, on affiche la première offre #}
             {% set firstOffer = latestOffers|first %}
 
             <article class="detail">
                 <div class="detail-head">
-                    {# ID ajouté pour changer l'icône #}
                     <div class="detail-img" id="detail-icon-container">
-                        <i class="fa-solid {{ firstOffer.icon }}"></i>
+                        <i class="fa-solid fa-briefcase"></i>
                     </div>
                     <div>
-                        {# IDs ajoutés pour changer les textes #}
                         <p class="detail-title" id="detail-entreprise">{{ firstOffer.entreprise }}</p>
-                        <p class="detail-sub" id="detail-poste">{{ firstOffer.poste }}</p>
+                        <p class="detail-sub" id="detail-poste">{{ firstOffer.title }}</p>
                     </div>
 
+                    {% if session.role == 'etudiant' %}
                     <label class="ui-bookmark">
-                        <input type="checkbox">
+                        <input type="checkbox" class="bookmark-checkbox" data-offer-id="{{ firstOffer.ID_offer }}"
+                            {% if wishlistIds is defined and firstOffer.ID_offer in wishlistIds %}checked{% endif %}>
                         <div class="bookmark">
                             <svg viewBox="0 0 32 32">
-                                <g>
-                                    <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
-                                </g>
+                                <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
                             </svg>
                         </div>
                     </label>
+                    {% endif %}
                 </div>
 
-                {# IDs ajoutés sur les tags #}
                 <div class="tags">
                     <span class="tag t-yellow" id="detail-tag-lieu">{{ firstOffer.lieu }}</span>
-                    <span class="tag t-red" id="detail-tag-type">{{ firstOffer.type }}</span>
-                    <span class="tag t-purple" id="detail-tag-duree">{{ firstOffer.duree }}</span>
-                    <span class="tag t-green" id="detail-tag-niveau">{{ firstOffer.niveau }}</span>
+                    <span class="tag t-red"    id="detail-tag-type">{{ firstOffer.type }}</span>
+                    <span class="tag t-purple" id="detail-tag-duree">{{ firstOffer.duration }}</span>
+                    <span class="tag t-green"  id="detail-tag-niveau">{{ firstOffer.level }}</span>
                 </div>
 
                 <div class="tabs" role="tablist" aria-label="Détails de l'offre">
-                    <button class="tab-btn active" type="button" data-tab="desc" role="tab" aria-selected="true">
-                        Description
-                    </button>
-                    <button class="tab-btn" type="button" data-tab="company" role="tab" aria-selected="false">
-                        Entreprise
-                    </button>
+                    <button class="tab-btn active" type="button" data-tab="desc" role="tab" aria-selected="true">Description</button>
+                    <button class="tab-btn" type="button" data-tab="company" role="tab" aria-selected="false">Entreprise</button>
                 </div>
 
                 <div class="detail-body">
                     <div class="tab-content active" id="tab-desc" data-content="desc" role="tabpanel">
                         <p class="section-title">Description du poste</p>
-                        {# ID ajouté ici #}
-                        <p class="para" id="detail-desc-text">
-                            {{ firstOffer.description }}
-                        </p>
+                        <p class="para" id="detail-desc-text">{{ firstOffer.description }}</p>
 
                         <p class="section-title">Prérequis</p>
                         <p class="para">
-                            {# IDs ajoutés ici #}
-                            Niveau demandé : <span id="detail-req-niveau">{{ firstOffer.niveau }}</span><br>
+                            Niveau demandé : <span id="detail-req-niveau">{{ firstOffer.level }}</span><br>
                             Type de contrat : <span id="detail-req-type">{{ firstOffer.type }}</span><br>
-                            Durée : <span id="detail-req-duree">{{ firstOffer.duree }}</span>
+                            Durée : <span id="detail-req-duree">{{ firstOffer.duration }}</span>
                         </p>
                     </div>
 
                     <div class="tab-content" id="tab-company" data-content="company" role="tabpanel" hidden>
-                        <p class="section-title">À propos de l’entreprise</p>
-                        {# ID ajouté ici #}
-                        <p class="para" id="detail-entdesc-text">{{ firstOffer.entrepriseDesc }}</p>
+                        <p class="section-title">À propos de l'entreprise</p>
+                        <p class="para" id="detail-entdesc-text">{{ firstOffer.entrepriseDesc ?? 'Aucune description disponible.' }}</p>
 
                         <p class="section-title">Technos / environnement</p>
-                        <p class="para">
-                            Environnement professionnel, missions variées et accompagnement sur le poste.
-                        </p>
+                        <p class="para">Environnement professionnel, missions variées et accompagnement sur le poste.</p>
                     </div>
                 </div>
 
                 <div class="detail-footer">
-                    {# Classe 'js-apply-btn' ajoutée pour le JS #}
-                    <button class="apply-btn js-apply-btn" type="button">Postuler</button>
+                    <button class="apply-btn js-apply-btn" type="button" data-id="{{ firstOffer.ID_offer }}">Postuler</button>
                 </div>
             </article>
         {% endif %}
     </section>
 
-    {# FAQ (Inchangée) #}
+    {# ===== FAQ ===== #}
     <div class="faq-title">F.A.Q</div>
     <section class="faq">
         <details>
             <summary>Comment rechercher une offre ? <span class="plus"></span></summary>
-            <p>Utilisez la barre de recherche en haut de la page d’accueil...</p>
+            <p>Utilisez la barre de recherche en haut de la page d'accueil...</p>
         </details>
         <details>
             <summary>Comment postuler ? <span class="plus"></span></summary>
-            <p>Une fois l’offre consultée, cliquez sur le bouton “Postuler”...</p>
+            <p>Une fois l'offre consultée, cliquez sur le bouton "Postuler"...</p>
         </details>
         <details>
             <summary>Puis-je filtrer les offres ? <span class="plus"></span></summary>
@@ -218,90 +182,101 @@
 {% endblock %}
 
 {% block javascripts %}
-    {# Petit correctif CSS pour s'assurer que la classe active se voit bien et que les onglets cachent le contenu #}
-    <style>
-        /* Ces styles devraient être dans accueil.css, je les mets ici temporairement 
-           pour garantir le fonctionnement visuel de la logique */
-        .mini-card { transition: background 0.2s; }
-        .mini-card.active { background-color: var(--bg-alt) !important; border-color: var(--primary) !important; }
-        .tab-content[hidden] { display: none; }
-        .tab-content.active { display: block; }
-    </style>
+<style>
+    .mini-card { transition: background 0.2s; }
+    .mini-card.active { background-color: var(--bg-alt) !important; border-color: var(--primary) !important; }
+    .tab-content[hidden] { display: none; }
+    .tab-content.active { display: block; }
+</style>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- 1. LOGIQUE DES ONGLETS (Description / Entreprise) ---
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-                    tabContents.forEach(c => { c.classList.remove('active'); c.setAttribute('hidden', 'true'); });
+    // ===== ONGLETS =====
+    const tabBtns     = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-                    btn.classList.add('active');
-                    btn.setAttribute('aria-selected', 'true');
-                    
-                    const targetContent = document.getElementById('tab-' + btn.dataset.tab);
-                    targetContent.classList.add('active');
-                    targetContent.removeAttribute('hidden');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            tabContents.forEach(c => { c.classList.remove('active'); c.setAttribute('hidden', 'true'); });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+            const target = document.getElementById('tab-' + btn.dataset.tab);
+            target.classList.add('active');
+            target.removeAttribute('hidden');
+        });
+    });
+
+    // ===== PANNEAU DROIT =====
+    const offerTriggers   = document.querySelectorAll('.js-offer-trigger');
+    const dEntreprise     = document.getElementById('detail-entreprise');
+    const dPoste          = document.getElementById('detail-poste');
+    const dTagLieu        = document.getElementById('detail-tag-lieu');
+    const dTagType        = document.getElementById('detail-tag-type');
+    const dTagDuree       = document.getElementById('detail-tag-duree');
+    const dTagNiveau      = document.getElementById('detail-tag-niveau');
+    const dDescText       = document.getElementById('detail-desc-text');
+    const dReqNiveau      = document.getElementById('detail-req-niveau');
+    const dReqType        = document.getElementById('detail-req-type');
+    const dReqDuree       = document.getElementById('detail-req-duree');
+    const dEntDescText    = document.getElementById('detail-entdesc-text');
+    const applyBtn        = document.querySelector('.js-apply-btn');
+
+    offerTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+            offerTriggers.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            dEntreprise.textContent  = this.dataset.entreprise;
+            dPoste.textContent       = this.dataset.poste;
+            dTagLieu.textContent     = this.dataset.lieu;
+            dTagType.textContent     = this.dataset.type;
+            dTagDuree.textContent    = this.dataset.duree;
+            dTagNiveau.textContent   = this.dataset.niveau;
+            dDescText.textContent    = this.dataset.desc;
+            dReqNiveau.textContent   = this.dataset.niveau;
+            dReqType.textContent     = this.dataset.type;
+            dReqDuree.textContent    = this.dataset.duree;
+            dEntDescText.textContent = this.dataset.entdesc;
+
+            // Met à jour le bouton postuler avec le bon ID
+            if (applyBtn) applyBtn.dataset.id = this.dataset.id;
+        });
+    });
+
+    // ===== BOUTON POSTULER =====
+    if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+            window.location.href = `/index.php?page=apply&offer_id=${applyBtn.dataset.id}`;
+        });
+    }
+
+    // ===== WISHLIST AJAX =====
+    document.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', async function() {
+            const offerId = this.dataset.offerId;
+            if (!offerId) return;
+
+            const previousState = !this.checked;
+            try {
+                const response = await fetch('/index.php?page=toggle_wishlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ offer_id: parseInt(offerId) })
                 });
-            });
-
-            // --- 2. LOGIQUE D'AFFICHAGE DYNAMIQUE (Mise à jour du panneau droit) ---
-            const offerTriggers = document.querySelectorAll('.js-offer-trigger');
-            
-            // Ciblages des éléments de droite
-            const dIconContainer = document.getElementById('detail-icon-container');
-            const dEntreprise = document.getElementById('detail-entreprise');
-            const dPoste = document.getElementById('detail-poste');
-            const dTagLieu = document.getElementById('detail-tag-lieu');
-            const dTagType = document.getElementById('detail-tag-type');
-            const dTagDuree = document.getElementById('detail-tag-duree');
-            const dTagNiveau = document.getElementById('detail-tag-niveau');
-            const dDescText = document.getElementById('detail-desc-text');
-            const dReqNiveau = document.getElementById('detail-req-niveau');
-            const dReqType = document.getElementById('detail-req-type');
-            const dReqDuree = document.getElementById('detail-req-duree');
-            const dEntDescText = document.getElementById('detail-entdesc-text');
-
-            offerTriggers.forEach(trigger => {
-                trigger.addEventListener('click', function() {
-                    // A. Gérer la classe active sur la gauche
-                    offerTriggers.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // B. Mettre à jour les données à droite en lisant les data-attributes
-                    dIconContainer.innerHTML = `<i class="fa-solid ${this.dataset.icon}"></i>`;
-                    dEntreprise.textContent = this.dataset.entreprise;
-                    dPoste.textContent = this.dataset.poste;
-                    
-                    // Tags
-                    dTagLieu.textContent = this.dataset.lieu;
-                    dTagType.textContent = this.dataset.type;
-                    dTagDuree.textContent = this.dataset.duree;
-                    dTagNiveau.textContent = this.dataset.niveau;
-                    
-                    // Corps du texte
-                    dDescText.textContent = this.dataset.desc;
-                    dReqNiveau.textContent = this.dataset.niveau;
-                    dReqType.textContent = this.dataset.type;
-                    dReqDuree.textContent = this.dataset.duree;
-                    dEntDescText.textContent = this.dataset.entdesc;
-                });
-            });
-
-            // --- 3. LOGIQUE DU BOUTON POSTULER DU PANNEAU DROIT ---
-            const applyBtn = document.querySelector('.js-apply-btn');
-            if (applyBtn) {
-                applyBtn.addEventListener('click', () => {
-                    // Récupère dynamiquement le poste et l'entreprise affichés à droite
-                    const poste = encodeURIComponent(document.getElementById('detail-poste').textContent.trim());
-                    const entreprise = encodeURIComponent(document.getElementById('detail-entreprise').textContent.trim());
-                    // Redirige vers la page de candidature
-                    window.location.href = `/index.php?page=apply&poste=${poste}&entreprise=${entreprise}`;
-                });
+                const result = await response.json();
+                if (!result.success) {
+                    this.checked = previousState;
+                    alert(result.error || 'Erreur lors de la mise à jour des favoris.');
+                }
+            } catch (e) {
+                this.checked = previousState;
+                console.error("Erreur wishlist", e);
             }
         });
-    </script>
+    });
+
+});
+</script>
 {% endblock %}

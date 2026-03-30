@@ -18,39 +18,6 @@ class CompanyManagementController
 
     public function index(): void
     {
-        $message = null;
-        $error = null;
-
-        // 1. TRAITEMENT DU FORMULAIRE : CRÉER UNE ENTREPRISE
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create_company') {
-            $name = trim($_POST['name'] ?? '');
-            
-            if (!empty($name)) {
-                $success = $this->companyModel->createCompany(
-                    $name,
-                    $_POST['description'] ?? '',
-                    $_POST['email'] ?? '',
-                    $_POST['tel'] ?? '',
-                    $_SESSION['id'] // L'ID du pilote connecté !
-                );
-
-                if ($success) {
-                    $message = "L'entreprise $name a été ajoutée avec succès !";
-                } else {
-                    $error = "Erreur lors de l'ajout de l'entreprise.";
-                }
-            } else {
-                $error = "Le nom de l'entreprise est obligatoire.";
-            }
-        }
-
-        // 2. RÉCUPÉRATION DES DONNÉES
-        if ($_SESSION['role'] === 'admin') {
-            $allCompanies = $this->companyModel->getAllCompanies();
-        } else {
-            $allCompanies = $this->companyModel->getCompaniesByPilot($_SESSION['id']);
-        }
-
         // ===== CRÉER =====
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'create') {
             $this->companyModel->create(
@@ -78,7 +45,10 @@ class CompanyManagementController
 
         // ===== ÉVALUER =====
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'rate') {
-            $this->companyModel->updateMark((int) $_POST['id'], (float) $_POST['note']);
+            $this->companyModel->updateMark(
+                (int) $_POST['id'],
+                (float) $_POST['note']
+            );
             header('Location: /index.php?page=company_management');
             exit;
         }
@@ -100,8 +70,6 @@ class CompanyManagementController
         echo $this->twig->render('company_management.html.twig', [
             'current_page' => 'company_management',
             'companies' => $companies,
-            'message' => $message,
-            'error' => $error,
             'pageCourante' => $pageCourante,
             'totalPages' => $totalPages,
             'pages' => $pages,

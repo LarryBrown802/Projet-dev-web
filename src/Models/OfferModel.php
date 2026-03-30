@@ -4,7 +4,7 @@ namespace App\Models;
 
 use PDO;
 
-class OfferModel
+class OfferModel extends PaginationModel
 {
     private \PDO $db;
     protected int $parPage = 5;

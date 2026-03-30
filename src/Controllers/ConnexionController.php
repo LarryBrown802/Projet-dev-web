@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel; // NOUVEAU : On importe le modèle
+use App\Models\UserModel;
 use Twig\Environment;
 
 class ConnexionController
@@ -20,28 +20,6 @@ class ConnexionController
 
     public function index(): void
     {
-        // Plus de session_start() ici, car il est déjà dans index.php !
-        $error = null;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
-
-            // NOUVEAU : On cherche l'utilisateur directement dans la vraie base de données !
-            $found = $this->userModel->authenticate($email, $password);
-
-            if ($found) {
-                // L'utilisateur existe et le mot de passe est bon
-                $_SESSION['role'] = $found['role'];
-                $_SESSION['email'] = $found['email'];
-                $_SESSION['id'] = $found['id'];
-                
-                header('Location: /index.php?page=accueil');
-                exit;
-            }
-
-            // Si $found est null, c'est que ça a échoué
-            $error = 'Identifiants incorrects.';
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,7 +33,8 @@ class ConnexionController
                 $_SESSION['email']   = $user['email'];
                 $_SESSION['role']    = $user['name_role'];
 
-                session_write_close(); // Assure que les données de session sont enregistrées avant la redirection
+                session_write_close();
+
                 switch ($user['name_role']) {
                     case 'administrateur':
                         header('Location: /index.php?page=dashboard_admin');

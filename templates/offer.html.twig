@@ -7,543 +7,391 @@
 {% endblock %}
 
 {% block content %}
-    <main class="container">
-        <div class="page-head">
-            <h1>Offres de stage et d'emploi</h1>
-            <p class="page-subtitle">Filtre à gauche, recherche au-dessus, puis clique sur “Voir plus”.</p>
+<main class="container">
+    <div class="page-head">
+        <h1>Offres de stage et d'emploi</h1>
+        <p class="page-subtitle">Filtre à gauche, recherche au-dessus, puis clique sur "Voir plus".</p>
+    </div>
+
+    {# ===== STATS ===== #}
+    <section class="stats stats--full">
+        <div class="stats-head">
+            <h2>Statistiques des offres</h2>
+            <p>Un aperçu rapide avant de postuler.</p>
         </div>
 
-        <section class="stats stats--full">
-            <div class="stats-head">
-                <h2>Statistiques des offres</h2>
-                <p>Un aperçu rapide avant de postuler.</p>
+        <div class="carousel">
+            <button class="carousel-btn prev" type="button" aria-label="Précédent">‹</button>
+            <div class="carousel-viewport">
+                <div class="carousel-track">
+                    <article class="stat-card">
+                        <h3>Répartition par durée</h3>
+                        <ul>
+                            <li>1–2 mois : 18%</li>
+                            <li>3–4 mois : 42%</li>
+                            <li>5–6 mois : 40%</li>
+                        </ul>
+                    </article>
+                    <article class="stat-card">
+                        <h3>Top wish-list</h3>
+                        <ol>
+                            <li>Dev Web</li>
+                            <li>Data Analyst</li>
+                            <li>Cybersécurité</li>
+                        </ol>
+                    </article>
+                    <article class="stat-card">
+                        <h3>Total d'offres en base</h3>
+                        <p class="big-number">{{ totalOffers }}</p>
+                        <p class="sub">offres disponibles</p>
+                    </article>
+                    <article class="stat-card">
+                        <h3>Moyenne de candidatures</h3>
+                        <p class="big-number">7,3</p>
+                        <p class="sub">candidatures / offre</p>
+                    </article>
+                </div>
+            </div>
+            <button class="carousel-btn next" type="button" aria-label="Suivant">›</button>
+        </div>
+
+        <div class="carousel-dots" aria-label="Pagination">
+            <button class="dot active" type="button" aria-label="Carte 1"></button>
+            <button class="dot" type="button" aria-label="Carte 2"></button>
+            <button class="dot" type="button" aria-label="Carte 3"></button>
+            <button class="dot" type="button" aria-label="Carte 4"></button>
+        </div>
+    </section>
+
+    <div class="layout">
+        {# ===== SIDEBAR FILTRES ===== #}
+        <aside class="filters" aria-label="Filtres des offres">
+            <div class="filters-head">
+                <h2>Filtres</h2>
+                <p>Affiner la liste</p>
             </div>
 
-            <div class="carousel">
-                <button class="carousel-btn prev" type="button" aria-label="Précédent">‹</button>
+            <form action="/index.php" method="get">
+                <input type="hidden" name="page" value="offers">
 
-                <div class="carousel-viewport">
-                    <div class="carousel-track">
-                        <article class="stat-card">
-                            <h3>Répartition par durée</h3>
-                            <ul>
-                                <li>1–2 mois : 18%</li>
-                                <li>3–4 mois : 42%</li>
-                                <li>5–6 mois : 40%</li>
-                            </ul>
-                        </article>
-
-                        <article class="stat-card">
-                            <h3>Top wish-list</h3>
-                            <ol>
-                                <li>Dev Web</li>
-                                <li>Data Analyst</li>
-                                <li>Cybersécurité</li>
-                            </ol>
-                        </article>
-
-                        <article class="stat-card">
-                            <h3>Total d’offres en base</h3>
-                            <p class="big-number">{{ offers|length }}</p>
-                            <p class="sub">offres disponibles</p>
-                        </article>
-
-                        <article class="stat-card">
-                            <h3>Moyenne de candidatures</h3>
-                            <p class="big-number">7,3</p>
-                            <p class="sub">candidatures / offre</p>
-                        </article>
-                    </div>
+                <div class="filter-block">
+                    <label class="filter-label" for="location">Lieu</label>
+                    <select id="location" name="location">
+                        <option value="">Tous</option>
+                        <option value="Lyon"       {% if location == 'Lyon' %}selected{% endif %}>Lyon</option>
+                        <option value="Paris"      {% if location == 'Paris' %}selected{% endif %}>Paris</option>
+                        <option value="Lille"      {% if location == 'Lille' %}selected{% endif %}>Lille</option>
+                        <option value="Toulouse"   {% if location == 'Toulouse' %}selected{% endif %}>Toulouse</option>
+                        <option value="Bordeaux"   {% if location == 'Bordeaux' %}selected{% endif %}>Bordeaux</option>
+                        <option value="Marseille"  {% if location == 'Marseille' %}selected{% endif %}>Marseille</option>
+                        <option value="Nantes"     {% if location == 'Nantes' %}selected{% endif %}>Nantes</option>
+                        <option value="Strasbourg" {% if location == 'Strasbourg' %}selected{% endif %}>Strasbourg</option>
+                        <option value="Rennes"     {% if location == 'Rennes' %}selected{% endif %}>Rennes</option>
+                    </select>
                 </div>
 
-                <button class="carousel-btn next" type="button" aria-label="Suivant">›</button>
-            </div>
-
-            <div class="carousel-dots" aria-label="Pagination">
-                <button class="dot active" type="button" aria-label="Carte 1"></button>
-                <button class="dot" type="button" aria-label="Carte 2"></button>
-                <button class="dot" type="button" aria-label="Carte 3"></button>
-                <button class="dot" type="button" aria-label="Carte 4"></button>
-            </div>
-        </section>
-
-        <div class="layout">
-            <aside class="filters" aria-label="Filtres des offres">
-                <div class="filters-head">
-                    <h2>Filtres</h2>
-                    <p>Affiner la liste</p>
+                <div class="filter-block">
+                    <span class="filter-label">Type</span>
+                    <label class="check"><input type="checkbox" name="types[]" value="Stage" {% if types is defined and 'Stage' in types %}checked{% endif %}><span>Stage</span></label>
+                    <label class="check"><input type="checkbox" name="types[]" value="Alternance" {% if types is defined and 'Alternance' in types %}checked{% endif %}><span>Alternance</span></label>
                 </div>
 
-                <form action="/index.php" method="get">
+                <div class="filter-block">
+                    <span class="filter-label">Niveau</span>
+                    <label class="check"><input type="checkbox" name="levels[]" value="Bac+2/3" {% if levels is defined and 'Bac+2/3' in levels %}checked{% endif %}><span>Bac+2/3</span></label>
+                    <label class="check"><input type="checkbox" name="levels[]" value="Bac+3" {% if levels is defined and 'Bac+3' in levels %}checked{% endif %}><span>Bac+3</span></label>
+                    <label class="check"><input type="checkbox" name="levels[]" value="Bac+4/5" {% if levels is defined and 'Bac+4/5' in levels %}checked{% endif %}><span>Bac+4/5</span></label>
+                    <label class="check"><input type="checkbox" name="levels[]" value="Bac+5" {% if levels is defined and 'Bac+5' in levels %}checked{% endif %}><span>Bac+5</span></label>
+                </div>
+
+                <div class="filter-block">
+                    <span class="filter-label">Domaines & métiers</span>
+
+                    <details class="facet" open>
+                        <summary class="facet-title">
+                            <span><i class="fa-solid fa-laptop-code"></i> Informatique</span>
+                            <span class="facet-count">6</span>
+                        </summary>
+                        <div class="facet-body">
+                            <label class="check"><input type="checkbox" name="categories[]" value="Développement" {% if categories is defined and 'Développement' in categories %}checked{% endif %}><span>Développement</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Réseau / Systèmes" {% if categories is defined and 'Réseau / Systèmes' in categories %}checked{% endif %}><span>Réseau / Systèmes</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Cybersécurité" {% if categories is defined and 'Cybersécurité' in categories %}checked{% endif %}><span>Cybersécurité</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Data / BI" {% if categories is defined and 'Data / BI' in categories %}checked{% endif %}><span>Data / BI</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="DevOps / Cloud" {% if categories is defined and 'DevOps / Cloud' in categories %}checked{% endif %}><span>DevOps / Cloud</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Support IT" {% if categories is defined and 'Support IT' in categories %}checked{% endif %}><span>Support IT</span></label>
+                        </div>
+                    </details>
+
+                    <details class="facet">
+                        <summary class="facet-title">
+                            <span><i class="fa-solid fa-briefcase"></i> Généraliste</span>
+                            <span class="facet-count">5</span>
+                        </summary>
+                        <div class="facet-body">
+                            <label class="check"><input type="checkbox" name="categories[]" value="Gestion de projet" {% if categories is defined and 'Gestion de projet' in categories %}checked{% endif %}><span>Gestion de projet</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="RH" {% if categories is defined and 'RH' in categories %}checked{% endif %}><span>RH</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Marketing / Com" {% if categories is defined and 'Marketing / Com' in categories %}checked{% endif %}><span>Marketing / Com</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Finance" {% if categories is defined and 'Finance' in categories %}checked{% endif %}><span>Finance</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Conseil" {% if categories is defined and 'Conseil' in categories %}checked{% endif %}><span>Conseil</span></label>
+                        </div>
+                    </details>
+
+                    <details class="facet">
+                        <summary class="facet-title">
+                            <span><i class="fa-solid fa-person-digging"></i> BTP</span>
+                            <span class="facet-count">4</span>
+                        </summary>
+                        <div class="facet-body">
+                            <label class="check"><input type="checkbox" name="categories[]" value="Conduite de travaux" {% if categories is defined and 'Conduite de travaux' in categories %}checked{% endif %}><span>Conduite de travaux</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Génie civil" {% if categories is defined and 'Génie civil' in categories %}checked{% endif %}><span>Génie civil</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="Topographie" {% if categories is defined and 'Topographie' in categories %}checked{% endif %}><span>Topographie</span></label>
+                            <label class="check"><input type="checkbox" name="categories[]" value="HSE / Sécurité" {% if categories is defined and 'HSE / Sécurité' in categories %}checked{% endif %}><span>HSE / Sécurité</span></label>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="filters-actions">
+                    <a href="/index.php?page=offers" class="btn-secondary">Réinitialiser</a>
+                    <button class="btn-voir" type="submit">Appliquer</button>
+                </div>
+            </form>
+        </aside>
+
+        {# ===== RÉSULTATS ===== #}
+        <section class="results" aria-label="Résultats des offres">
+            <div class="results-bar">
+                <form class="results-search" action="/index.php" method="get">
                     <input type="hidden" name="page" value="offers">
-
-                    <div class="filter-block">
-                        <label class="filter-label" for="location">Lieu</label>
-                        <select id="location" name="location">
-                            <option value="">Tous</option>
-                            <option value="Lyon" {% if location == 'Lyon' %}selected{% endif %}>Lyon</option>
-                            <option value="Paris" {% if location == 'Paris' %}selected{% endif %}>Paris</option>
-                            <option value="Lille" {% if location == 'Lille' %}selected{% endif %}>Lille</option>
-                            <option value="Toulouse" {% if location == 'Toulouse' %}selected{% endif %}>Toulouse</option>
-                            <option value="Bordeaux" {% if location == 'Bordeaux' %}selected{% endif %}>Bordeaux</option>
-                            <option value="Marseille" {% if location == 'Marseille' %}selected{% endif %}>Marseille</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-block">
-                        <span class="filter-label">Type</span>
-                        <label class="check">
-                            <input type="checkbox" name="types[]" value="Stage"
-                                {% if types is defined and 'Stage' in types %}checked{% endif %}>
-                            <span>Stage</span>
-                        </label>
-                        <label class="check">
-                            <input type="checkbox" name="types[]" value="Alternance"
-                                {% if types is defined and 'Alternance' in types %}checked{% endif %}>
-                            <span>Alternance</span>
-                        </label>
-                    </div>
-
-                    <div class="filter-block">
-                        <span class="filter-label">Niveau</span>
-                        <label class="check">
-                            <input type="checkbox" name="levels[]" value="Bac+2/3"
-                                {% if levels is defined and 'Bac+2/3' in levels %}checked{% endif %}>
-                            <span>Bac+2/3</span>
-                        </label>
-                        <label class="check">
-                            <input type="checkbox" name="levels[]" value="Bac+3"
-                                {% if levels is defined and 'Bac+3' in levels %}checked{% endif %}>
-                            <span>Bac+3</span>
-                        </label>
-                        <label class="check">
-                            <input type="checkbox" name="levels[]" value="Bac+4/5"
-                                {% if levels is defined and 'Bac+4/5' in levels %}checked{% endif %}>
-                            <span>Bac+4/5</span>
-                        </label>
-                        <label class="check">
-                            <input type="checkbox" name="levels[]" value="Bac+5"
-                                {% if levels is defined and 'Bac+5' in levels %}checked{% endif %}>
-                            <span>Bac+5</span>
-                        </label>
-                    </div>
-
-                    <div class="filter-block">
-                        <span class="filter-label">Domaines & métiers</span>
-
-                        <details class="facet" open>
-                            <summary class="facet-title">
-                                <span><i class="fa-solid fa-laptop-code"></i> Informatique</span>
-                                <span class="facet-count">6</span>
-                            </summary>
-
-                            <div class="facet-body">
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Développement"
-                                        {% if categories is defined and 'Développement' in categories %}checked{% endif %}>
-                                    <span>Développement</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Réseau / Systèmes"
-                                        {% if categories is defined and 'Réseau / Systèmes' in categories %}checked{% endif %}>
-                                    <span>Réseau / Systèmes</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Cybersécurité"
-                                        {% if categories is defined and 'Cybersécurité' in categories %}checked{% endif %}>
-                                    <span>Cybersécurité</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Data / BI"
-                                        {% if categories is defined and 'Data / BI' in categories %}checked{% endif %}>
-                                    <span>Data / BI</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="DevOps / Cloud"
-                                        {% if categories is defined and 'DevOps / Cloud' in categories %}checked{% endif %}>
-                                    <span>DevOps / Cloud</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Support IT"
-                                        {% if categories is defined and 'Support IT' in categories %}checked{% endif %}>
-                                    <span>Support IT</span>
-                                </label>
-                            </div>
-                        </details>
-
-                        <details class="facet">
-                            <summary class="facet-title">
-                                <span><i class="fa-solid fa-briefcase"></i> Généraliste</span>
-                                <span class="facet-count">5</span>
-                            </summary>
-
-                            <div class="facet-body">
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Gestion de projet"
-                                        {% if categories is defined and 'Gestion de projet' in categories %}checked{% endif %}>
-                                    <span>Gestion de projet</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="RH"
-                                        {% if categories is defined and 'RH' in categories %}checked{% endif %}>
-                                    <span>RH</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Marketing / Com"
-                                        {% if categories is defined and 'Marketing / Com' in categories %}checked{% endif %}>
-                                    <span>Marketing / Com</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Finance"
-                                        {% if categories is defined and 'Finance' in categories %}checked{% endif %}>
-                                    <span>Finance</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Commercial"
-                                        {% if categories is defined and 'Commercial' in categories %}checked{% endif %}>
-                                    <span>Commercial</span>
-                                </label>
-                            </div>
-                        </details>
-
-                        <details class="facet">
-                            <summary class="facet-title">
-                                <span><i class="fa-solid fa-person-digging"></i> BTP</span>
-                                <span class="facet-count">4</span>
-                            </summary>
-
-                            <div class="facet-body">
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Conduite de travaux"
-                                        {% if categories is defined and 'Conduite de travaux' in categories %}checked{% endif %}>
-                                    <span>Conduite de travaux</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Génie civil"
-                                        {% if categories is defined and 'Génie civil' in categories %}checked{% endif %}>
-                                    <span>Génie civil</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="Topographie"
-                                        {% if categories is defined and 'Topographie' in categories %}checked{% endif %}>
-                                    <span>Topographie</span>
-                                </label>
-                                <label class="check">
-                                    <input type="checkbox" name="categories[]" value="HSE / Sécurité"
-                                        {% if categories is defined and 'HSE / Sécurité' in categories %}checked{% endif %}>
-                                    <span>HSE / Sécurité</span>
-                                </label>
-                            </div>
-                        </details>
-                    </div>
-
-                    <div class="filters-actions">
-                        <a href="/index.php?page=offers" class="btn-secondary">Réinitialiser</a>
-                        <button class="btn-voir" type="submit">Appliquer</button>
-                    </div>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" name="search" value="{{ search|default('') }}"
+                           placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher" />
                 </form>
-            </aside>
 
-            <section class="results" aria-label="Résultats des offres">
-                <div class="results-bar">
-                    <form class="results-search" action="/index.php" method="get">
-                        <input type="hidden" name="page" value="offers">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input
-                            type="search"
-                            name="search"
-                            value="{{ search|default('') }}"
-                            placeholder="Rechercher un poste, une entreprise…"
-                            aria-label="Rechercher"
-                        />
-                    </form>
+                <div class="results-sort">
+                    <label class="sr-only" for="sort">Trier</label>
+                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    <select id="sort">
+                        <option value="pertinence">Pertinence</option>
+                        <option value="recent">Plus récent</option>
+                        <option value="remu">Rémunération</option>
+                        <option value="az">A → Z</option>
+                    </select>
+                </div>
+            </div>
 
-                    <div class="results-sort">
-                        <label class="sr-only" for="sort">Trier</label>
-                        <i class="fa-solid fa-arrow-up-wide-short"></i>
-                        <select id="sort">
-                            <option value="pertinence">Pertinence</option>
-                            <option value="recent">Plus récent</option>
-                            <option value="remu">Rémunération</option>
-                            <option value="az">A → Z</option>
-                        </select>
-                    </div>
+            <section class="offres" aria-label="Liste des offres">
+                {% for offer in offers %}
+                    <article class="offre-card">
+                        <div class="offre-top">
+                            <div class="offre-logo">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+
+                            <div class="offre-title">
+                                <h2 class="offre-poste">{{ offer.title }}</h2>
+                                <p class="offre-entreprise">{{ offer.entreprise }}</p>
+                            </div>
+
+                            {% if session.role == 'etudiant' %}
+                            <label class="ui-bookmark" title="Ajouter aux favoris">
+                                <input type="checkbox"
+                                       aria-label="Ajouter aux favoris"
+                                       data-offer-id="{{ offer.ID_offer }}"
+                                       class="bookmark-checkbox"
+                                       {% if wishlistIds is defined and offer.ID_offer in wishlistIds %}checked{% endif %} />
+                                <div class="bookmark" aria-hidden="true">
+                                    <svg viewBox="0 0 32 32">
+                                        <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
+                                    </svg>
+                                </div>
+                            </label>
+                            {% endif %}
+                        </div>
+
+                        <div class="offre-tags">
+                            <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> {{ offer.lieu }}</span>
+                            <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> {{ offer.type }}</span>
+                            <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> {{ offer.level }}</span>
+                            <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> {{ offer.remuneration }}</span>
+                        </div>
+
+                        <div class="offre-desc">
+                            <strong>Description</strong>
+                            <p class="truncate-3">{{ offer.description }}</p>
+                        </div>
+
+                        <button
+                            class="btn-voir btn-full open-dialog"
+                            type="button"
+                            data-id="{{ offer.ID_offer }}"
+                            data-poste="{{ offer.title }}"
+                            data-entreprise="{{ offer.entreprise }}"
+                            data-lieu="{{ offer.lieu }}"
+                            data-type="{{ offer.type }}"
+                            data-niveau="{{ offer.level }}"
+                            data-duree="{{ offer.duration }}"
+                            data-remu="{{ offer.remuneration }}"
+                            data-entreprisedesc="{{ offer.entrepriseDesc ?? '' }}"
+                        >
+                            Voir plus
+                        </button>
+                    </article>
+                {% else %}
+                    <p>Aucune offre trouvée.</p>
+                {% endfor %}
+            </section>
+
+            {# ===== PAGINATION ===== #}
+            <nav class="pagination" aria-label="Pagination des offres">
+                <button class="page-arrow" type="button"
+                    {% if pageCourante <= 1 %}disabled{% endif %}
+                    onclick="window.location='?page=offers&p={{ pageCourante - 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div class="page-numbers">
+                    {% for p in pages %}
+                        {% if p == '...' %}
+                            <span class="page-ellipsis">…</span>
+                        {% else %}
+                            <button class="page-number {% if p == pageCourante %}active{% endif %}"
+                                type="button"
+                                onclick="window.location='?page=offers&p={{ p }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                                {{ p }}
+                            </button>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
-                <section class="offres" aria-label="Liste des offres">
-                    {% for offer in offers %}
-                        <article class="offre-card">
-                            <div class="offre-top">
-                                <div class="offre-logo">
-                                    <i class="fa-solid {{ offer.icon }}"></i>
-                                </div>
+                <button class="page-arrow" type="button"
+                    {% if pageCourante >= totalPages %}disabled{% endif %}
+                    onclick="window.location='?page=offers&p={{ pageCourante + 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </nav>
+        </section>
+    </div>
+</main>
 
-                                <div class="offre-title">
-                                    <h2 class="offre-poste">{{ offer.poste }}</h2>
-                                    <p class="offre-entreprise">{{ offer.entreprise }}</p>
-                                </div>
+{# ===== DIALOG ===== #}
+<dialog class="dialog" id="offreDialog" aria-labelledby="dialogTitle">
+    <form method="dialog" class="dialog-inner">
+        <header class="dialog-header">
+            <div class="dialog-logo" id="dialogIcon">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <div>
+                <h2 id="dialogTitle">Titre du poste</h2>
+                <p class="dialog-company" id="dialogCompany">Entreprise</p>
+            </div>
+            <button class="dialog-close" value="cancel" aria-label="Fermer">✕</button>
+        </header>
 
-                                <label class="ui-bookmark" title="Ajouter aux favoris">
-                                    <input type="checkbox" aria-label="Ajouter aux favoris" data-offer-id="{{ offer.id }}" class="bookmark-checkbox"/>
-                                    <div class="bookmark" aria-hidden="true">
-                                        <svg viewBox="0 0 32 32">
-                                            <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
-                                        </svg>
-                                    </div>
-                                </label>
-                            </div>
+        <div class="dialog-grid">
+            <section class="dialog-box">
+                <h3>Détails</h3>
+                <ul>
+                    <li><strong>Lieu :</strong> <span id="dialogLieu"></span></li>
+                    <li><strong>Type :</strong> <span id="dialogType"></span></li>
+                    <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
+                    <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
+                    <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
+                </ul>
+            </section>
 
-                            <div class="offre-tags">
-                                <span class="tag tag-lieu"><i class="fa-solid fa-location-dot"></i> {{ offer.lieu }}</span>
-                                <span class="tag tag-type"><i class="fa-solid fa-briefcase"></i> {{ offer.type }}</span>
-                                <span class="tag tag-nv"><i class="fa-solid fa-signal"></i> {{ offer.niveau }}</span>
-                                <span class="tag tag-remu"><i class="fa-solid fa-euro-sign"></i> {{ offer.remuneration }}</span>
-                            </div>
-
-                            <div class="offre-desc">
-                                <strong>Description</strong>
-                                <p class="truncate-3">{{ offer.description }}</p>
-                            </div>
-
-                            <button
-                                class="btn-voir btn-full open-dialog"
-                                type="button"
-                                data-poste="{{ offer.poste }}"
-                                data-entreprise="{{ offer.entreprise }}"
-                                data-lieu="{{ offer.lieu }}"
-                                data-type="{{ offer.type }}"
-                                data-niveau="{{ offer.niveau }}"
-                                data-duree="{{ offer.duree }}"
-                                data-remu="{{ offer.remuneration }}"
-                                data-entreprisedesc="{{ offer.entrepriseDesc }}"
-                                data-missions="{{ offer.missions|join(';') }}"
-                                data-icon="{{ offer.icon }}"
-                            >
-                                Voir plus
-                            </button>
-                        </article>
-                    {% else %}
-                        <p>Aucune offre trouvée.</p>
-                    {% endfor %}
-                </section>
-
-                <nav class="pagination" aria-label="Pagination des offres">
-                    <button class="page-arrow" type="button"
-                        {% if pageCourante <= 1 %}disabled{% endif %}
-                        onclick="window.location='?page=offers&p={{ pageCourante - 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-
-                    <div class="page-numbers">
-                        {% for p in pages %}
-                            {% if p == '...' %}
-                                <span class="page-ellipsis">…</span>
-                            {% else %}
-                                <button class="page-number {% if p == pageCourante %}active{% endif %}"
-                                    type="button"
-                                    onclick="window.location='?page=offers&p={{ p }}&search={{ search|default('') }}&location={{ location|default('') }}'">
-                                    {{ p }}
-                                </button>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-
-                    <button class="page-arrow" type="button"
-                        {% if pageCourante >= totalPages %}disabled{% endif %}
-                        onclick="window.location='?page=offers&p={{ pageCourante + 1 }}&search={{ search|default('') }}&location={{ location|default('') }}'">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </nav>
-
+            <section class="dialog-box dialog-full">
+                <h3>À propos de l'entreprise</h3>
+                <p id="dialogEntrepriseDesc"></p>
             </section>
         </div>
-    </main>
 
-    <dialog class="dialog" id="offreDialog" aria-labelledby="dialogTitle">
-        <form method="dialog" class="dialog-inner">
-            <header class="dialog-header">
-                <div class="dialog-logo" id="dialogIcon">
-                    <i class="fa-solid fa-briefcase"></i>
-                </div>
-                <div>
-                    <h2 id="dialogTitle">Titre du poste</h2>
-                    <p class="dialog-company" id="dialogCompany">Entreprise</p>
-                </div>
-                <button class="dialog-close" value="cancel" aria-label="Fermer">✕</button>
-            </header>
-
-            <div class="dialog-grid">
-                <section class="dialog-box">
-                    <h3>Détails</h3>
-                    <ul>
-                        <li><strong>Lieu :</strong> <span id="dialogLieu"></span></li>
-                        <li><strong>Type :</strong> <span id="dialogType"></span></li>
-                        <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
-                        <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
-                        <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
-                    </ul>
-                </section>
-
-                <section class="dialog-box">
-                    <h3>Missions</h3>
-                    <ul id="dialogMissions"></ul>
-                </section>
-
-                <section class="dialog-box dialog-full">
-                    <h3>À propos de l'entreprise</h3>
-                    <p id="dialogEntrepriseDesc"></p>
-                </section>
-            </div>
-
-            <footer class="dialog-actions">
-                <button class="btn-voir btn-full" type="button">Postuler</button>
-            </footer>
-        </form>
-    </dialog>
+        <footer class="dialog-actions">
+            <button class="btn-voir btn-full" type="button" id="btnPostuler">Postuler</button>
+        </footer>
+    </form>
+</dialog>
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        // ==========================================
-        // 1. MODAL LOGIC (VOIR PLUS)
-        // ==========================================
-        const dialog = document.getElementById('offreDialog');
+<script>
+    // ===== MODAL VOIR PLUS =====
+    const dialog = document.getElementById('offreDialog');
 
-        function initModals() {
-            const openBtns = document.querySelectorAll('.open-dialog');
-            openBtns.forEach(btn => {
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
+    document.querySelectorAll('.open-dialog').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('dialogTitle').textContent          = btn.dataset.poste;
+            document.getElementById('dialogCompany').textContent        = btn.dataset.entreprise;
+            document.getElementById('dialogLieu').textContent           = btn.dataset.lieu;
+            document.getElementById('dialogType').textContent           = btn.dataset.type;
+            document.getElementById('dialogNiveau').textContent         = btn.dataset.niveau;
+            document.getElementById('dialogDuree').textContent          = btn.dataset.duree;
+            document.getElementById('dialogRemu').textContent           = btn.dataset.remu;
+            document.getElementById('dialogEntrepriseDesc').textContent = btn.dataset.entreprisedesc;
 
-                newBtn.addEventListener('click', () => {
-                    document.getElementById('dialogTitle').textContent = newBtn.dataset.poste;
-                    document.getElementById('dialogCompany').textContent = newBtn.dataset.entreprise;
-                    document.getElementById('dialogLieu').textContent = newBtn.dataset.lieu;
-                    document.getElementById('dialogType').textContent = newBtn.dataset.type;
-                    document.getElementById('dialogNiveau').textContent = newBtn.dataset.niveau;
-                    document.getElementById('dialogDuree').textContent = newBtn.dataset.duree;
-                    document.getElementById('dialogRemu').textContent = newBtn.dataset.remu;
-                    document.getElementById('dialogEntrepriseDesc').textContent = newBtn.dataset.entreprisedesc;
-                    
-                    document.getElementById('dialogIcon').innerHTML = `<i class="fa-solid ${newBtn.dataset.icon}"></i>`;
-                    
-                    const ul = document.getElementById('dialogMissions');
-                    ul.innerHTML = '';
-                    (newBtn.dataset.missions||'').split(';').filter(Boolean).forEach(m => {
-                        const li = document.createElement('li'); li.textContent = m; ul.appendChild(li);
-                    });
-                    
-                    dialog.showModal();
-                });
-            });
+            document.getElementById('btnPostuler').onclick = () => {
+                window.location.href = `/index.php?page=apply&offer_id=${btn.dataset.id}`;
+            };
 
-            // Postuler button logic inside modal
-            const btnApplyAction = document.querySelector('.dialog-actions .btn-voir');
-            if (btnApplyAction) {
-                const newApplyBtn = btnApplyAction.cloneNode(true);
-                btnApplyAction.parentNode.replaceChild(newApplyBtn, btnApplyAction);
-                
-                newApplyBtn.addEventListener('click', () => {
-                    const poste = encodeURIComponent(document.getElementById('dialogTitle').textContent);
-                    const entreprise = encodeURIComponent(document.getElementById('dialogCompany').textContent);
-                    window.location.href = `/index.php?page=apply&poste=${poste}&entreprise=${entreprise}`;
-                });
-            }
-        }
-
-        // Initialize Modals on load
-        initModals();
-
-        // Close modal on backdrop click
-        dialog.addEventListener('click', e => {
-            const r = dialog.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
-                dialog.close();
-            }
+            dialog.showModal();
         });
+    });
 
+    dialog.addEventListener('click', e => {
+        const r = dialog.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+            dialog.close();
+        }
+    });
 
-        // ==========================================
-        // 2. CAROUSEL STATISTIQUES
-        // ==========================================
-        const track = document.querySelector('.carousel-track');
-        const cards = document.querySelectorAll('.stat-card');
-        const prevBtn = document.querySelector('.carousel-btn.prev');
-        const nextBtn = document.querySelector('.carousel-btn.next');
-        const dots = document.querySelectorAll('.carousel-dots .dot');
+    // ===== CAROUSEL =====
+    const track   = document.querySelector('.carousel-track');
+    const cards   = document.querySelectorAll('.stat-card');
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
+    const dots    = document.querySelectorAll('.carousel-dots .dot');
 
-        if (track && cards.length > 0) {
-            let currentIndex = 0;
+    if (track && cards.length > 0) {
+        let currentIndex = 0;
 
-            function updateCarousel() {
-                const cardWidth = cards[0].offsetWidth;
-                const style = window.getComputedStyle(track);
-                const gap = parseFloat(style.gap) || 0;
-                
-                const moveAmount = (cardWidth + gap) * currentIndex;
-                
-                track.style.transform = `translateX(-${moveAmount}px)`;
-                track.style.transition = 'transform 0.4s ease-in-out';
-
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentIndex);
-                });
-            }
-
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    if (currentIndex < cards.length - 1) {
-                        currentIndex++;
-                        updateCarousel();
-                    }
-                });
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                        updateCarousel();
-                    }
-                });
-            }
-
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateCarousel();
-                });
-            });
+        function updateCarousel() {
+            const cardWidth = cards[0].offsetWidth;
+            const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
+            track.style.transform  = `translateX(-${(cardWidth + gap) * currentIndex}px)`;
+            track.style.transition = 'transform 0.4s ease-in-out';
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
         }
 
-        // ==========================================
-        // 4. LOGIQUE DE LA WISHLIST (AJAX)
-        // ==========================================
-        document.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', async function() {
-                const offerId = this.dataset.offerId;
-                if (!offerId) return;
+        nextBtn?.addEventListener('click', () => { if (currentIndex < cards.length - 1) { currentIndex++; updateCarousel(); } });
+        prevBtn?.addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; updateCarousel(); } });
+        dots.forEach((dot, i) => dot.addEventListener('click', () => { currentIndex = i; updateCarousel(); }));
+    }
 
-                try {
-                    // On envoie discrètement l'ID au serveur PHP
-                    const response = await fetch('/index.php?page=toggle_wishlist', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ offer_id: offerId })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    // Si l'étudiant n'est pas connecté, on annule l'animation visuelle et on l'avertit
-                    if (!result.success) {
-                        this.checked = !this.checked;
-                        alert(result.error);
-                    }
-                } catch (e) {
-                    this.checked = !this.checked;
-                    console.error("Erreur d'enregistrement", e);
+    // ===== WISHLIST AJAX =====
+    document.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', async function() {
+            const offerId = this.dataset.offerId;
+            if (!offerId) return;
+
+            const previousState = !this.checked; // état avant le clic
+
+            try {
+                const response = await fetch('/index.php?page=toggle_wishlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ offer_id: parseInt(offerId) })
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    this.checked = previousState; // annule le changement visuel
+                    alert(result.error || 'Erreur lors de la mise à jour des favoris.');
                 }
-            });
+            } catch (e) {
+                this.checked = previousState;
+                console.error("Erreur wishlist", e);
+            }
         });
-    </script>
+    });
+</script>
 {% endblock %}

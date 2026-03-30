@@ -2,70 +2,78 @@
 
 namespace App\Models;
 
-use PDO;
-
-class CompanyManagementModel
+class CompanyManagementModel extends PaginationModel
 {
-    private int $parPage = 10;
+    private \PDO $db;
+    protected int $parPage = 5;
 
-    // L'Admin voit toutes les entreprises
-    public function getAllCompanies(): array
+    public function __construct(\PDO $db)
     {
-        $pdo = Database::getConnection();
-        return $pdo->query("SELECT * FROM Company ORDER BY name")->fetchAll();
+        $this->db = $db;
     }
 
-    // Le Pilote ne voit que SES entreprises
-    public function getCompaniesByPilot(int $pilotId): array
+    public function getAll(?string $search = null): array
     {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT * FROM Company WHERE ID_user = :pid ORDER BY name");
-        $stmt->execute(['pid' => $pilotId]);
-        return $stmt->fetchAll();
-    }
+        $sql = '
+            SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
+                   COUNT(DISTINCT a.ID_profile) AS stagiaires
+            FROM Company c
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
 
-    /**
-     * Insère une NOUVELLE entreprise reliée au pilote
-     */
-    public function createCompany(string $name, string $description, string $email, string $tel, int $pilotId): bool
-    {
-        $pdo = Database::getConnection();
-        $sql = "INSERT INTO Company (name, description, email, number, ID_user) 
-                VALUES (:name, :desc, :email, :tel, :pid)";
-        
-        try {
-            $stmt = $pdo->prepare($sql);
-            return $stmt->execute([
-                'name' => $name,
-                'desc' => $description,
-                'email' => $email,
-                'tel' => $tel,
-                'pid' => $pilotId
-            ]);
-        } catch (\PDOException $e) {
-            // On force la page à afficher l'erreur exacte de MySQL en gros sur fond blanc !
-            die("🚨 ERREUR MYSQL : " . $e->getMessage());
+        if (!empty($search)) {
+            $sql .= ' AND c.name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
         }
+
+        $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    // Pagination (Identique aux autres)
-    public function getPage(array $companies, int $page): array
+    public function create(string $name, string $email, string $number, string $description): bool
     {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($companies, $offset, $this->parPage);
+        $stmt = $this->db->prepare('
+            INSERT INTO Company (name, email, number, description)
+            VALUES (:name, :email, :number, :description)
+        ');
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':number' => $number,
+            ':description' => $description,
+        ]);
     }
 
-    public function totalPages(array $companies): int
+    public function update(int $id, string $name, string $email, string $number, string $description): bool
     {
-        return (int) ceil(count($companies) / $this->parPage);
+        $stmt = $this->db->prepare('
+            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            WHERE ID = :id
+        ');
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':number' => $number,
+            ':description' => $description,
+            ':id' => $id,
+        ]);
     }
 
-    public function getPageNumbers(int $currentPage, int $totalPages): array
+    public function updateMark(int $id, float $mark): bool
     {
-        if ($totalPages <= 1) return [1];
-        if ($totalPages <= 5) return range(1, $totalPages);
-        if ($currentPage <= 3) return [1, 2, 3, 4, '...', $totalPages];
-        if ($currentPage >= $totalPages - 2) return [1, '...', $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
-        return [1, '...', $currentPage - 1, $currentPage, $currentPage + 1, '...', $totalPages];
+        $stmt = $this->db->prepare('UPDATE Company SET average_mark = :mark WHERE ID = :id');
+        return $stmt->execute([':mark' => $mark, ':id' => $id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM Company WHERE ID = :id');
+        return $stmt->execute([':id' => $id]);
     }
 }
