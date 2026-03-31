@@ -18,6 +18,7 @@ use App\Controllers\CompanyManagementController;
 use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\PilotAdminController;
+use App\Controllers\ApplyController;
 use App\Models\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -60,12 +61,6 @@ switch ($page) {
         $controller->index();
         break;
         
-    case 'apply':
-        requireRole('etudiant'); 
-        $controller = new \App\Controllers\ApplyController($twig, $bdd);
-        $controller->index();
-        break;
-
     case 'company':
         $controller = new CompanyController($twig, $bdd);
         $controller->index();
@@ -85,9 +80,16 @@ switch ($page) {
 
     case 'toggle_wishlist':
         requireRole('etudiant');
-        $controller = new \App\Controllers\WishlistController($twig, $bdd);
+        $controller = new WishlistController($twig, $bdd);
         $controller->toggleAjax();
         break;
+
+    case 'apply':
+        requireRole('etudiant'); 
+        $controller = new ApplyController($twig, $bdd);
+        $controller->index();
+        break;
+
 
     // ===== PILOTE SEULEMENT =====
     case 'dashboard_pilot':
