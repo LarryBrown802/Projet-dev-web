@@ -10,55 +10,59 @@ class ApplyController
     private Environment $twig;
     private ApplyModel $applyModel;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, \PDO $bdd) // ← ajoute $bdd
     {
-        $this->twig = $twig;
-        $this->applyModel = new ApplyModel();
+        $this->twig       = $twig;
+        $this->applyModel = new ApplyModel($bdd); // ← transmets $bdd
     }
 
     public function index(): void
     {
-        // On récupère les infos de l'URL (GET) ou du formulaire (POST)
-        $poste = $_POST['poste'] ?? $_GET['poste'] ?? 'Candidature spontanée';
-        $entreprise = $_POST['entreprise'] ?? $_GET['entreprise'] ?? '';
-        
+        // Récupère l'offre via ID ou via nom
+        $offerId = $_POST['offer_id'] ?? (isset($_GET['offer_id']) ? (int)$_GET['offer_id'] : null);
+        $poste = $_GET['poste'] ?? 'Candidature spontanée';
+        $entreprise = $_GET['entreprise'] ?? '';
+
+        // Si on a un offer_id, on récupère les vraies infos
+        if ($offerId) {
+            $offer = $this->applyModel->getOfferById($offerId);
+            if ($offer) {
+                $poste      = $offer['title'];
+                $entreprise = $offer['entreprise'];
+            }
+        }
+
         $message = null;
-        $error = null;
+        $error   = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nom = trim($_POST['nom'] ?? '');
-            $prenom = trim($_POST['prenom'] ?? '');
-            $lettre = trim($_POST['lettre'] ?? '');
-            $userId = $_SESSION['id']; // L'ID de l'étudiant connecté
+            $nom      = trim($_POST['nom']    ?? '');
+            $prenom   = trim($_POST['prenom'] ?? '');
+            $lettre   = trim($_POST['lettre'] ?? '');
+            $userId   = $_SESSION['user_id']; // ← corrigé
 
-            $offerId = $this->applyModel->getOfferByName($poste);
+            $offerId = $offerId ?? $this->applyModel->getOfferByName($poste);
 
             if (!$offerId) {
                 $error = "Impossible de trouver cette offre dans la base de données.";
             } else {
-                // Gestion du Profil
                 $profileId = $this->applyModel->getProfileByUserId($userId);
                 if (!$profileId) {
-                    // S'il n'a pas de profil, on le crée !
                     $profileId = $this->applyModel->createProfile($userId, $nom, $prenom);
                 }
 
-                // Gestion du téléchargement du CV
-                $cvFilename = "cv_non_fourni.pdf";
+                $cvFilename = 'cv_non_fourni.pdf';
                 if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
-                    // On crée un nom unique pour éviter d'écraser un autre CV
-                    $cvFilename = time() . '_' . basename($_FILES['cv']['name']);
-                    
-                    // Assure-toi de créer ce dossier 'uploads' dans ton dossier 'public/' !
-                    $uploadDir = __DIR__ . '/../../public/uploads/';
+                $originalName = basename($_FILES['cv']['name']);
+                $cleanName    = preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalName);
+                $cvFilename   = time() . '_' . $cleanName;
+                $uploadDir  = __DIR__ . '/../../public/uploads/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0777, true);
                     }
-                    
                     move_uploaded_file($_FILES['cv']['tmp_name'], $uploadDir . $cvFilename);
                 }
 
-                // Sauvegarde finale
                 $success = $this->applyModel->saveApplication($offerId, $profileId, $cvFilename, $lettre);
 
                 if ($success) {
@@ -71,10 +75,11 @@ class ApplyController
 
         echo $this->twig->render('apply.html.twig', [
             'current_page' => 'apply',
+            'offer_id' => $offerId,
             'poste' => $poste,
             'entreprise' => $entreprise,
             'message' => $message,
-            'error' => $error
+            'error' => $error,
         ]);
     }
 }
