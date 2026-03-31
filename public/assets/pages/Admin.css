@@ -113,20 +113,77 @@
 .page-arrow:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
 /* DIALOG */
-.dialog { width: min(860px, 92vw); border: none; border-radius: var(--radius); padding: 0; box-shadow: 0 24px 70px rgba(0,0,0,.25); overflow: hidden; }
-.dialog--sm { width: min(520px, 92vw); }
-.dialog::backdrop { background: rgba(0,0,0,.52); }
-.dialog-inner { background: var(--card); padding: 20px; }
-.dialog-header { display: grid; grid-template-columns: 58px 1fr 42px; gap: 14px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid rgba(15,23,42,.08); margin-bottom: 16px; }
-.dialog-logo { width: 58px; height: 58px; border-radius: 16px; background: linear-gradient(135deg, rgba(94,146,166,.22), rgba(74,122,140,.10)); border: 1px solid rgba(94,146,166,.25); display: grid; place-items: center; font-size: 22px; color: var(--primary-dark); }
-.dialog-logo--danger { background: rgba(255,59,48,.1); border-color: rgba(255,59,48,.25); color: rgb(255,59,48); }
+.dialog { 
+    width: min(860px, 92vw); 
+    border: none;
+    border-radius: var(--radius); 
+    padding: 0; 
+    box-shadow: 0 24px 70px rgba(0,0,0,.25); 
+    max-height: 90vh;
+    overflow-y: auto;  
+}
+
+.dialog::-webkit-scrollbar {
+    display: none;
+}
+
+.dialog--sm { 
+    width: min(520px, 92vw); 
+}
+
+.dialog::backdrop { 
+    background: rgba(0,0,0,.52); 
+}
+
+.dialog-inner { 
+    background: var(--card); 
+    padding: 20px; 
+}
+
+.dialog-header { 
+    display: grid; 
+    grid-template-columns: 58px 1fr 42px; 
+    gap: 14px; 
+    align-items: center; 
+    padding-bottom: 14px; 
+    border-bottom: 1px solid rgba(15,23,42,.08); 
+    margin-bottom: 16px; 
+}
+
+.dialog-logo { 
+    width: 58px; 
+    height: 58px; 
+    border-radius: 16px; 
+    background: linear-gradient(135deg, rgba(94,146,166,.22), rgba(74,122,140,.10)); 
+    border: 1px solid rgba(94,146,166,.25); 
+    display: grid; 
+    place-items: center; 
+    font-size: 22px; 
+    color: var(--primary-dark); 
+}
+
+.dialog-logo--danger { 
+    background: rgba(255,59,48,.1); 
+    border-color: rgba(255,59,48,.25); 
+    color: rgb(255,59,48); 
+}
+
 .dialog-logo.kpi-green { background: rgba(31,139,59,.12); border-color: rgba(31,139,59,.25); color: rgb(31,139,59); }
 .dialog-header h2 { margin: 0; font-size: 20px; font-weight: 900; }
 .dialog-company { margin: 5px 0 0; color: var(--muted); font-weight: 800; font-size: 13px; }
 .dialog-close { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 12px; background: rgba(15,23,42,.04); cursor: pointer; font-weight: 900; color: var(--text); font-size: 16px; transition: background .12s; }
 .dialog-close:hover { background: rgba(255,59,48,.08); color: rgb(255,59,48); border-color: rgba(255,59,48,.25); }
-.dialog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 600px) { .dialog-grid { grid-template-columns: 1fr; } }
+
+.dialog-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+}
+
+@media (max-width: 600px) {
+     .dialog-grid { grid-template-columns: 1fr; } 
+}
+
 .dialog-box { background: rgba(15,23,42,.04); border: 1px solid rgba(15,23,42,.08); border-radius: 14px; padding: 14px; }
 .dialog-box h3 { margin: 0 0 10px; font-size: 14px; font-weight: 900; }
 .dialog-box ul { margin: 0; padding-left: 18px; }
@@ -138,7 +195,10 @@
 .dialog-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
 
 /* FORMS */
-.dialog-form { display: grid; gap: 14px; }
+.dialog-form { 
+    display: grid; 
+    gap: 14px; 
+}
 .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 540px) { .field-group { grid-template-columns: 1fr; } }
 .field { display: flex; flex-direction: column; gap: 6px; }
