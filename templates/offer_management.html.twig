@@ -3,7 +3,7 @@
 {% block title %}Gestion des offres{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/Admin.css">
+    <link rel="stylesheet" href="../assets/pages/Admin.css">
 {% endblock %}
 
 {% block content %}
@@ -180,14 +180,14 @@
                     <li><strong>Date :</strong> <span id="viewDate"></span></li>
                 </ul>
             </section>
-            <section class="dialog-box dialog-full">
+            <section class="dialog-box">
                 <h3>Description</h3>
                 <p id="viewDesc"></p>
             </section>
         </div>
-        <footer class="dialog-actions">
+        <div class="dialog-actions">
             <button class="btn-secondary" id="btnCloseViewOffre2">Fermer</button>
-        </footer>
+        </div>
     </div>
 </dialog>
 
@@ -269,10 +269,10 @@
                 <label for="cDesc">Description <span class="required">*</span></label>
                 <textarea id="cDesc" name="description" rows="3" placeholder="Description de l'offre…" required></textarea>
             </div>
-            <footer class="dialog-actions">
+            <div class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelCreateOffre">Annuler</button>
                 <button class="btn-voir" type="submit">Créer</button>
-            </footer>
+            </div>
         </form>
     </div>
 </dialog>
@@ -338,10 +338,10 @@
                 <label for="eDesc">Description <span class="required">*</span></label>
                 <textarea id="eDesc" name="description" rows="3" required></textarea>
             </div>
-            <footer class="dialog-actions">
+            <div class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelEditOffre">Annuler</button>
                 <button class="btn-voir" type="submit">Enregistrer</button>
-            </footer>
+            </div>
         </form>
     </div>
 </dialog>
@@ -360,10 +360,10 @@
         <form method="post" action="/index.php?page={{ current_page }}">
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="id" id="dOffreId">
-            <footer class="dialog-actions">
+            <div class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelDeleteOffre">Annuler</button>
                 <button class="btn-danger" type="submit">Supprimer</button>
-            </footer>
+            </div>
         </form>
     </div>
 </dialog>
