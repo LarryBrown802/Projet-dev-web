@@ -45,7 +45,10 @@ class CompanyManagementController
 
         // ===== ÉVALUER =====
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'rate') {
-            $this->companyModel->updateMark((int) $_POST['id'], (float) $_POST['note']);
+            $this->companyModel->updateMark(
+                (int) $_POST['id'],
+                (float) $_POST['note']
+            );
             header('Location: /index.php?page=company_management');
             exit;
         }

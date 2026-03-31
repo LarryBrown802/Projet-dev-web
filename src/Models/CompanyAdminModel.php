@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace App\Models;
 
 class CompanyModel extends PaginationModel
@@ -77,3 +77,4 @@ class CompanyModel extends PaginationModel
         return $stmt->execute([':id' => $id]);
     }
 }
+    */

@@ -2,23 +2,50 @@
 
 namespace App\Controllers;
 
-use App\Models\PaginationModel;
+use App\Models\WishlistModel;
 use Twig\Environment;
 
-class WishlistController 
+class WishlistController
 {
     private Environment $twig;
+    private WishlistModel $wishlistModel;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, \PDO $bdd)
     {
-        $this->twig = $twig;
+        $this->twig          = $twig;
+        $this->wishlistModel = new WishlistModel($bdd);
     }
 
     public function index(): void
     {
+        $userId      = $_SESSION['user_id']; 
+        $profileId   = $this->wishlistModel->getOrCreateProfile($userId);
+        $savedOffers = $this->wishlistModel->getSavedOffers($profileId);
+
         echo $this->twig->render('wishlist.html.twig', [
             'current_page' => 'wishlist',
+            'offers'       => $savedOffers,
         ]);
-        
+    }
+
+    public function toggleAjax(): void
+    {
+        header('Content-Type: application/json');
+
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'etudiant') { 
+            echo json_encode(['success' => false, 'error' => 'Veuillez vous connecter en tant qu\'étudiant.']);
+            return;
+        }
+
+        $data    = json_decode(file_get_contents('php://input'), true);
+        $offerId = (int) ($data['offer_id'] ?? 0);
+
+        if ($offerId > 0) {
+            $profileId = $this->wishlistModel->getOrCreateProfile($_SESSION['user_id']); // ← corrigé
+            $isAdded   = $this->wishlistModel->toggleWishlist($offerId, $profileId);
+            echo json_encode(['success' => true, 'added' => $isAdded]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'ID de l\'offre invalide.']);
+        }
     }
 }

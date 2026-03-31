@@ -19,6 +19,18 @@
         </button>
     </div>
 
+    {# ===== MESSAGES ===== #}
+    {% if message %}
+        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-check"></i> {{ message }}
+        </div>
+    {% endif %}
+    {% if error %}
+        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
+
     {# ===== BARRE DE RECHERCHE ===== #}
     <form method="get" action="/index.php" class="search-bar-wrap">
         <input type="hidden" name="page" value="company_management">
@@ -53,8 +65,9 @@
                     <td>
                         <span class="stars">
                             {% set note = company.average_mark ?? 0 %}
+                            {% set RoundedNote = note|round %}
                             {% for i in 1..5 %}
-                                {% if i <= note %}
+                                {% if i <= RoundedNote %}
                                     <i class="fa-solid fa-star"></i>
                                 {% else %}
                                     <i class="fa-regular fa-star"></i>
@@ -85,7 +98,7 @@
                     </td>
                 </tr>
                 {% else %}
-                    <tr><td colspan="6">Aucune entreprise trouvée.</td></tr>
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Aucune entreprise trouvée.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

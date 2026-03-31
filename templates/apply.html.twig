@@ -13,6 +13,18 @@
             <p class="page-subtitle">Vous postulez pour <strong>{{ poste }}</strong> chez <strong>{{ entreprise }}</strong>.</p>
         </div>
 
+        {% if message %}
+            <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 24px; font-weight: bold; border: 1px solid #c3eedd;">
+                <i class="fa-solid fa-circle-check"></i> {{ message }}
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 24px; font-weight: bold; border: 1px solid #f5c2c7;">
+                <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+            </div>
+        {% endif %}
+
         <form action="/index.php?page=apply" method="POST" enctype="multipart/form-data" style="background: var(--card); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);">
             
             <input type="hidden" name="poste" value="{{ poste }}">

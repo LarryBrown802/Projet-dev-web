@@ -4,121 +4,76 @@ namespace App\Models;
 
 class CompanyManagementModel extends PaginationModel
 {
-    private array $companies;
+    private \PDO $db;
     protected int $parPage = 5;
 
-    public function __construct()
+    public function __construct(\PDO $db)
     {
-        $this->companies = [
-            [
-                'nom' => 'Tech Solutions', 
-                'email' => 'contact@techsolutions.fr', 
-                'tel' => '01 23 45 67 89', 
-                'stagiaires' => 6, 
-                'note' => 4, 
-                'desc' => 'Entreprise spécialisée dans le développement web et mobile.'
-            ],
-            [
-                'nom' => 'Data Insights', 
-                'email' => 'contact@datainsights.fr', 
-                'tel' => '01 34 56 78 90', 
-                'stagiaires' => 3, 
-                'note' => 5, 
-                'desc' => 'Leader de l\'analyse de données décisionnelles.'
-            ],
-            [
-                'nom' => 'SecureTech', 
-                'email' => 'contact@securetech.fr', 
-                'tel' => '01 45 67 89 01', 
-                'stagiaires' => 4, 
-                'note' => 3, 
-                'desc' => 'Experts en cybersécurité et protection des systèmes d\'information.'
-            ],
-            [
-                'nom' => 'Cloud Solutions', 
-                'email' => 'contact@cloudsol.fr', 
-                'tel' => '01 56 78 90 12', 
-                'stagiaires' => 2, 
-                'note' => 4, 
-                'desc' => 'Solutions cloud et DevOps pour les entreprises en transformation numérique.'
-            ],
-            [
-                'nom' => 'AI Labs', 
-                'email' => 'contact@ailabs.fr', 
-                'tel' => '01 67 89 01 23', 
-                'stagiaires' => 5, 
-                'note' => 5, 
-                'desc' => 'Développement de solutions d\'intelligence artificielle pour l\'industrie.'
-            ],
-            [
-                'nom' => 'App Innovate', 
-                'email' => 'contact@appinnovate.fr', 
-                'tel' => '01 78 90 12 34', 
-                'stagiaires' => 5, 
-                'note' => 4, 
-                ' desc' => ' Applications mobiles pour la santé et le sport.'
-            ],
-            [
-                'nom' => 'WebAgency', 
-                'email' => 'contact@webagency.fr', 
-                'tel' => '01 89 01 23 45', 
-                'stagiaires' => 7, 
-                'note' => 4, 
-                'desc' => 'Solutions web sur mesure pour les PME françaises.'
-            ],
-            [
-                'nom' => 'Creative Studio', 
-                'email' => 'contact@creativestudio.fr', 
-                'tel' => '01 90 12 34 56', 
-                'stagiaires' => 9, 
-                'note' => 5, 
-                'desc' => 'Agence de design spécialisée en expérience utilisateur.'
-            ],
-            [
-                'nom' => 'NetWork Pro', 
-                'email' => 'contact@networkpro.fr', 
-                'tel' => '02 01 23 45 67', 
-                'stagiaires' => 3, 
-                'note' => 3, 
-                'desc' => 'Gestion des infrastructures réseau pour les entreprises en Alsace.'
-            ],
-            [
-                'nom' => 'Innova Group', 
-                'email' => 'contact@innovagroup.fr', 
-                'tel' => '02 12 34 56 78', 
-                'stagiaires' => 6, 
-                'note' => 4, 
-                'desc' => ' Cabinet de conseil en transformation digitale.'
-            ],
-            [
-                'nom' => 'StartupX', 
-                'email' => 'contact@startupx.fr', 
-                'tel' => '02 23 45 67 89', 
-                'stagiaires' => 11, 
-                'note' => 5, 
-                'desc' => ' Plateforme SaaS innovante pour la gestion RH.'
-            ],
-            [
-                'nom' => 'HelpDesk Plus', 
-                'email' => 'contact@helpdeskplus.fr', 
-                'tel' => '02 34 56 78 90', 
-                'stagiaires' => 11, 
-                'note' => 5, 
-                'desc' => ' Plateforme SaaS innovante pour la gestion RH.'
-            ],
-            [
-                'nom' => 'HelpDesk Plus', 
-                'email' => 'contact@helpdeskplus.fr', 
-                'tel' => '02 34 56 78 90', 
-                'stagiaires' => 11, 
-                'note' => 5, 
-                'desc' => ' Plateforme SaaS innovante pour la gestion RH.'
-            ]
-        ];
+        $this->db = $db;
     }
 
-    public function getAllCompanies(): array
+    public function getAll(?string $search = null): array
     {
-        return $this->companies;
+        $sql = '
+            SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
+                   COUNT(DISTINCT a.ID_profile) AS stagiaires
+            FROM Company c
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND c.name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function create(string $name, string $email, string $number, string $description): bool
+    {
+        $stmt = $this->db->prepare('
+            INSERT INTO Company (name, email, number, description)
+            VALUES (:name, :email, :number, :description)
+        ');
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':number' => $number,
+            ':description' => $description,
+        ]);
+    }
+
+    public function update(int $id, string $name, string $email, string $number, string $description): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            WHERE ID = :id
+        ');
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':number' => $number,
+            ':description' => $description,
+            ':id' => $id,
+        ]);
+    }
+
+    public function updateMark(int $id, float $mark): bool
+    {
+        $stmt = $this->db->prepare('UPDATE Company SET average_mark = :mark WHERE ID = :id');
+        return $stmt->execute([':mark' => $mark, ':id' => $id]);
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM Company WHERE ID = :id');
+        return $stmt->execute([':id' => $id]);
     }
 }

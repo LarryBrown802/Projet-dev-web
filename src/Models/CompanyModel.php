@@ -113,4 +113,17 @@ class CompanyModel extends PaginationModel
             return false;
         }
     }
+
+    public function getById(int $id): array|false
+{
+    $stmt = $this->db->prepare('
+        SELECT c.*, COUNT(DISTINCT o.ID_offer) AS offres_count
+        FROM Company c
+        LEFT JOIN Offer o ON o.ID_company = c.ID
+        WHERE c.ID = :id
+        GROUP BY c.ID
+    ');
+    $stmt->execute([':id' => $id]);
+    return $stmt->fetch(\PDO::FETCH_ASSOC);
+}
 }

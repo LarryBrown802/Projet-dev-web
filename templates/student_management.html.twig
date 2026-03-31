@@ -7,6 +7,17 @@
 {% endblock %}
 
 {% block content %}
+
+{% if message %}
+        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-check"></i> {{ message }}
+        </div>
+    {% endif %}
+    {% if error %}
+        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+        </div>
+    {% endif %}
 <main class="container">
 
     <div class="page-head">
@@ -53,7 +64,7 @@
                     <td><strong>{{ student.nom }}</strong></td>
                     <td>{{ student.prenom }}</td>
                     <td>{{ student.email }}</td>
-                    <td>{{ student.promotion }}</td>
+                    <td>{{ student.promotion | default('Non défini') }}</td>
                     <td>{{ student.candidatures }}</td>
                     <td>
                         {% if student.statut == 'ok' %}
