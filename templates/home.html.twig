@@ -63,9 +63,9 @@
                                 {{ offer.title }}
                             </p>
                             <p class="mini-info">
-                                <i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>{{ offer.type }}
-                                <i class="fa-solid fa-location-dot"></i>{{ offer.lieu }}
-                                <i class="fa-solid fa-ranking-star"></i>{{ offer.level }}
+                                <span><i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>{{ offer.type }}</span>
+                                <span><i class="fa-solid fa-location-dot"></i>{{ offer.lieu }}</span>
+                                <span><i class="fa-solid fa-ranking-star"></i>{{ offer.level }}</span>
                             </p>
                         </div>
 
@@ -80,11 +80,6 @@
                             </div>
                         </label>
                         {% endif %}
-
-                        <div class="separateur"></div>
-                        <div class="mini-meta">
-                            <span class="pill">{{ offer.duration }}</span>
-                        </div>
                     </article>
                 {% else %}
                     <p>Aucune offre disponible pour le moment.</p>
@@ -182,13 +177,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<style>
-    .mini-card { transition: background 0.2s; }
-    .mini-card.active { background-color: var(--bg-alt) !important; border-color: var(--primary) !important; }
-    .tab-content[hidden] { display: none; }
-    .tab-content.active { display: block; }
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -209,19 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ===== PANNEAU DROIT =====
-    const offerTriggers   = document.querySelectorAll('.js-offer-trigger');
-    const dEntreprise     = document.getElementById('detail-entreprise');
-    const dPoste          = document.getElementById('detail-poste');
-    const dTagLieu        = document.getElementById('detail-tag-lieu');
-    const dTagType        = document.getElementById('detail-tag-type');
-    const dTagDuree       = document.getElementById('detail-tag-duree');
-    const dTagNiveau      = document.getElementById('detail-tag-niveau');
-    const dDescText       = document.getElementById('detail-desc-text');
-    const dReqNiveau      = document.getElementById('detail-req-niveau');
-    const dReqType        = document.getElementById('detail-req-type');
-    const dReqDuree       = document.getElementById('detail-req-duree');
-    const dEntDescText    = document.getElementById('detail-entdesc-text');
-    const applyBtn        = document.querySelector('.js-apply-btn');
+    const offerTriggers = document.querySelectorAll('.js-offer-trigger');
+    const dEntreprise   = document.getElementById('detail-entreprise');
+    const dPoste        = document.getElementById('detail-poste');
+    const dTagLieu      = document.getElementById('detail-tag-lieu');
+    const dTagType      = document.getElementById('detail-tag-type');
+    const dTagDuree     = document.getElementById('detail-tag-duree');
+    const dTagNiveau    = document.getElementById('detail-tag-niveau');
+    const dDescText     = document.getElementById('detail-desc-text');
+    const dReqNiveau    = document.getElementById('detail-req-niveau');
+    const dReqType      = document.getElementById('detail-req-type');
+    const dReqDuree     = document.getElementById('detail-req-duree');
+    const dEntDescText  = document.getElementById('detail-entdesc-text');
+    const applyBtn      = document.querySelector('.js-apply-btn');
 
     offerTriggers.forEach(trigger => {
         trigger.addEventListener('click', function() {
@@ -240,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dReqDuree.textContent    = this.dataset.duree;
             dEntDescText.textContent = this.dataset.entdesc;
 
-            // Met à jour le bouton postuler avec le bon ID
             if (applyBtn) applyBtn.dataset.id = this.dataset.id;
         });
     });
