@@ -19,12 +19,14 @@
         </button>
     </div>
 
-    <div class="search-bar-wrap">
+    <form method="get" action="/index.php" class="search-bar-wrap">
+        <input type="hidden" name="page" value="pilot_admin">
+        <input type="hidden" name="p" value="1">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Rechercher un pilote par nom ou prénom…" id="searchPilote" />
+            <input type="search" name="search" value="{{ search|default('') }}" placeholder="Rechercher un pilote par nom ou prénom…" />
         </div>
-    </div>
+    </form>
 
     <div class="table-wrap">
         <table class="dash-table">
@@ -52,7 +54,7 @@
                             data-name="{{ pilot.name }}"
                             data-surname="{{ pilot.surname }}"
                             data-email="{{ pilot.email }}"
-                            data-promotion="{{ pilot.promotion ?? '' }}">
+                            data-id-promotion="{{ pilot.ID_promotion ?? '' }}">
                             <i class="fa-solid fa-pen"></i>
                         </button>
                         <button class="btn-icon btn-delete" title="Supprimer"
@@ -70,14 +72,44 @@
         </table>
     </div>
 
-    <nav class="pagination">
-        <button class="page-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
-        <div class="page-numbers">
-            <button class="page-number active">1</button>
-        </div>
-        <button class="page-arrow" disabled><i class="fa-solid fa-chevron-right"></i></button>
-    </nav>
+    <nav class="pagination" aria-label="Pagination des pilotes">
 
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="pilot_admin">
+            <input type="hidden" name="p" value="{{ pageCourante - 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante <= 1 %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </form>
+
+        <div class="page-numbers">
+            {% for p in pages %}
+                {% if p == '...' %}
+                    <span class="page-ellipsis">…</span>
+                {% else %}
+                    <form method="get" action="/index.php">
+                        <input type="hidden" name="page" value="pilot_admin">
+                        <input type="hidden" name="p" value="{{ p }}">
+                        <input type="hidden" name="search" value="{{ search|default('') }}">
+                        <button class="page-number {% if p == pageCourante %}active{% endif %}" type="submit">
+                            {{ p }}
+                        </button>
+                    </form>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="pilot_admin">
+            <input type="hidden" name="p" value="{{ pageCourante + 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante >= totalPages %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+
+    </nav>
 </main>
 
 <!-- ===== DIALOG CRÉER ===== -->
@@ -109,8 +141,24 @@
                 <div class="input"><i class="fa-solid fa-lock"></i><input id="cPassword" name="password" type="password" placeholder="Mot de passe" required /></div>
             </div>
             <div class="field">
-                <label for="cPromotion">Promotion</label>
-                <div class="input"><i class="fa-solid fa-graduation-cap"></i><input id="cPromotion" name="promotion" type="text" placeholder="ex: CPI A2 Informatique" /></div>
+                <label for="cPromotionExist">Promotion existante</label>
+                <div class="input">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <select id="cPromotionExist" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                        <option value="">Aucune</option>
+                        {% for promo in promotions %}
+                            <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="cPromotion">Ou créer une nouvelle promotion</label>
+                <div class="input">
+                    <i class="fa-solid fa-plus"></i>
+                    <input id="cPromotion" name="promotion" type="text" placeholder="ex: CPI A2 Informatique" />
+                </div>
             </div>
             <footer class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelCreatePilote">Annuler</button>
@@ -147,7 +195,15 @@
             </div>
             <div class="field">
                 <label for="ePromotion">Promotion</label>
-                <div class="input"><i class="fa-solid fa-graduation-cap"></i><input id="ePromotion" name="promotion" type="text" placeholder="ex: CPI A2 Informatique" /></div>
+                <div class="input">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <select id="ePromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                        <option value="">Aucune</option>
+                        {% for promo in promotions %}
+                            <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             <footer class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelEditPilote">Annuler</button>
@@ -166,7 +222,7 @@
             <button class="dialog-close" id="btnCloseDeletePilote" type="button">✕</button>
         </header>
         <div class="dialog-confirm-body">
-            <p>Cette action est <strong>irréversible</strong>. Le compte et sa promotion seront définitivement supprimés.</p>
+            <p>Cette action est <strong>irréversible</strong>. Le compte sera définitivement supprimé.</p>
         </div>
         <form method="post" action="/index.php?page=pilot_admin">
             <input type="hidden" name="action" value="delete">
@@ -203,11 +259,18 @@
     document.querySelectorAll('.btn-edit').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('editPiloteSubtitle').textContent = btn.dataset.name + ' ' + btn.dataset.surname;
-            document.getElementById('eIdUser').value      = btn.dataset.id;
-            document.getElementById('eName').value        = btn.dataset.name      || '';
-            document.getElementById('eSurname').value     = btn.dataset.surname   || '';
-            document.getElementById('eEmail').value       = btn.dataset.email     || '';
-            document.getElementById('ePromotion').value   = btn.dataset.promotion || '';
+            document.getElementById('eIdUser').value   = btn.dataset.id;
+            document.getElementById('eName').value     = btn.dataset.name    || '';
+            document.getElementById('eSurname').value  = btn.dataset.surname || '';
+            document.getElementById('eEmail').value    = btn.dataset.email   || '';
+
+            // Sélectionne la promotion actuelle du pilote dans le select
+            const select = document.getElementById('ePromotion');
+            const idPromo = btn.dataset.idPromotion || '';
+            for (let option of select.options) {
+                option.selected = option.value === idPromo;
+            }
+
             openDialog('dialogEditPilote');
         };
     });
@@ -224,13 +287,5 @@
     });
     document.getElementById('btnCloseDeletePilote').onclick  = () => closeDialog('dialogDeletePilote');
     document.getElementById('btnCancelDeletePilote').onclick = () => closeDialog('dialogDeletePilote');
-
-    // ===== RECHERCHE =====
-    document.getElementById('searchPilote').addEventListener('input', function() {
-        const val = this.value.toLowerCase();
-        document.querySelectorAll('.dash-table tbody tr').forEach(tr => {
-            tr.style.display = tr.textContent.toLowerCase().includes(val) ? '' : 'none';
-        });
-    });
 </script>
 {% endblock %}

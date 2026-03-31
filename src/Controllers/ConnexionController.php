@@ -29,11 +29,12 @@ class ConnexionController
             $user = $this->userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['ID_user'];
+                $_SESSION['id_user'] = $user['ID_user'];
                 $_SESSION['email']   = $user['email'];
                 $_SESSION['role']    = $user['name_role'];
 
-                session_write_close(); // Assure que les données de session sont enregistrées avant la redirection
+                session_write_close();
+
                 switch ($user['name_role']) {
                     case 'administrateur':
                         header('Location: /index.php?page=dashboard_admin');

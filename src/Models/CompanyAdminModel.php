@@ -1,8 +1,8 @@
 <?php
-
+/*
 namespace App\Models;
 
-class CompanyManagementModel extends PaginationModel
+class CompanyModel extends PaginationModel
 {
     private \PDO $db;
     protected int $parPage = 5;
@@ -43,9 +43,9 @@ class CompanyManagementModel extends PaginationModel
             VALUES (:name, :email, :number, :description)
         ');
         return $stmt->execute([
-            ':name' => $name,
-            ':email' => $email,
-            ':number' => $number,
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
             ':description' => $description,
         ]);
     }
@@ -57,11 +57,11 @@ class CompanyManagementModel extends PaginationModel
             WHERE ID = :id
         ');
         return $stmt->execute([
-            ':name' => $name,
-            ':email' => $email,
-            ':number' => $number,
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
             ':description' => $description,
-            ':id' => $id,
+            ':id'          => $id,
         ]);
     }
 
@@ -77,3 +77,4 @@ class CompanyManagementModel extends PaginationModel
         return $stmt->execute([':id' => $id]);
     }
 }
+    */
