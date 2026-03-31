@@ -38,14 +38,14 @@
                 {% elseif session.role == 'etudiant' %}
                     <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
                     <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
-                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
                     <a href="/index.php?page=wishlist"  class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
 
                 {# ===== NON CONNECTÉ ===== #}
                 {% else %}
                     <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
                     <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
-                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprise</a>
+                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
                 {% endif %}
 
                 {# ===== BOUTON CONNEXION / PROFIL ===== #}
@@ -89,7 +89,7 @@
                 <div class="footer-col">
                     <h4>Legal</h4>
                     <a href="/index.php?page=mentions-legales">Mentions légales</a>
-                    <a href="/index.php?page=conditions-utilisation">Termes d'utilisations</a>
+                    <a href="/index.php?page=conditions-utilisation">conditions d'utilisations</a>
                 </div>
 
                 <div class="footer-col">

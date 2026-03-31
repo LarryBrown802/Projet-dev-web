@@ -121,6 +121,12 @@ switch ($page) {
         $controller->index();
         break;*/
 
+    case 'mentions-legales':
+        echo $twig->render('mentions-legales.html.twig');
+        break;
+
+    case 'conditions-utilisation':
+        echo $twig->render('conditions-utilisation.html.twig');
     // ===== PILOTE & ADMIN =====
     case 'offer_management':
         requireRole('administrateur', 'pilote');

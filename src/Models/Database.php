@@ -6,7 +6,7 @@ class Database
     public static function connect(): \PDO
     {
         try {
-            $db = new \PDO('mysql:host=localhost;dbname=Lems;charset=utf8mb4', 'root', 'Sv132006!');
+            $db = new \PDO('mysql:host=localhost;dbname=Lems;charset=utf8mb4', 'root', '0865');
             $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             return $db;
         } catch (\PDOException $e) {
