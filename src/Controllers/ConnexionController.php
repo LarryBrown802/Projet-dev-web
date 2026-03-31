@@ -33,7 +33,8 @@ class ConnexionController
                 $_SESSION['email']   = $user['email'];
                 $_SESSION['role']    = $user['name_role'];
 
-                session_write_close(); // Assure que les données de session sont enregistrées avant la redirection
+                session_write_close();
+
                 switch ($user['name_role']) {
                     case 'administrateur':
                         header('Location: /index.php?page=dashboard_admin');

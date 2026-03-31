@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace App\Controllers;
 
 use App\Models\OfferModel;
@@ -88,4 +88,4 @@ class OfferAdminController
             'type' => $type,
         ]);
     }
-}
+}*/

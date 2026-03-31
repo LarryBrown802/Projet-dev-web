@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use PDO;
+
 class OfferModel extends PaginationModel
 {
     private \PDO $db;
