@@ -3,51 +3,48 @@
 {% block title %}Mentions légales - LEMS{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/mentions-legales.css">
+    <link rel="stylesheet" href="/assets/pages/pages-legales.css">
 {% endblock %}
 
 {% block content %}
-<main class="mentions-legales">
+<main class="page-legale">
 
-    <div class="mentions-legales__header">
+    <div class="page-legale__header">
         <h1>Mentions légales</h1>
-        <p class="mentions-legales__subtitle">Application LEMS — Plateforme de recherche de stages</p>
-        <p class="mentions-legales__update">Dernière mise à jour : <time datetime="2025-01-01">30 mars 2026</time></p>
+        <p class="page-legale__subtitle">Application LEMS — Plateforme de recherche de stages</p>
+        <p class="page-legale__update">Dernière mise à jour : <time datetime="2026-03-30">30 mars 2026</time></p>
     </div>
 
-    <div class="mentions-legales__content">
+    <div class="page-legale__content">
 
-        {# ── 1. Éditeur ── #}
-        <section class="mentions-legales__section" id="editeur">
+        <section class="page-legale__section" id="editeur">
             <h2>1. Éditeur du site</h2>
             <p>
                 Conformément à l'article 6 de la loi n° 2004-575 du 21 juin 2004
                 pour la Confiance dans l'Économie Numérique (LCEN), le présent site
                 est édité par :
             </p>
-            <ul class="mentions-legales__list">
-                <li><span class="mentions-legales__label">Nom de l'entité :</span> Equipe 05 </li>
-                <li><span class="mentions-legales__label">Numéro SIRET :</span> <em>123456789</em></li>
-                <li><span class="mentions-legales__label">Adresse du siège social :</span> <em> 80 avenue Edmund Halley Rouen, 76800 Saint-Étienne-du-Rouvray</em></li>
-                <li><span class="mentions-legales__label">Téléphone :</span> <em>+33 (0)2 33 44 55 66</em></li>
-                <li><span class="mentions-legales__label">Email de contact :</span> <a href="mailto:contact@cesi.fr">contact@lems.fr</a></li>
+            <ul class="page-legale__list">
+                <li><span class="page-legale__label">Nom de l'entité :</span> Equipe 05</li>
+                <li><span class="page-legale__label">Numéro SIRET :</span> <em>123456789</em></li>
+                <li><span class="page-legale__label">Adresse du siège social :</span> <em>80 avenue Edmund Halley Rouen, 76800 Saint-Étienne-du-Rouvray</em></li>
+                <li><span class="page-legale__label">Téléphone :</span> <em>+33 (0)2 33 44 55 66</em></li>
+                <li><span class="page-legale__label">Email de contact :</span> <a href="mailto:contact@lems.fr">contact@lems.fr</a></li>
             </ul>
         </section>
 
-        {# ── 2. Hébergeur ── #}
-        <section class="mentions-legales__section" id="hebergeur">
+        <section class="page-legale__section" id="hebergeur">
             <h2>2. Hébergeur du site</h2>
             <p>Le site LEMS est hébergé par :</p>
-            <ul class="mentions-legales__list">
-                <li><span class="mentions-legales__label">Nom de l'hébergeur :</span> <em> CESI</em></li>
-                <li><span class="mentions-legales__label">Adresse :</span> <em>1 av du Général de Gaulle, 92074 Puteaux La Défense</em></li>
-                <li><span class="mentions-legales__label">Téléphone :</span> <em>+33(0) 1 44 45 92 00</em></li>
-                <li><span class="mentions-legales__label">Site web :</span> <em>cesi.fr</em></li>
+            <ul class="page-legale__list">
+                <li><span class="page-legale__label">Nom de l'hébergeur :</span> CESI</li>
+                <li><span class="page-legale__label">Adresse :</span> 1 av du Général de Gaulle, 92074 Puteaux La Défense</li>
+                <li><span class="page-legale__label">Téléphone :</span> +33(0) 1 44 45 92 00</li>
+                <li><span class="page-legale__label">Site web :</span> <a href="https://www.cesi.fr" target="_blank" rel="noopener noreferrer">cesi.fr</a></li>
             </ul>
         </section>
 
-        {# ── 3. Objet ── #}
-        <section class="mentions-legales__section" id="objet">
+        <section class="page-legale__section" id="objet">
             <h2>3. Objet du site</h2>
             <p>
                 LEMS est une application web développée dans le cadre d'un projet
@@ -55,7 +52,7 @@
                 faciliter la recherche de stages pour les étudiants en regroupant
                 sur une plateforme unique :
             </p>
-            <ul class="mentions-legales__list">
+            <ul class="page-legale__list">
                 <li>les offres de stage proposées par les entreprises partenaires ;</li>
                 <li>les fiches entreprises et leurs évaluations ;</li>
                 <li>les outils de gestion des candidatures (CV, lettre de motivation) ;</li>
@@ -67,15 +64,14 @@
             </p>
         </section>
 
-        {# ── 4. RGPD ── #}
-        <section class="mentions-legales__section" id="donnees-personnelles">
+        <section class="page-legale__section" id="donnees-personnelles">
             <h2>4. Protection des données personnelles (RGPD)</h2>
 
             <h3>4.1 Responsable du traitement</h3>
             <p>
                 Le responsable du traitement des données personnelles collectées
-                via LEMS est CESI,
-                dont le siège est situé à <em>1 av du Général de Gaulle, 92074 Puteaux La Défense</em>.
+                via LEMS est CESI, dont le siège est situé à
+                1 av du Général de Gaulle, 92074 Puteaux La Défense.
             </p>
             <p>
                 Contact délégué à la protection des données (DPO) :
@@ -87,31 +83,23 @@
                 Dans le cadre du fonctionnement de LEMS, les données à caractère
                 personnel suivantes sont collectées :
             </p>
-            <ul class="mentions-legales__list">
-                <li><span class="mentions-legales__label">Données d'identification :</span> nom, prénom, adresse e-mail</li>
-                <li><span class="mentions-legales__label">Données d'authentification :</span> mot de passe (stocké haché, jamais en clair)</li>
-                <li><span class="mentions-legales__label">Documents de candidature :</span> curriculum vitæ (CV) et lettre de motivation (LM)</li>
-                <li><span class="mentions-legales__label">Données de navigation :</span> adresse IP et horodatage conservés dans les journaux serveur</li>
+            <ul class="page-legale__list">
+                <li><span class="page-legale__label">Données d'identification :</span> nom, prénom, adresse e-mail</li>
+                <li><span class="page-legale__label">Données d'authentification :</span> mot de passe (stocké haché, jamais en clair)</li>
+                <li><span class="page-legale__label">Documents de candidature :</span> curriculum vitæ (CV) et lettre de motivation (LM)</li>
+                <li><span class="page-legale__label">Données de navigation :</span> adresse IP et horodatage conservés dans les journaux serveur</li>
             </ul>
 
-            <h3>4.3 Finalités et bases légales</h3>
-            <ul class="mentions-legales__list">
-                <li>Gestion des comptes et authentification — <em>exécution du contrat / intérêt légitime</em></li>
-                <li>Mise en relation étudiants / entreprises via les candidatures — <em>exécution du contrat</em></li>
-                <li>Suivi pédagogique par les pilotes de promotion — <em>intérêt légitime de l'établissement</em></li>
-                <li>Sécurité et journalisation des accès — <em>obligation légale / intérêt légitime</em></li>
-            </ul>
-
-            <h3>4.4 Durée de conservation</h3>
-            <ul class="mentions-legales__list">
-                <li><span class="mentions-legales__label">Comptes utilisateurs :</span> durée de la scolarité + <em>2 ans</em> après la fin de la formation</li>
-                <li><span class="mentions-legales__label">Candidatures (CV, LM) :</span> <em>1 an</em> après le dépôt</li>
+            <h3>4.3 Durée de conservation</h3>
+            <ul class="page-legale__list">
+                <li><span class="page-legale__label">Comptes utilisateurs :</span> durée de la scolarité + 2 ans après la fin de la formation</li>
+                <li><span class="page-legale__label">Candidatures (CV, LM) :</span> 1 an après le dépôt</li>
             </ul>
             <p>À l'issue de ces durées, les données sont supprimées ou anonymisées.</p>
 
-            <h3>4.5 Destinataires des données</h3>
+            <h3>4.4 Destinataires des données</h3>
             <p>Les données sont accessibles uniquement :</p>
-            <ul class="mentions-legales__list">
+            <ul class="page-legale__list">
                 <li>aux administrateurs de la plateforme LEMS ;</li>
                 <li>aux pilotes de promotion, pour les données de leurs propres étudiants ;</li>
                 <li>aux entreprises concernées, dans la limite des informations transmises lors d'une candidature ;</li>
@@ -119,7 +107,7 @@
             </ul>
             <p>Aucune donnée n'est cédée, vendue ou transférée à des tiers à des fins commerciales.</p>
 
-            <h3>4.6 Vos droits</h3>
+            <h3>4.5 Vos droits</h3>
             <p>
                 Conformément au RGPD (articles 15 à 22) et à la loi
                 « Informatique et Libertés » modifiée, vous disposez des droits
@@ -136,35 +124,31 @@
             </p>
         </section>
 
-        {# ── 5. Cookies ── #}
-        <section class="mentions-legales__section" id="cookies">
+        <section class="page-legale__section" id="cookies">
             <h2>5. Cookies</h2>
             <p>
                 LEMS utilise uniquement des cookies strictement nécessaires au
                 fonctionnement de l'application :
             </p>
-            <ul class="mentions-legales__list">
+            <ul class="page-legale__list">
                 <li>
-                    <span class="mentions-legales__label">Cookie de session :</span>
+                    <span class="page-legale__label">Cookie de session :</span>
                     maintien de l'authentification
                 </li>
             </ul>
-            
         </section>
 
-        {# ── 6. Sécurité ── #}
-        <section class="mentions-legales__section" id="securite">
+        <section class="page-legale__section" id="securite">
             <h2>6. Sécurité</h2>
             <p>LEMS met en œuvre les mesures suivantes pour protéger vos données :</p>
-            <ul class="mentions-legales__list">
+            <ul class="page-legale__list">
                 <li>Protection contre les injections SQL (requêtes préparées) ;</li>
                 <li>Protection contre les attaques XSS (échappement des sorties HTML) ;</li>
                 <li>Contrôle d'accès basé sur les rôles (administrateur, pilote, étudiant).</li>
             </ul>
         </section>
 
-        {# ── 7. Propriété intellectuelle ── #}
-        <section class="mentions-legales__section" id="propriete-intellectuelle">
+        <section class="page-legale__section" id="propriete-intellectuelle">
             <h2>7. Propriété intellectuelle</h2>
             <p>
                 L'ensemble du contenu de LEMS (structure, design, textes, code source,
@@ -178,8 +162,7 @@
             </p>
         </section>
 
-        {# ── 8. Liens hypertextes ── #}
-        <section class="mentions-legales__section" id="liens">
+        <section class="page-legale__section" id="liens">
             <h2>8. Liens hypertextes</h2>
             <p>
                 LEMS peut contenir des liens vers des sites tiers fournis à titre
@@ -188,8 +171,7 @@
             </p>
         </section>
 
-        {# ── 9. Limitation de responsabilité ── #}
-        <section class="mentions-legales__section" id="responsabilite">
+        <section class="page-legale__section" id="responsabilite">
             <h2>9. Limitation de responsabilité</h2>
             <p>
                 LEMS est une application développée dans un cadre pédagogique. CESI
@@ -199,27 +181,25 @@
             </p>
         </section>
 
-        {# ── 10. Droit applicable ── #}
-        <section class="mentions-legales__section" id="droit-applicable">
+        <section class="page-legale__section" id="droit-applicable">
             <h2>10. Droit applicable et juridiction</h2>
             <p>
                 Les présentes mentions légales sont régies par le droit français.
                 En cas de litige relatif à l'utilisation du site LEMS, les tribunaux
-                français seront seuls compétents — <em>Tribunal Judiciaire de Nanterre</em>.
+                français seront seuls compétents — Tribunal Judiciaire de Nanterre.
             </p>
         </section>
 
-        {# ── 11. Contact ── #}
-        <section class="mentions-legales__section" id="contact">
+        <section class="page-legale__section" id="contact">
             <h2>11. Contact</h2>
             <p>Pour toute question relative aux présentes mentions légales :</p>
-            <ul class="mentions-legales__list">
-                <li><span class="mentions-legales__label">Email :</span> <a href="mailto:contact@cesi.fr">contact@cesi.fr</a></li>
-                <li><span class="mentions-legales__label">Courrier :</span> CESI — <em>1 av du Général de Gaulle, 92074 Puteaux La Défense.</em></li>
+            <ul class="page-legale__list">
+                <li><span class="page-legale__label">Email :</span> <a href="mailto:contact@cesi.fr">contact@cesi.fr</a></li>
+                <li><span class="page-legale__label">Courrier :</span> CESI — 1 av du Général de Gaulle, 92074 Puteaux La Défense.</li>
             </ul>
         </section>
 
-    </div>{# /.mentions-legales__content #}
+    </div>
 
 </main>
 {% endblock %}
