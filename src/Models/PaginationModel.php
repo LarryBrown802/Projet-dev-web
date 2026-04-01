@@ -4,7 +4,7 @@ namespace App\Models;
 
 class PaginationModel
 {
-    protected int $perPage = 5;
+    protected int $perPage = 6;
 
     public function getPage(array $items, int $page): array
     {

@@ -5,7 +5,7 @@ namespace App\Models;
 class CompanyManagementModel extends PaginationModel
 {
     private \PDO $db;
-    protected int $parPage = 5;
+    protected int $parPage = 6;
 
     public function __construct(\PDO $db)
     {

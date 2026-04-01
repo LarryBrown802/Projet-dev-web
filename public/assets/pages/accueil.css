@@ -153,13 +153,23 @@ h2{
   gap: 10px;
   align-items: start;
   cursor: pointer;
-  transition: border-color 0.2s, border-width 0.2s;
+  /* On ajoute une transition sur TOUT pour que l'animation soit fluide */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Carte active — fond blanc + bordure primary */
+/* L'animation au survol : la carte avance et projette une ombre */
+.mini-card:hover {
+  transform: translateX(8px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  border-color: #bbb;
+}
+
+/* Carte active — reste en surbrillance */
 .mini-card.active {
   background: #ffffff !important;
   border-color: var(--primary) !important;
+  transform: translateX(8px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
 .tab-content[hidden] { display: none; }
