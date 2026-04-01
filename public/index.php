@@ -131,6 +131,8 @@ switch ($page) {
 
     case 'conditions-utilisation':
         echo $twig->render('conditions-utilisation.html.twig');
+        break; 
+        
     // ===== PILOTE & ADMIN =====
     case 'offer_management':
         requireRole('administrateur', 'pilote');

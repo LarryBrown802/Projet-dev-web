@@ -18,49 +18,70 @@
         <section class="entreprise-section">
 
             {% for company in companies %}
-                <article class="entreprise-card">
+                <article class="entreprise-card" style="transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #eee; border-radius: 12px; background: #fff;">
                     <div style="padding: 20px;">
-                        <h3 style="margin-top: 0;">{{ company.name }}</h3>
-
-                        <div class="avis" style="color: #c8a000; margin-bottom: 15px;">
-                            {% set note = company.average_mark ?? 0 %}
-                            {% for i in 1..5 %}
-                                {% if i <= note %}
-                                    <i class="fa-solid fa-star"></i>
-                                {% else %}
-                                    <i class="fa-regular fa-star"></i>
-                                {% endif %}
-                            {% endfor %}
+                        
+                        {# ===== EN-TÊTE : LOGO + NOM + ÉTOILES ===== #}
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                            
+                            {# Générateur de logo dynamique basé sur le nom de l'entreprise #}
+                            <img src="https://ui-avatars.com/api/?name={{ company.name|url_encode }}&background=random&color=fff&rounded=true&size=56&bold=true" 
+                                 alt="Logo de {{ company.name }}" 
+                                 style="width: 56px; height: 56px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); object-fit: cover;">
+                            
+                            <div style="display: flex; flex-direction: column; justify-content: center;">
+                                <h3 style="margin: 0 0 4px 0; font-size: 18px; color: #111;">{{ company.name }}</h3>
+                                
+                                {# Système d'étoiles dynamique #}
+                                <div class="avis" style="color: #f1c40f; font-size: 13px;">
+                                    {% set note = company.average_mark ?? 0 %}
+                                    
+                                    {# On boucle de 1 à 5 pour dessiner les étoiles #}
+                                    {% for i in 1..5 %}
+                                        {% if i <= note %}
+                                            <i class="fa-solid fa-star"></i>
+                                        {% else %}
+                                            <i class="fa-regular fa-star" style="color: #e0e0e0;"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                
+                                </div>
+                            </div>
                         </div>
+                        {# ========================================== #}
 
-                        <div class="contact-info" style="font-size: 14px; margin-bottom: 15px;">
-                            <p style="margin: 5px 0;">
-                                <i class="fa-solid fa-phone" style="width: 20px;"></i>
+                        <div class="contact-info" style="font-size: 14px; margin-bottom: 15px; color: #555;">
+                            <p style="margin: 6px 0; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-phone" style="color: #5E92A6;"></i>
                                 {{ company.number ?? '—' }}
                             </p>
-                            <p style="margin: 5px 0;">
-                                <i class="fa-solid fa-envelope" style="width: 20px;"></i>
+                            <p style="margin: 6px 0; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-envelope" style="color: #5E92A6;"></i>
                                 {{ company.email ?? '—' }}
                             </p>
                         </div>
 
-                        <p style="font-size: 14px; line-height: 1.5; color: var(--text); height: 65px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                            {{ company.description ?? 'Aucune description disponible.' }}
+                        <p style="font-size: 14px; line-height: 1.6; color: var(--text); height: 65px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; margin-bottom: 15px;">
+                            {{ company.description ?? 'Aucune description disponible pour le moment.' }}
                         </p>
 
-                        <p style="font-size: 13px; font-weight: bold; color: var(--primary); margin-top: 10px;">
-                            {{ company.stagiaires ?? 0 }} stagiaires ayant postulé
-                        </p>
+                        <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; color: #5E92A6; margin-top: auto; padding-top: 10px; border-top: 1px solid #f0f0f0;">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            {{ company.stagiaires ?? 0 }} stagiaire(s) ayant postulé
+                        </div>
 
                         <a href="/index.php?page=company_detail&id={{ company.ID }}"
                            class="btn-voir"
-                           style="display: block; text-align: center; text-decoration: none; margin-top: 15px;">
+                           style="display: block; text-align: center; text-decoration: none; margin-top: 15px; background: #5E92A6; color: white; padding: 10px; border-radius: 8px; font-weight: bold; transition: background 0.3s;">
                             Découvrir
                         </a>
                     </div>
                 </article>
             {% else %}
-                <p style="grid-column: 1 / -1; text-align: center;">Aucune entreprise trouvée.</p>
+                <p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #888; font-size: 16px;">
+                    <i class="fa-solid fa-building" style="font-size: 32px; margin-bottom: 10px; color: #ddd; display: block;"></i>
+                    Aucune entreprise trouvée.
+                </p>
             {% endfor %}
 
         </section>

@@ -13,7 +13,7 @@ class OfferManagementModel
      */
     public function getAllOffers(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         $sql = "
             SELECT o.*, c.name as entreprise, l.city as lieu
             FROM Offer o
@@ -29,7 +29,7 @@ class OfferManagementModel
      */
     public function getOffersByPilot(int $pilotId): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         
         // On cherche les offres (o) dont l'entreprise (c) appartient au pilote (ID_user)
         $sql = "
@@ -51,7 +51,7 @@ class OfferManagementModel
      */
     public function getLocations(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         return $pdo->query("SELECT ID_location, city FROM Location ORDER BY city")->fetchAll();
     }
 
@@ -60,7 +60,7 @@ class OfferManagementModel
      */
     public function getAllCompanies(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         return $pdo->query("SELECT ID, name FROM Company ORDER BY name")->fetchAll();
     }
 
@@ -69,7 +69,7 @@ class OfferManagementModel
      */
     public function getCompaniesByPilot(int $pilotId): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         $stmt = $pdo->prepare("SELECT ID, name FROM Company WHERE ID_user = :pid ORDER BY name");
         $stmt->execute(['pid' => $pilotId]);
         return $stmt->fetchAll();
@@ -80,7 +80,7 @@ class OfferManagementModel
      */
     public function createOffer(array $data): bool
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         // CURDATE() met automatiquement la date du jour MySQL
         $sql = "INSERT INTO Offer (title, description, duration, remuneration, type, level, domain, publication_date, ID_location, ID_company) 
                 VALUES (:title, :description, :duration, :remuneration, :type, :level, :domain, CURDATE(), :id_location, :id_company)";

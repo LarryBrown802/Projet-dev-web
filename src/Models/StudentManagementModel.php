@@ -11,7 +11,7 @@ class StudentManagementModel
 
     public function getAllStudents(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         $sql = "
             SELECT p.ID_profile, p.name as nom, p.surname as prenom, u.email, 
                    c.name as centre, pr.name as promotion,
@@ -29,13 +29,13 @@ class StudentManagementModel
 
     public function getCenters(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         return $pdo->query("SELECT ID_center, name FROM Center ORDER BY name")->fetchAll();
     }
 
     public function getPromotions(): array
     {
-        $pdo = Database::getConnection();
+        $pdo = Database::connect();
         return $pdo->query("SELECT ID_promotion, name FROM Promotion ORDER BY name")->fetchAll();
     }
 
