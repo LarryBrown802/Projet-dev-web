@@ -15,12 +15,12 @@
     </div>
 
     <div id="company-list-container">
-        <section class="entreprise-section">
+        <div class="entreprise-section">
 
             {% for company in companies %}
                 <article class="entreprise-card">
                     <div style="padding: 20px;">
-                        <h3 style="margin-top: 0;">{{ company.name }}</h3>
+                        <h2 style="margin-top: 0;">{{ company.name }}</h2>
 
                         <div class="avis" style="color: #c8a000; margin-bottom: 15px;">
                             {% set note = company.average_mark ?? 0 %}
@@ -63,7 +63,7 @@
                 <p style="grid-column: 1 / -1; text-align: center;">Aucune entreprise trouvée.</p>
             {% endfor %}
 
-        </section>
+        </div>
 
         {# ===== PAGINATION ===== #}
         <nav class="pagination" aria-label="Pagination des entreprises" style="margin-top: 40px; justify-content: center;">
