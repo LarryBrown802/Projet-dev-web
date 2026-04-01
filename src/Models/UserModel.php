@@ -95,6 +95,44 @@ class UserModel extends PaginationController
         return $stmt->execute([':id' => $id]);
     }
 
+    // ===== REMEMBER ME (COOKIES) =====
+
+    public function setRememberToken(int $id, string $token): bool
+    {
+        $hash   = hash('sha256', $token);
+        $expiry = date('Y-m-d H:i:s', strtotime('+30 days'));
+        $stmt   = $this->db->prepare('
+            UPDATE User
+            SET remember_token = :token, remember_token_expiry = :expiry
+            WHERE ID_user = :id
+        ');
+        return $stmt->execute([':token' => $hash, ':expiry' => $expiry, ':id' => $id]);
+    }
+
+    public function findByRememberToken(string $token): array|false
+    {
+        $hash = hash('sha256', $token);
+        $stmt = $this->db->prepare('
+            SELECT u.*, r.name_role
+            FROM User u
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE u.remember_token = :token
+              AND u.remember_token_expiry > NOW()
+        ');
+        $stmt->execute([':token' => $hash]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function clearRememberToken(int $id): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE User
+            SET remember_token = NULL, remember_token_expiry = NULL
+            WHERE ID_user = :id
+        ');
+        return $stmt->execute([':id' => $id]);
+    }
+
 
     public function createWithRole(string $email, string $password, string $role): int|false
     {

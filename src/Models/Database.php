@@ -13,10 +13,10 @@ class Database
     {
         if (self::$instance === null) {
             // Configuration pour ton MySQL local sur Ubuntu
-            $host = '127.0.0.1';
-            $db   = 'lems_db';
-            $user = 'lems_user';
-            $pass = 'lems1234'; // Le mot de passe choisi à l'étape 2
+            $host = 'localhost';
+            $db   = 'lems';
+            $user = 'Nasus';
+            $pass = '1SbireCanon@'; // Le mot de passe choisi à l'étape 2
             $port = '3306';
 
             try {

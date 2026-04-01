@@ -33,6 +33,28 @@ class ConnexionController
                 $_SESSION['email']   = $user['email'];
                 $_SESSION['role']    = $user['name_role'];
 
+                // Cookie "se souvenir de moi"
+                if (!empty($_POST['remember'])) {
+                    $token  = bin2hex(random_bytes(32));
+                    $expiry = time() + 30 * 24 * 3600; // 30 jours
+                    $this->userModel->setRememberToken($user['ID_user'], $token);
+                    setcookie('remember_token', $token, [
+                        'expires'  => $expiry,
+                        'path'     => '/',
+                        'httponly' => true,
+                        'samesite' => 'Lax',
+                    ]);
+                } else {
+                    // Case non cochée : supprime l'ancien cookie et le token en DB
+                    $this->userModel->clearRememberToken($user['ID_user']);
+                    setcookie('remember_token', '', [
+                        'expires'  => time() - 3600,
+                        'path'     => '/',
+                        'httponly' => true,
+                        'samesite' => 'Lax',
+                    ]);
+                }
+
                 session_write_close();
 
                 switch ($user['name_role']) {
