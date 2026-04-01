@@ -1,0 +1,133 @@
+/* ===== PAGE PROFIL ===== */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 700px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== CARD PROFIL ===== */
+.profile-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(94,146,166,.22), rgba(74,122,140,.10));
+    border: 1px solid rgba(94,146,166,.25);
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+}
+
+.profile-name {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.profile-email,
+.profile-promo {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-status {
+    margin-top: 10px;
+}
+
+/* ===== STATS ===== */
+.profile-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--primary-dark);
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ===== SECTION CANDIDATURES ===== */
+.profile-section {
+    margin-top: 10px;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 50px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.empty-state p {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.badge--ok   { background: rgba(31,139,59,.14);  color: rgb(31,139,59);  border: 1px solid rgba(31,139,59,.22); }
+.badge--wait { background: rgba(217,211,29,.22); color: #6b5b00;          border: 1px solid rgba(217,211,29,.35); }
+.badge--no   { background: rgba(255,59,48,.14);  color: rgb(255,59,48);   border: 1px solid rgba(255,59,48,.22); }
