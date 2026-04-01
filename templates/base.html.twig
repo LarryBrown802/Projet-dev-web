@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="LEMS - Le portail de gestion des offres de stage et d'alternance pour les étudiants du CESI. Découvrez, postulez et gérez vos candidatures facilement.">
 
-    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="../assets/main.css">
 
     {% block stylesheets %}{% endblock %}
 
@@ -54,14 +54,25 @@
                     <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
                 {% else %}
                     <div class="profile">
-                        <a class="profile-btn" href="/index.php?page=profil" aria-label="Profil">
+                        <a class="profile-btn" href="
+                            {%- if session.role == 'etudiant' -%}
+                                /index.php?page=profile
+                            {%- elseif session.role == 'pilote' -%}
+                                /index.php?page=dashboard_pilot
+                            {%- elseif session.role == 'administrateur' -%}
+                                /index.php?page=dashboard_admin
+                            {%- else -%}
+                                #
+                            {%- endif -%}
+                        " aria-label="Profil">
                             <i class="fa-solid fa-user"></i>
                         </a>
 
                         <div class="profile-menu" role="menu">
-                            <a href="/index.php?page=profil"      role="menuitem">Mon profil</a>
-                            <a href="/index.php?page=parametres"  role="menuitem">Paramètres</a>
-                            <hr>
+                            {% if session.role == 'etudiant' %}
+                                <a href="/index.php?page=profile" role="menuitem">Mon profil</a>
+                                <hr>
+                            {% endif %}
                             <a href="/index.php?page=logout" role="menuitem" class="deco">Déconnexion</a>
                         </div>
                     </div>
