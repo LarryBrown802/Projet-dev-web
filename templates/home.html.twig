@@ -3,7 +3,7 @@
 {% block title %}Accueil - LEMS{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/accueil.css">
+    <link rel="stylesheet" href="/assets/pages/accueil.css?v=2">
 {% endblock %}
 
 {% block content %}
@@ -42,6 +42,24 @@
         <aside class="list">
             <div class="list-cards">
                 {% for offer in latestOffers %}
+                    
+                    {# --- LOGIQUE DES ICONES DYNAMIQUES (Améliorée) --- #}
+                    {% set lowerTitle = offer.title|lower %}
+                    {% set iconClass = 'fa-briefcase' %}
+                    
+                    {% if 'dev' in lowerTitle or 'dév' in lowerTitle %}
+                        {% set iconClass = 'fa-laptop-code' %}
+                    {% elseif 'data' in lowerTitle or 'donnée' in lowerTitle %}
+                        {% set iconClass = 'fa-chart-line' %}
+                    {% elseif 'cyber' in lowerTitle or 'secur' in lowerTitle or 'sécur' in lowerTitle %}
+                        {% set iconClass = 'fa-shield-halved' %}
+                    {% elseif 'réseau' in lowerTitle or 'reseau' in lowerTitle or 'support' in lowerTitle %}
+                        {% set iconClass = 'fa-server' %}
+                    {% elseif 'consultant' in lowerTitle or 'projet' in lowerTitle %}
+                        {% set iconClass = 'fa-user-tie' %}
+                    {% endif %}
+                    {# ------------------------------------------------- #}
+
                     <article class="mini-card js-offer-trigger {% if loop.first %}active{% endif %}"
                         data-id="{{ offer.ID_offer }}"
                         data-poste="{{ offer.title }}"
@@ -52,9 +70,10 @@
                         data-duree="{{ offer.duration }}"
                         data-desc="{{ offer.description }}"
                         data-entdesc="{{ offer.entrepriseDesc ?? '' }}"
+                        data-icon="{{ iconClass }}" {# <-- On passe l'icone au JS #}
                     >
                         <div class="mini-logo">
-                            <i class="fa-solid fa-briefcase"></i>
+                            <i class="fa-solid {{ iconClass }}"></i>
                         </div>
 
                         <div>
@@ -70,7 +89,7 @@
                         </div>
 
                         {% if session.role == 'etudiant' %}
-                        <label class="ui-bookmark">
+                        <label class="ui-bookmark js-bookmark-label">
                             <input type="checkbox" class="bookmark-checkbox" data-offer-id="{{ offer.ID_offer }}"
                                 {% if wishlistIds is defined and offer.ID_offer in wishlistIds %}checked{% endif %}>
                             <div class="bookmark">
@@ -94,10 +113,26 @@
         {% if latestOffers is not empty %}
             {% set firstOffer = latestOffers|first %}
 
+            {# --- On applique la même logique d'icône pour la première offre à droite --- #}
+            {% set lowerTitleFirst = firstOffer.title|lower %}
+            {% set firstIconClass = 'fa-briefcase' %}
+            
+            {% if 'dev' in lowerTitleFirst or 'dév' in lowerTitleFirst %}
+                {% set firstIconClass = 'fa-laptop-code' %}
+            {% elseif 'data' in lowerTitleFirst or 'donnée' in lowerTitleFirst %}
+                {% set firstIconClass = 'fa-chart-line' %}
+            {% elseif 'cyber' in lowerTitleFirst or 'secur' in lowerTitleFirst or 'sécur' in lowerTitleFirst %}
+                {% set firstIconClass = 'fa-shield-halved' %}
+            {% elseif 'réseau' in lowerTitleFirst or 'reseau' in lowerTitleFirst or 'support' in lowerTitleFirst %}
+                {% set firstIconClass = 'fa-server' %}
+            {% elseif 'consultant' in lowerTitleFirst or 'projet' in lowerTitleFirst %}
+                {% set firstIconClass = 'fa-user-tie' %}
+            {% endif %}
+
             <article class="detail">
                 <div class="detail-head">
                     <div class="detail-img" id="detail-icon-container">
-                        <i class="fa-solid fa-briefcase"></i>
+                        <i id="detail-icon-main" class="fa-solid {{ firstIconClass }}"></i>
                     </div>
                     <div>
                         <p class="detail-title" id="detail-entreprise">{{ firstOffer.entreprise }}</p>
@@ -106,7 +141,8 @@
 
                     {% if session.role == 'etudiant' %}
                     <label class="ui-bookmark">
-                        <input type="checkbox" class="bookmark-checkbox" data-offer-id="{{ firstOffer.ID_offer }}"
+                        {# On ajoute l'ID 'detail-bookmark-checkbox' ici pour le JS ! #}
+                        <input type="checkbox" id="detail-bookmark-checkbox" class="bookmark-checkbox" data-offer-id="{{ firstOffer.ID_offer }}"
                             {% if wishlistIds is defined and firstOffer.ID_offer in wishlistIds %}checked{% endif %}>
                         <div class="bookmark">
                             <svg viewBox="0 0 32 32">
@@ -210,12 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const dReqDuree     = document.getElementById('detail-req-duree');
     const dEntDescText  = document.getElementById('detail-entdesc-text');
     const applyBtn      = document.querySelector('.js-apply-btn');
+    
+    // Nouveaux éléments ciblés
+    const dIconMain         = document.getElementById('detail-icon-main');
+    const dBookmarkCheckbox = document.getElementById('detail-bookmark-checkbox');
 
     offerTriggers.forEach(trigger => {
         trigger.addEventListener('click', function() {
             offerTriggers.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
 
+            // MàJ des textes
             dEntreprise.textContent  = this.dataset.entreprise;
             dPoste.textContent       = this.dataset.poste;
             dTagLieu.textContent     = this.dataset.lieu;
@@ -228,7 +269,23 @@ document.addEventListener('DOMContentLoaded', () => {
             dReqDuree.textContent    = this.dataset.duree;
             dEntDescText.textContent = this.dataset.entdesc;
 
+            // MàJ de l'icône dynamique
+            if (dIconMain) {
+                const iconClass = this.dataset.icon || 'fa-briefcase';
+                dIconMain.className = `fa-solid ${iconClass}`;
+            }
+
+            // MàJ du bouton postuler
             if (applyBtn) applyBtn.dataset.id = this.dataset.id;
+
+            // MàJ vitale : On met à jour l'ID du favori dans le panneau droit et son état (coché ou non)
+            if (dBookmarkCheckbox) {
+                dBookmarkCheckbox.dataset.offerId = this.dataset.id;
+                const leftCheckbox = this.querySelector('.bookmark-checkbox');
+                if (leftCheckbox) {
+                    dBookmarkCheckbox.checked = leftCheckbox.checked;
+                }
+            }
         });
     });
 
@@ -239,13 +296,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== WISHLIST AJAX =====
+    // ===== EMPÊCHER LE CLIC CARTE (On le met sur .ui-bookmark pour bloquer la propagation) =====
+    document.querySelectorAll('.ui-bookmark').forEach(label => {
+        label.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
+
+    // ===== WISHLIST AJAX SYNCHRONISÉ =====
     document.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', async function() {
             const offerId = this.dataset.offerId;
             if (!offerId) return;
 
-            const previousState = !this.checked;
+            const isChecked = this.checked;
+
+            // 1. Sync visuelle immédiate : Si je coche à droite, ça coche la carte de gauche aussi !
+            document.querySelectorAll(`.bookmark-checkbox[data-offer-id="${offerId}"]`).forEach(cb => {
+                if (cb !== this) cb.checked = isChecked;
+            });
+
+            // 2. Appel au serveur
             try {
                 const response = await fetch('/index.php?page=toggle_wishlist', {
                     method: 'POST',
@@ -253,12 +324,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ offer_id: parseInt(offerId) })
                 });
                 const result = await response.json();
+                
                 if (!result.success) {
-                    this.checked = previousState;
+                    // Rollback visuel en cas d'erreur
+                    document.querySelectorAll(`.bookmark-checkbox[data-offer-id="${offerId}"]`).forEach(cb => {
+                        cb.checked = !isChecked;
+                    });
                     alert(result.error || 'Erreur lors de la mise à jour des favoris.');
                 }
             } catch (e) {
-                this.checked = previousState;
+                document.querySelectorAll(`.bookmark-checkbox[data-offer-id="${offerId}"]`).forEach(cb => {
+                    cb.checked = !isChecked;
+                });
                 console.error("Erreur wishlist", e);
             }
         });
