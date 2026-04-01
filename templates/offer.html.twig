@@ -55,7 +55,7 @@
             <button class="carousel-btn next" type="button" aria-label="Suivant">›</button>
         </div>
 
-        <div class="carousel-dots" aria-label="Pagination">
+        <div class="carousel-dots" role="group" aria-label="Pagination">
             <button class="dot active" type="button" aria-label="Carte 1"></button>
             <button class="dot" type="button" aria-label="Carte 2"></button>
             <button class="dot" type="button" aria-label="Carte 3"></button>
@@ -164,7 +164,7 @@
                     <input type="hidden" name="page" value="offers">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="search" name="search" value="{{ search|default('') }}"
-                           placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher" />
+                           placeholder="Rechercher un poste, une entreprise…" aria-label="Rechercher">
                 </form>
 
                 <div class="results-sort">
@@ -198,12 +198,12 @@
                                        aria-label="Ajouter aux favoris"
                                        data-offer-id="{{ offer.ID_offer }}"
                                        class="bookmark-checkbox"
-                                       {% if wishlistIds is defined and offer.ID_offer in wishlistIds %}checked{% endif %} />
-                                <div class="bookmark" aria-hidden="true">
+                                       {% if wishlistIds is defined and offer.ID_offer in wishlistIds %}checked{% endif %}>
+                                <span class="bookmark" aria-hidden="true">
                                     <svg viewBox="0 0 32 32">
                                         <path d="M27 4v27a1 1 0 0 1-1.625.781L16 24.281l-9.375 7.5A1 1 0 0 1 5 31V4a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4z"></path>
                                     </svg>
-                                </div>
+                                </span>
                             </label>
                             {% endif %}
                         </div>

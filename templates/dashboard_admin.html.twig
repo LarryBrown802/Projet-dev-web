@@ -27,102 +27,28 @@
     </div>
 
     {# ===== KPIs ===== #}
-    <section class="kpi-grid kpi-grid--5">
+    <div class="kpi-grid kpi-grid--5">
         <article class="kpi-card">
             <div class="kpi-icon kpi-blue"><i class="fa-solid fa-chalkboard-teacher"></i></div>
-            <div><p class="kpi-label">Pilotes</p><p class="kpi-value">{{ nbPilotes }}</p></div>
+            <div><h2 class="kpi-label">Pilotes</h2><p class="kpi-value">{{ nbPilotes }}</p></div>
         </article>
         <article class="kpi-card">
             <div class="kpi-icon kpi-green"><i class="fa-solid fa-user-graduate"></i></div>
-            <div><p class="kpi-label">Étudiants</p><p class="kpi-value">{{ nbEtudiants }}</p></div>
+            <div><h2 class="kpi-label">Étudiants</h2><p class="kpi-value">{{ nbEtudiants }}</p></div>
         </article>
         <article class="kpi-card">
             <div class="kpi-icon kpi-yellow"><i class="fa-solid fa-building"></i></div>
-            <div><p class="kpi-label">Entreprises</p><p class="kpi-value">{{ nbEntreprises }}</p></div>
+            <div><h2 class="kpi-label">Entreprises</h2><p class="kpi-value">{{ nbEntreprises }}</p></div>
         </article>
         <article class="kpi-card">
             <div class="kpi-icon kpi-purple"><i class="fa-solid fa-briefcase"></i></div>
-            <div><p class="kpi-label">Offres</p><p class="kpi-value">{{ nbOffres }}</p></div>
+            <div><h2 class="kpi-label">Offres</h2><p class="kpi-value">{{ nbOffres }}</p></div>
         </article>
         <article class="kpi-card">
             <div class="kpi-icon kpi-red"><i class="fa-solid fa-file-circle-check"></i></div>
-            <div><p class="kpi-label">Candidatures</p><p class="kpi-value">{{ nbCandidatures }}</p></div>
+            <div><h2 class="kpi-label">Candidatures</h2><p class="kpi-value">{{ nbCandidatures }}</p></div>
         </article>
-    </section>
-
-    {# ===== LAYOUT ===== #}
-    <div class="admin-layout">
-
-        {# ===== ACTIVITÉ RÉCENTE ===== #}
-        <aside class="admin-aside">
-            <h2 class="section-title-dash">Activité récente</h2>
-            <div class="activity-list">
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-blue"><i class="fa-solid fa-user-plus"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Nouvel étudiant inscrit</p>
-                        <p class="activity-sub">Raphaël Linard - CPI A2 Informatique</p>
-                        <span class="activity-time">Il y a 10 min</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-yellow"><i class="fa-solid fa-briefcase"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Nouvelle offre publiée</p>
-                        <p class="activity-sub">Dev Web — Tech Solutions</p>
-                        <span class="activity-time">Il y a 35 min</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-green"><i class="fa-solid fa-building"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Entreprise ajoutée</p>
-                        <p class="activity-sub">AI Labs</p>
-                        <span class="activity-time">Il y a 1h</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-purple"><i class="fa-solid fa-chalkboard-teacher"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Pilote créé</p>
-                        <p class="activity-sub">M. Roussel — CPI A2 Informatique</p>
-                        <span class="activity-time">Il y a 2h</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-red"><i class="fa-solid fa-trash"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Offre supprimée</p>
-                        <p class="activity-sub">Stage Marketing — MKT Corp</p>
-                        <span class="activity-time">Il y a 3h</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-blue"><i class="fa-solid fa-file-circle-check"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Candidature reçue</p>
-                        <p class="activity-sub">Enzo Boucetta → DevOps</p>
-                        <span class="activity-time">Il y a 4h</span>
-                    </div>
-                </article>
-
-                <article class="activity-item">
-                    <div class="activity-icon ai-yellow"><i class="fa-solid fa-star"></i></div>
-                    <div class="activity-body">
-                        <p class="activity-title">Entreprise évaluée</p>
-                        <p class="activity-sub">SecureTech — 4/5 étoiles</p>
-                        <span class="activity-time">Il y a 5h</span>
-                    </div>
-                </article>
-
-            </div>
-        </aside>
+    </div>
 
         {# ===== TABLEAUX ===== #}
         <section class="admin-main">
@@ -202,7 +128,6 @@
             </div>
 
         </section>
-    </div>
 
 </main>
 {% endblock %}
