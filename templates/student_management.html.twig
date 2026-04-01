@@ -7,27 +7,28 @@
 {% block title %}Gestion des étudiants - LEMS{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/pages/Pilote.css">
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
 {% endblock %}
 
 {% block content %}
+<main class="container">
 
-{% if message %}
-        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+    {# ===== MESSAGES ===== #}
+    {% if message %}
+        <div class="alert alert-success">
             <i class="fa-solid fa-check"></i> {{ message }}
         </div>
     {% endif %}
     {% if error %}
-        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <div class="alert alert-error">
             <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
         </div>
     {% endif %}
-<main class="container">
 
     <div class="page-head">
         <div>
             <h1>
-                {% if session.role == 'admin' %}
+                {% if session.role == 'administrateur' %}
                     Gestion de tous les étudiants
                 {% else %}
                     Mes étudiants
@@ -35,20 +36,25 @@
             </h1>
             <p class="page-subtitle">Consultez les profils, les candidatures et l'état de la recherche de stage.</p>
         </div>
-        {% if session.role == 'admin' or session.role == 'pilote' %}
-            <button class="btn-add" type="button" id="btnCreateEtu"> {# ← corrigé : btnCreateEtudiant → btnCreateEtu #}
+        {% if session.role == 'administrateur' or session.role == 'pilote' %}
+            <button class="btn-add" type="button" id="btnCreateEtu">
                 <i class="fa-solid fa-plus"></i> Nouvel étudiant
             </button>
         {% endif %}
     </div>
 
-    <div class="search-bar-wrap">
+    {# ===== BARRE DE RECHERCHE ===== #}
+    <form method="get" action="/index.php" class="search-bar-wrap">
+        <input type="hidden" name="page" value="student_management">
+        <input type="hidden" name="p" value="1">
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" placeholder="Rechercher par nom, prénom ou email…" aria-label="Rechercher un étudiant" />
+            <input type="search" name="search" value="{{ search|default('') }}"
+                   placeholder="Rechercher par nom, prénom ou email…" aria-label="Rechercher un étudiant" />
         </div>
-    </div>
+    </form>
 
+    {# ===== TABLEAU ===== #}
     <div class="table-wrap">
         <table class="dash-table">
             <thead>
@@ -68,12 +74,12 @@
                     <td><strong>{{ student.nom }}</strong></td>
                     <td>{{ student.prenom }}</td>
                     <td>{{ student.email }}</td>
-                    <td>{{ student.promotion | default('Non défini') }}</td>
-                    <td>{{ student.candidatures }}</td>
+                    <td>{{ student.promotion ?? '—' }}</td>
+                    <td>{{ student.candidatures ?? 0 }}</td>
                     <td>
-                        {% if student.statut == 'ok' %}
+                        {% if student.status == 'ok' %}
                             <span class="badge badge--ok">Stage trouvé</span>
-                        {% elseif student.statut == 'no' %}
+                        {% elseif student.status == 'no' %}
                             <span class="badge badge--no">Non trouvé</span>
                         {% else %}
                             <span class="badge badge--wait">En cours</span>
@@ -84,16 +90,19 @@
                             data-nom="{{ student.nom }}"
                             data-prenom="{{ student.prenom }}"
                             data-email="{{ student.email }}"
-                            data-candidatures="{{ student.candidatures_detail }}"> {# ← supprimé data-pilote inexistant #}
+                            data-candidatures="{{ student.candidatures_detail is defined and student.candidatures_detail ? student.candidatures_detail|e('html_attr') : '[]' }}">                            
                             <i class="fa-solid fa-eye"></i>
                         </button>
                         <button class="btn-icon btn-edit-etu" title="Modifier"
+                            data-id="{{ student.ID_profile }}"
                             data-nom="{{ student.nom }}"
                             data-prenom="{{ student.prenom }}"
-                            data-email="{{ student.email }}">
+                            data-email="{{ student.email }}"
+                            data-status="{{ student.status ?? 'wait' }}">
                             <i class="fa-solid fa-pen"></i>
                         </button>
                         <button class="btn-icon btn-delete-etu" title="Supprimer"
+                            data-id="{{ student.ID_profile }}"
                             data-nom="{{ student.nom }}"
                             data-prenom="{{ student.prenom }}">
                             <i class="fa-solid fa-trash"></i>
@@ -107,37 +116,49 @@
         </table>
     </div>
 
+    {# ===== PAGINATION ===== #}
     <nav class="pagination" aria-label="Pagination des étudiants">
-        <button class="page-arrow" type="button"
-            {% if pageCourante <= 1 %}disabled{% endif %}
-            onclick="window.location='?page=student_management&p={{ pageCourante - 1 }}&search={{ search|default('') }}'">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="student_management">
+            <input type="hidden" name="p" value="{{ pageCourante - 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante <= 1 %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </form>
 
         <div class="page-numbers">
             {% for p in pages %}
                 {% if p == '...' %}
                     <span class="page-ellipsis">…</span>
                 {% else %}
-                    <button class="page-number {% if p == pageCourante %}active{% endif %}"
-                        type="button"
-                        onclick="window.location='?page=student_management&p={{ p }}&search={{ search|default('') }}'">
-                        {{ p }}
-                    </button>
+                    <form method="get" action="/index.php">
+                        <input type="hidden" name="page" value="student_management">
+                        <input type="hidden" name="p" value="{{ p }}">
+                        <input type="hidden" name="search" value="{{ search|default('') }}">
+                        <button class="page-number {% if p == pageCourante %}active{% endif %}" type="submit">
+                            {{ p }}
+                        </button>
+                    </form>
                 {% endif %}
             {% endfor %}
         </div>
 
-        <button class="page-arrow" type="button"
-            {% if pageCourante >= totalPages %}disabled{% endif %}
-            onclick="window.location='?page=student_management&p={{ pageCourante + 1 }}&search={{ search|default('') }}'">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        <form method="get" action="/index.php">
+            <input type="hidden" name="page" value="student_management">
+            <input type="hidden" name="p" value="{{ pageCourante + 1 }}">
+            <input type="hidden" name="search" value="{{ search|default('') }}">
+            <button class="page-arrow" type="submit" {% if pageCourante >= totalPages %}disabled{% endif %}>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </form>
+
     </nav>
 
 </main>
 
-<!-- ===== DIALOGS ===== -->
+{# ===== DIALOG VOIR ===== #}
 <dialog class="dialog" id="dialogViewEtu">
     <div class="dialog-inner">
         <header class="dialog-header">
@@ -153,18 +174,19 @@
             <div class="table-wrap">
                 <table class="dash-table">
                     <thead>
-                        <tr><th>Offre</th><th>Entreprise</th><th>Date</th><th>Statut</th></tr>
+                        <tr><th>Offre</th><th>Entreprise</th></tr>
                     </thead>
                     <tbody id="viewEtuTbody"></tbody>
                 </table>
             </div>
         </div>
-        <footer class="dialog-actions" style="margin-top:14px">
+        <div class="dialog-actions" style="margin-top:14px">
             <button class="btn-secondary" id="btnCloseViewEtu2">Fermer</button>
-        </footer>
+        </div>
     </div>
 </dialog>
 
+{# ===== DIALOG CRÉER ===== #}
 <dialog class="dialog dialog--sm" id="dialogCreateEtu">
     <div class="dialog-inner">
         <header class="dialog-header">
@@ -172,45 +194,57 @@
             <div><h2>Nouvel étudiant</h2><p class="dialog-company">Créer un compte étudiant.</p></div>
             <button class="dialog-close" id="btnCloseCreateEtu" type="button">✕</button>
         </header>
-        <form class="dialog-form" id="formCreateEtu" novalidate>
+        <form class="dialog-form" method="post" action="/index.php?page=student_management">
+            <input type="hidden" name="action" value="create_student">
             <div class="field-group">
                 <div class="field">
                     <label for="cNom">Nom <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-user"></i><input id="cNom" type="text" placeholder="Nom" required /></div>
+                    <div class="input"><i class="fa-solid fa-user"></i><input id="cNom" name="nom" type="text" placeholder="Nom" required /></div>
                 </div>
                 <div class="field">
                     <label for="cPrenom">Prénom <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-user"></i><input id="cPrenom" type="text" placeholder="Prénom" required /></div>
+                    <div class="input"><i class="fa-solid fa-user"></i><input id="cPrenom" name="prenom" type="text" placeholder="Prénom" required /></div>
                 </div>
             </div>
             <div class="field">
                 <label for="cEmail">Email <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-envelope"></i><input id="cEmail" type="email" placeholder="prenom.nom@viacesi.fr" required /></div>
+                <div class="input">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input id="cEmail" name="email" type="email" placeholder="prenom.nom@viacesi.fr" required />
+                </div>
             </div>
             <div class="field">
                 <label for="cPassword">Mot de passe <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-lock"></i><input id="cPassword" type="password" placeholder="Mot de passe" required /></div>
+                <div class="input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input id="cPassword" name="password" type="password" placeholder="Mot de passe" required />
+
+                    <button type="button" class="toogle-password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
             </div>
             <div class="field">
-                <label for="cPilote">Pilote référent</label>
+                <label for="cPromotion">Promotion</label>
                 <div class="input">
-                    <i class="fa-solid fa-chalkboard-teacher"></i>
-                    <select id="cPilote" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <select id="cPromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
                         <option value="">Sélectionner…</option>
-                        <option>Dupont Jean</option>
-                        <option>Durand Marie</option>
-                        <option>Martin Paul</option>
+                        {% for promo in promotions %}
+                            <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
-            <footer class="dialog-actions">
+            <div class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelCreateEtu">Annuler</button>
                 <button class="btn-voir" type="submit">Créer</button>
-            </footer>
+            </div>
         </form>
     </div>
 </dialog>
 
+{# ===== DIALOG MODIFIER ===== #}
 <dialog class="dialog dialog--sm" id="dialogEditEtu">
     <div class="dialog-inner">
         <header class="dialog-header">
@@ -218,29 +252,62 @@
             <div><h2>Modifier l'étudiant</h2><p class="dialog-company" id="editEtuSubtitle">—</p></div>
             <button class="dialog-close" id="btnCloseEditEtu" type="button">✕</button>
         </header>
-        <form class="dialog-form" id="formEditEtu" novalidate>
+        <form class="dialog-form" method="post" action="/index.php?page=student_management">
+            <input type="hidden" name="action" value="update_student">
+            <input type="hidden" name="id_profile" id="eIdProfile">
             <div class="field-group">
                 <div class="field">
                     <label for="eNom">Nom <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-user"></i><input id="eNom" type="text" required /></div>
+                    <div class="input"><i class="fa-solid fa-user"></i><input id="eNom" name="nom" type="text" required /></div>
                 </div>
                 <div class="field">
                     <label for="ePrenom">Prénom <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-user"></i><input id="ePrenom" type="text" required /></div>
+                    <div class="input"><i class="fa-solid fa-user"></i><input id="ePrenom" name="prenom" type="text" required /></div>
                 </div>
             </div>
             <div class="field">
                 <label for="eEmail">Email <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-envelope"></i><input id="eEmail" type="email" required /></div>
+                <div class="input"><i class="fa-solid fa-envelope"></i><input id="eEmail" name="email" type="email" required /></div>
             </div>
-            <footer class="dialog-actions">
+            <div class="field">
+                <label for="ePassword">Nouveau mot de passe</label>
+                <div class="input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input id="ePassword" name="password" type="password" placeholder="Laisser vide pour ne pas changer" />
+                </div>
+            </div>
+            <div class="field">
+                <label for="ePromotion">Promotion</label>
+                <div class="input">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <select id="ePromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                        <option value="">Aucune</option>
+                        {% for promo in promotions %}
+                            <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="field">
+                <label for="eStatus">Statut de recherche</label>
+                <div class="input">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <select id="eStatus" name="status" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                        <option value="wait">En cours</option>
+                        <option value="ok">Stage trouvé</option>
+                        <option value="no">Non trouvé</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-actions">
                 <button class="btn-secondary" type="button" id="btnCancelEditEtu">Annuler</button>
                 <button class="btn-voir" type="submit">Enregistrer</button>
-            </footer>
+            </div>
         </form>
     </div>
 </dialog>
 
+{# ===== DIALOG SUPPRIMER ===== #}
 <dialog class="dialog dialog--sm" id="dialogDeleteEtu">
     <div class="dialog-inner">
         <header class="dialog-header">
@@ -251,10 +318,14 @@
         <div class="dialog-confirm-body">
             <p>Cette action est <strong>irréversible</strong>. Le compte et toutes les données seront supprimés.</p>
         </div>
-        <footer class="dialog-actions">
-            <button class="btn-secondary" type="button" id="btnCancelDeleteEtu">Annuler</button>
-            <button class="btn-danger" type="button" id="btnConfirmDeleteEtu">Supprimer</button>
-        </footer>
+        <form method="post" action="/index.php?page=student_management">
+            <input type="hidden" name="action" value="delete_student">
+            <input type="hidden" name="id_profile" id="dIdProfile">
+            <div class="dialog-actions">
+                <button class="btn-secondary" type="button" id="btnCancelDeleteEtu">Annuler</button>
+                <button class="btn-danger" type="submit">Supprimer</button>
+            </div>
+        </form>
     </div>
 </dialog>
 
@@ -262,11 +333,9 @@
 
 {% block javascripts %}
 <script>
-    // Helpers ouverture/fermeture dialogs
     function openDialog(id) { document.getElementById(id).showModal(); }
     function closeDialog(id) { document.getElementById(id).close(); }
 
-    // Fermeture au clic sur le backdrop
     ['dialogViewEtu', 'dialogCreateEtu', 'dialogEditEtu', 'dialogDeleteEtu'].forEach(id => {
         const d = document.getElementById(id);
         d.addEventListener('click', e => {
@@ -277,24 +346,24 @@
         });
     });
 
-    const statutLabel = { ok: 'Accepté', wait: 'En attente', no: 'Refusé' };
-    const statutClass = { ok: 'badge--ok', wait: 'badge--wait', no: 'badge--no' };
+    const statusLabel = { ok: 'Stage trouvé', wait: 'En cours', no: 'Non trouvé' };
+    const statusClass = { ok: 'badge--ok', wait: 'badge--wait', no: 'badge--no' };
 
     // ===== VOIR =====
     document.querySelectorAll('.btn-view-etu').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('viewEtuTitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
-            document.getElementById('viewEtuInfo').textContent = btn.dataset.email;
+            document.getElementById('viewEtuInfo').textContent  = btn.dataset.email;
             const tbody = document.getElementById('viewEtuTbody');
             tbody.innerHTML = '';
             try {
                 JSON.parse(btn.dataset.candidatures || '[]').forEach(c => {
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td><strong>${c.offre}</strong></td><td>${c.entreprise}</td><td>${c.date}</td><td><span class="badge ${statutClass[c.statut]}">${statutLabel[c.statut]}</span></td>`;
+                tr.innerHTML = `<td><strong>${c.offre}</strong></td><td>${c.entreprise}</td>`; 
                     tbody.appendChild(tr);
                 });
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="4">Aucune candidature.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="2">Aucune candidature.</td></tr>';
             }
             openDialog('dialogViewEtu');
         };
@@ -303,45 +372,55 @@
     document.getElementById('btnCloseViewEtu2').onclick = () => closeDialog('dialogViewEtu');
 
     // ===== CRÉER =====
-    document.getElementById('btnCreateEtu').onclick        = () => openDialog('dialogCreateEtu');
-    document.getElementById('btnCloseCreateEtu').onclick   = () => closeDialog('dialogCreateEtu');
-    document.getElementById('btnCancelCreateEtu').onclick  = () => closeDialog('dialogCreateEtu');
-    document.getElementById('formCreateEtu').onsubmit = e => {
-        e.preventDefault();
-        alert('Étudiant créé (démo)');
-        closeDialog('dialogCreateEtu');
-    };
+    document.getElementById('btnCreateEtu').onclick       = () => openDialog('dialogCreateEtu');
+    document.getElementById('btnCloseCreateEtu').onclick  = () => closeDialog('dialogCreateEtu');
+    document.getElementById('btnCancelCreateEtu').onclick = () => closeDialog('dialogCreateEtu');
+    document.querySelectorAll(".toogle-password").forEach(button => {
+        button.addEventListener("click", () => {
+            const input = button.parentElement.querySelector("input");
+            const icon = button.querySelector("i");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+    });
 
     // ===== MODIFIER =====
     document.querySelectorAll('.btn-edit-etu').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('editEtuSubtitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
-            document.getElementById('eNom').value    = btn.dataset.nom    || '';
-            document.getElementById('ePrenom').value = btn.dataset.prenom || '';
-            document.getElementById('eEmail').value  = btn.dataset.email  || '';
+            document.getElementById('eIdProfile').value = btn.dataset.id     || '';
+            document.getElementById('eNom').value       = btn.dataset.nom    || '';
+            document.getElementById('ePrenom').value    = btn.dataset.prenom || '';
+            document.getElementById('eEmail').value     = btn.dataset.email  || '';
+            document.getElementById('ePromotion').value = '';
+
+            // Pré-sélectionne le status actuel
+            const eStatus = document.getElementById('eStatus');
+            for (let o of eStatus.options) o.selected = o.value === (btn.dataset.status || 'wait');
+
             openDialog('dialogEditEtu');
         };
     });
     document.getElementById('btnCloseEditEtu').onclick  = () => closeDialog('dialogEditEtu');
     document.getElementById('btnCancelEditEtu').onclick = () => closeDialog('dialogEditEtu');
-    document.getElementById('formEditEtu').onsubmit = e => {
-        e.preventDefault();
-        alert('Modifications enregistrées (démo)');
-        closeDialog('dialogEditEtu');
-    };
 
     // ===== SUPPRIMER =====
     document.querySelectorAll('.btn-delete-etu').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('deleteEtuName').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
+            document.getElementById('dIdProfile').value          = btn.dataset.id;
             openDialog('dialogDeleteEtu');
         };
     });
-    document.getElementById('btnCloseDeleteEtu').onclick   = () => closeDialog('dialogDeleteEtu');
-    document.getElementById('btnCancelDeleteEtu').onclick  = () => closeDialog('dialogDeleteEtu');
-    document.getElementById('btnConfirmDeleteEtu').onclick = () => {
-        alert('Étudiant supprimé (démo)');
-        closeDialog('dialogDeleteEtu');
-    };
+    document.getElementById('btnCloseDeleteEtu').onclick  = () => closeDialog('dialogDeleteEtu');
+    document.getElementById('btnCancelDeleteEtu').onclick = () => closeDialog('dialogDeleteEtu');
 </script>
 {% endblock %}

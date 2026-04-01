@@ -41,6 +41,9 @@
                     <div class="input">
                         <i class="fa-solid fa-lock"></i>
                         <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+                        <button type="button" class="toggle-password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
                     </div>
                 </div>
 
@@ -53,4 +56,20 @@
             </form>
         </section>
     </main>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+                } else {
+                    input.type = 'password';
+                    btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+                }
+            });
+        });
+    </script>
 {% endblock %}
