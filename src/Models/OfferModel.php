@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Models;
+use App\Utils\PaginationController;
 
 use PDO;
 
-class OfferModel extends PaginationModel
+class OfferModel extends PaginationController
 {
     private \PDO $db;
     protected int $parPage = 5;

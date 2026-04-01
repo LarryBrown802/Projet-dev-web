@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models;
+use App\Utils\PaginationController;
 
-class CompanyModel extends PaginationModel
+class CompanyModel extends PaginationController
 {
     private \PDO $db;
     protected int $parPage = 5;
