@@ -37,9 +37,11 @@ $twig->addGlobal('session', $_SESSION);
 // Fonction de protection des routes par rôle
 function requireRole(string ...$roles): void
 {
+    global $twig; // Permet d'utiliser l'affichage Twig à l'intérieur de la fonction
+    
     if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $roles)) {
         http_response_code(403);
-        echo 'Accès interdit';
+        echo $twig->render('403.html.twig');
         exit;
     }
 }
@@ -138,6 +140,8 @@ switch ($page) {
 
     case 'conditions-utilisation':
         echo $twig->render('conditions-utilisation.html.twig');
+        break; 
+        
     // ===== PILOTE & ADMIN =====
     case 'offer_management':
         requireRole('administrateur', 'pilote');
@@ -159,6 +163,6 @@ switch ($page) {
 
     default:
         http_response_code(404);
-        echo 'Page non trouvée';
+        echo $twig->render('404.html.twig');
         break;
 }
