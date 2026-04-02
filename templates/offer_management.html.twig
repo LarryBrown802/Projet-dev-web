@@ -30,7 +30,7 @@
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" name="search" value="{{ search|default('') }}"
-                   placeholder="Rechercher par titre, entreprise…" />
+                   placeholder="Rechercher par titre, entreprise…">
         </div>
         <div class="search-bar">
             <i class="fa-solid fa-filter"></i>
@@ -207,7 +207,7 @@
             <input type="hidden" name="action" value="create">
             <div class="field">
                 <label for="cTitle">Titre <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-briefcase"></i><input id="cTitle" name="title" type="text" placeholder="ex: Développeur Web" required /></div>
+                <div class="input"><i class="fa-solid fa-briefcase"></i><input id="cTitle" name="title" type="text" placeholder="ex: Développeur Web" required></div>
             </div>
             <div class="field-group">
                 <div class="field">
@@ -237,21 +237,21 @@
             </div>
             <div class="field">
                 <label for="cDomain">Domaine <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-folder"></i><input id="cDomain" name="domain" type="text" placeholder="ex: Développement" required /></div>
+                <div class="input"><i class="fa-solid fa-folder"></i><input id="cDomain" name="domain" type="text" placeholder="ex: Développement" required></div>
             </div>
             <div class="field-group">
                 <div class="field">
                     <label for="cDuration">Durée <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-clock"></i><input id="cDuration" name="duration" type="text" placeholder="ex: 6 mois" required /></div>
+                    <div class="input"><i class="fa-solid fa-clock"></i><input id="cDuration" name="duration" type="text" placeholder="ex: 6 mois" required></div>
                 </div>
                 <div class="field">
                     <label for="cRemu">Rémunération (€) <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="cRemu" name="remuneration" type="number" placeholder="ex: 900" required /></div>
+                    <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="cRemu" name="remuneration" type="number" placeholder="ex: 900" required></div>
                 </div>
             </div>
             <div class="field">
                 <label for="cCity">Ville <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-location-dot"></i><input id="cCity" name="city" type="text" placeholder="ex: Lyon" required /></div>
+                <div class="input"><i class="fa-solid fa-location-dot"></i><input id="cCity" name="city" type="text" placeholder="ex: Lyon" required></div>
             </div>
             <div class="field">
                 <label for="cCompany">Entreprise <span class="required">*</span></label>
@@ -267,7 +267,7 @@
             </div>
             <div class="field">
                 <label for="cDate">Date de publication <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-calendar"></i><input id="cDate" name="publication_date" type="date" required /></div>
+                <div class="input"><i class="fa-solid fa-calendar"></i><input id="cDate" name="publication_date" type="date" required></div>
             </div>
             <div class="field">
                 <label for="cDesc">Description <span class="required">*</span></label>
@@ -294,7 +294,7 @@
             <input type="hidden" name="id" id="eOffreId">
             <div class="field">
                 <label for="eTitle">Titre <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-briefcase"></i><input id="eTitle" name="title" type="text" required /></div>
+                <div class="input"><i class="fa-solid fa-briefcase"></i><input id="eTitle" name="title" type="text" required></div>
             </div>
             <div class="field-group">
                 <div class="field">
@@ -302,6 +302,7 @@
                     <div class="input">
                         <i class="fa-solid fa-tag"></i>
                         <select id="eType" name="type" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                            <option value="">Sélectionner…</option>
                             <option value="Stage">Stage</option>
                             <option value="Alternance">Alternance</option>
                         </select>
@@ -312,6 +313,7 @@
                     <div class="input">
                         <i class="fa-solid fa-signal"></i>
                         <select id="eLevel" name="level" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                            <option value="">Sélectionner…</option>
                             <option value="Bac+2/3">Bac+2/3</option>
                             <option value="Bac+3">Bac+3</option>
                             <option value="Bac+4/5">Bac+4/5</option>
@@ -322,21 +324,21 @@
             </div>
             <div class="field">
                 <label for="eDomain">Domaine <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-folder"></i><input id="eDomain" name="domain" type="text" required /></div>
+                <div class="input"><i class="fa-solid fa-folder"></i><input id="eDomain" name="domain" type="text" required></div>
             </div>
             <div class="field-group">
                 <div class="field">
                     <label for="eDuration">Durée <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-clock"></i><input id="eDuration" name="duration" type="text" required /></div>
+                    <div class="input"><i class="fa-solid fa-clock"></i><input id="eDuration" name="duration" type="text" required></div>
                 </div>
                 <div class="field">
                     <label for="eRemu">Rémunération (€) <span class="required">*</span></label>
-                    <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="eRemu" name="remuneration" type="number" required /></div>
+                    <div class="input"><i class="fa-solid fa-euro-sign"></i><input id="eRemu" name="remuneration" type="number" required></div>
                 </div>
             </div>
             <div class="field">
                 <label for="eCity">Ville <span class="required">*</span></label>
-                <div class="input"><i class="fa-solid fa-location-dot"></i><input id="eCity" name="city" type="text" required /></div>
+                <div class="input"><i class="fa-solid fa-location-dot"></i><input id="eCity" name="city" type="text" required></div>
             </div>
             <div class="field">
                 <label for="eDesc">Description <span class="required">*</span></label>

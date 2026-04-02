@@ -26,6 +26,8 @@ use Twig\Loader\FilesystemLoader;
 
 $loader = new FilesystemLoader(__DIR__ . '/../templates');
 $twig   = new Environment($loader);
+$dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotnev->load();
 
 $bdd = Database::connect();
 
