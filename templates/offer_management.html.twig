@@ -7,7 +7,7 @@
 {% block title %}Gestion des offres - LEMS{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="../assets/pages/Admin.css">
+    <link rel="stylesheet" href="/assets/pages/Admin.css">
 {% endblock %}
 
 {% block content %}
@@ -377,74 +377,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function openDialog(id) { document.getElementById(id).showModal(); }
-    function closeDialog(id) { document.getElementById(id).close(); }
-
-    ['dialogViewOffre', 'dialogCreateOffre', 'dialogEditOffre', 'dialogDeleteOffre'].forEach(id => {
-        const d = document.getElementById(id);
-        d.addEventListener('click', e => {
-            const r = d.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
-        });
-    });
-
-    // ===== CRÉER =====
-    document.getElementById('btnCreateOffre').onclick       = () => openDialog('dialogCreateOffre');
-    document.getElementById('btnCloseCreateOffre').onclick  = () => closeDialog('dialogCreateOffre');
-    document.getElementById('btnCancelCreateOffre').onclick = () => closeDialog('dialogCreateOffre');
-
-    // ===== VOIR =====
-    document.querySelectorAll('.btn-view-offre').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('viewOffreTitre').textContent      = btn.dataset.titre;
-            document.getElementById('viewOffreEntreprise').textContent = btn.dataset.entreprise;
-            document.getElementById('viewLieu').textContent            = btn.dataset.lieu;
-            document.getElementById('viewType').textContent            = btn.dataset.type;
-            document.getElementById('viewNiveau').textContent          = btn.dataset.niveau;
-            document.getElementById('viewDuree').textContent           = btn.dataset.duree;
-            document.getElementById('viewRemu').textContent            = btn.dataset.remu;
-            document.getElementById('viewDate').textContent            = btn.dataset.date;
-            document.getElementById('viewDesc').textContent            = btn.dataset.desc;
-            openDialog('dialogViewOffre');
-        };
-    });
-    document.getElementById('btnCloseViewOffre').onclick  = () => closeDialog('dialogViewOffre');
-    document.getElementById('btnCloseViewOffre2').onclick = () => closeDialog('dialogViewOffre');
-
-    // ===== MODIFIER =====
-    document.querySelectorAll('.btn-edit-offre').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('editOffreSubtitle').textContent = btn.dataset.titre;
-            document.getElementById('eOffreId').value  = btn.dataset.id;
-            document.getElementById('eTitle').value    = btn.dataset.titre  || '';
-            document.getElementById('eDomain').value   = btn.dataset.domain || '';
-            document.getElementById('eDuration').value = btn.dataset.duree  || '';
-            document.getElementById('eRemu').value     = btn.dataset.remu   || '';
-            document.getElementById('eCity').value     = btn.dataset.lieu   || '';
-            document.getElementById('eDesc').value     = btn.dataset.desc   || '';
-
-            const eType = document.getElementById('eType');
-            for (let o of eType.options) o.selected = o.value === btn.dataset.type;
-
-            const eLevel = document.getElementById('eLevel');
-            for (let o of eLevel.options) o.selected = o.value === btn.dataset.niveau;
-
-            openDialog('dialogEditOffre');
-        };
-    });
-    document.getElementById('btnCloseEditOffre').onclick  = () => closeDialog('dialogEditOffre');
-    document.getElementById('btnCancelEditOffre').onclick = () => closeDialog('dialogEditOffre');
-
-    // ===== SUPPRIMER =====
-    document.querySelectorAll('.btn-delete-offre').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('deleteOffreTitre').textContent = btn.dataset.titre;
-            document.getElementById('dOffreId').value               = btn.dataset.id;
-            openDialog('dialogDeleteOffre');
-        };
-    });
-    document.getElementById('btnCloseDeleteOffre').onclick  = () => closeDialog('dialogDeleteOffre');
-    document.getElementById('btnCancelDeleteOffre').onclick = () => closeDialog('dialogDeleteOffre');
-</script>
+    {{ parent() }}
+    <script src="/assets/javascript/offer-crud.js"></script>
 {% endblock %}

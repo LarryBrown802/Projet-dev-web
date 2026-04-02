@@ -97,4 +97,57 @@ __________ */
 
 /* AFFICHAGE DU MENU AU SURVOL OU FOCUS */
 .profile:hover .profile-menu,
-.profile:focus-within .profile-menu { display: block; }
+.profile:focus-within .profile-menu{
+  display: block;
+
+}
+
+/* =========================
+   BURGER
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.burger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* =========================
+   MOBILE
+@media (max-width: 768px) {
+
+  .burger {
+    display: flex;
+  }
+
+  .navbar-right {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    background: var(--primary-dark);
+    flex-direction: column;
+    align-items: flex-start;
+    width: 220px;
+    padding: 15px;
+    border-radius: 16px;
+    display: none;
+  }
+
+  .navbar-right.active {
+    display: flex;
+  }
+
+  .navbar-right a {
+    width: 100%;
+  }
+
+  .profile {
+    width: 100%;
+  }
+}
