@@ -231,6 +231,7 @@
                             data-niveau="{{ offer.level }}"
                             data-duree="{{ offer.duration }}"
                             data-remu="{{ offer.remuneration }}"
+                            data-desc="{{ offer.description }}"
                             data-entreprisedesc="{{ offer.entrepriseDesc ?? '' }}"
                         >
                             Voir plus
@@ -288,6 +289,7 @@
         </header>
 
         <div class="dialog-grid">
+            {# Colonne gauche — Détails #}
             <section class="dialog-box">
                 <h3>Détails</h3>
                 <ul>
@@ -295,25 +297,32 @@
                     <li><strong>Type :</strong> <span id="dialogType"></span></li>
                     <li><strong>Niveau :</strong> <span id="dialogNiveau"></span></li>
                     <li><strong>Durée :</strong> <span id="dialogDuree"></span></li>
-                    <li><strong>Rémunération :</strong> <span id="dialogRemu"></span></li>
+                    <li><strong>Rémunération :</strong> <span id="dialogRemu"></span> €/mois</li>
                 </ul>
             </section>
 
-            <section class="dialog-box dialog-full">
+            {# Colonne droite — À propos de l'entreprise #}
+            <section class="dialog-box">
                 <h3>À propos de l'entreprise</h3>
                 <p id="dialogEntrepriseDesc"></p>
             </section>
+
+            {# Ligne complète — Description du poste #}
+            <section class="dialog-box dialog-full">
+                <h3>Description du poste</h3>
+                <p id="dialogDesc"></p>
+            </section>
         </div>
 
-        <footer class="dialog-actions">
+        <div class="dialog-actions">
             {% if session.role is defined and session.role == 'etudiant' %}
                 <button class="btn-voir btn-full" type="button" id="btnPostuler">Postuler</button>
             {% else %}
-                <a href="/index.php?page=connexion" class="btn-voir btn-full" style="text-decoration:none;text-align:center">
+                <a href="/index.php?page=connexion" class="btn-voir btn-full" style="text-decoration:none;text-align:center;display:block">
                     Se connecter pour postuler
                 </a>
             {% endif %}
-        </footer>
+        </div>
     </form>
 </dialog>
 {% endblock %}
@@ -332,6 +341,7 @@
             document.getElementById('dialogNiveau').textContent         = btn.dataset.niveau;
             document.getElementById('dialogDuree').textContent          = btn.dataset.duree;
             document.getElementById('dialogRemu').textContent           = btn.dataset.remu;
+            document.getElementById('dialogDesc').textContent           = btn.dataset.desc;
             document.getElementById('dialogEntrepriseDesc').textContent = btn.dataset.entreprisedesc;
 
             const btnPostuler = document.getElementById('btnPostuler');
@@ -381,7 +391,7 @@
             const offerId = this.dataset.offerId;
             if (!offerId) return;
 
-            const previousState = !this.checked; // état avant le clic
+            const previousState = !this.checked;
 
             try {
                 const response = await fetch('/index.php?page=toggle_wishlist', {
@@ -393,7 +403,7 @@
                 const result = await response.json();
 
                 if (!result.success) {
-                    this.checked = previousState; // annule le changement visuel
+                    this.checked = previousState;
                     alert(result.error || 'Erreur lors de la mise à jour des favoris.');
                 }
             } catch (e) {
