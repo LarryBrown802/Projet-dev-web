@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Si le fichier ou dossier existe, on le sert directement
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Sinon on redirige vers index.php
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Sécurité — bloque l'accès aux fichiers sensibles
+<FilesMatch "\.(env|json|lock|md|sql|sh|gitignore)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

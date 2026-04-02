@@ -8,13 +8,11 @@ use Twig\Environment;
 class ConnexionController
 {
     private Environment $twig;
-    private \PDO $bdd;
     private UserModel $userModel;
 
     public function __construct(Environment $twig, \PDO $bdd)
     {
         $this->twig      = $twig;
-        $this->bdd       = $bdd;
         $this->userModel = new UserModel($bdd);
     }
 
