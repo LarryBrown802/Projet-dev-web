@@ -306,7 +306,13 @@
         </div>
 
         <footer class="dialog-actions">
-            <button class="btn-voir btn-full" type="button" id="btnPostuler">Postuler</button>
+            {% if session.role is defined and session.role == 'etudiant' %}
+                <button class="btn-voir btn-full" type="button" id="btnPostuler">Postuler</button>
+            {% else %}
+                <a href="/index.php?page=connexion" class="btn-voir btn-full" style="text-decoration:none;text-align:center">
+                    Se connecter pour postuler
+                </a>
+            {% endif %}
         </footer>
     </form>
 </dialog>
@@ -328,9 +334,12 @@
             document.getElementById('dialogRemu').textContent           = btn.dataset.remu;
             document.getElementById('dialogEntrepriseDesc').textContent = btn.dataset.entreprisedesc;
 
-            document.getElementById('btnPostuler').onclick = () => {
-                window.location.href = `/index.php?page=apply&offer_id=${btn.dataset.id}`;
-            };
+            const btnPostuler = document.getElementById('btnPostuler');
+            if (btnPostuler) {
+                btnPostuler.onclick = () => {
+                    window.location.href = `/index.php?page=apply&offer_id=${btn.dataset.id}`;
+                };
+            }
 
             dialog.showModal();
         });

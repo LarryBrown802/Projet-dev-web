@@ -37,6 +37,19 @@ class CompanyModel extends PaginationController
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function getById(int $id): array|false
+    {
+        $stmt = $this->db->prepare('
+            SELECT c.*, COUNT(DISTINCT o.ID_offer) AS offres_count
+            FROM Company c
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            WHERE c.ID = :id
+            GROUP BY c.ID
+        ');
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public function create(string $name, string $email, string $number, string $description): bool
     {
         $stmt = $this->db->prepare('
@@ -54,7 +67,8 @@ class CompanyModel extends PaginationController
     public function update(int $id, string $name, string $email, string $number, string $description): bool
     {
         $stmt = $this->db->prepare('
-            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            UPDATE Company SET name = :name, email = :email, 
+                               number = :number, description = :description
             WHERE ID = :id
         ');
         return $stmt->execute([
@@ -72,36 +86,59 @@ class CompanyModel extends PaginationController
         return $stmt->execute([':mark' => $mark, ':id' => $id]);
     }
 
+    public function addNote(int $id_user, int $id_company, int $value): bool
+    {
+        // Insère ou met à jour la note
+        $stmt = $this->db->prepare('
+            INSERT INTO Note (ID_user, ID_company, value)
+            VALUES (:id_user, :id_company, :value)
+            ON DUPLICATE KEY UPDATE value = :value2
+        ');
+        $result = $stmt->execute([
+            ':id_user'    => $id_user,
+            ':id_company' => $id_company,
+            ':value'      => $value,
+            ':value2'     => $value,
+        ]);
+
+        // Recalcule la moyenne
+        if ($result) {
+            $avg = $this->db->prepare('
+                SELECT AVG(value) FROM Note WHERE ID_company = :id
+            ');
+            $avg->execute([':id' => $id_company]);
+            $moyenne = round((float) $avg->fetchColumn(), 1);
+            $this->updateMark($id_company, $moyenne);
+        }
+
+        return $result;
+    }
+
     public function delete(int $id): bool
     {
         try {
             $this->db->beginTransaction();
 
-            // Supprime d'abord les candidatures liées aux offres de l'entreprise
             $this->db->prepare('
                 DELETE FROM Apply WHERE ID_offer IN (
                     SELECT ID_offer FROM Offer WHERE ID_company = :id
                 )
             ')->execute([':id' => $id]);
 
-            // Supprime ensuite les wishlists liées aux offres
             $this->db->prepare('
                 DELETE FROM Save_wishlist WHERE ID_offer IN (
                     SELECT ID_offer FROM Offer WHERE ID_company = :id
                 )
             ')->execute([':id' => $id]);
 
-            // Supprime les offres de l'entreprise
             $this->db->prepare('
                 DELETE FROM Offer WHERE ID_company = :id
             ')->execute([':id' => $id]);
 
-            // Supprime les notes de l'entreprise
             $this->db->prepare('
                 DELETE FROM Note WHERE ID_company = :id
             ')->execute([':id' => $id]);
 
-            // Supprime enfin l'entreprise
             $this->db->prepare('
                 DELETE FROM Company WHERE ID = :id
             ')->execute([':id' => $id]);
@@ -114,17 +151,4 @@ class CompanyModel extends PaginationController
             return false;
         }
     }
-
-    public function getById(int $id): array|false
-{
-    $stmt = $this->db->prepare('
-        SELECT c.*, COUNT(DISTINCT o.ID_offer) AS offres_count
-        FROM Company c
-        LEFT JOIN Offer o ON o.ID_company = c.ID
-        WHERE c.ID = :id
-        GROUP BY c.ID
-    ');
-    $stmt->execute([':id' => $id]);
-    return $stmt->fetch(\PDO::FETCH_ASSOC);
-}
 }
