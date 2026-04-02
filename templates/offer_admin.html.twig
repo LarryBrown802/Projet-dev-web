@@ -24,7 +24,7 @@
     </div>
 
     {# ===== BARRE DE RECHERCHE ===== #}
-    <form method="get" action="/index.php" style="display:grid;grid-template-columns:1fr 200px;gap:12px" class="search-bar-wrap">
+    <form method="get" action="/index.php" class="search-bar-wrap search-bar-wrap--2col">
         <input type="hidden" name="page" value="offer_admin">
         <input type="hidden" name="p" value="1">
         <div class="search-bar">
@@ -34,8 +34,7 @@
         </div>
         <div class="search-bar">
             <i class="fa-solid fa-filter"></i>
-            <select name="type" style="border:none;outline:none;width:100%;background:transparent;font-weight:800;cursor:pointer"
-                    onchange="this.form.submit()">
+            <select name="type" class="select-bare" onchange="this.form.submit()">
                 <option value="">Tous les types</option>
                 <option value="Stage"      {% if type == 'Stage' %}selected{% endif %}>Stage</option>
                 <option value="Alternance" {% if type == 'Alternance' %}selected{% endif %}>Alternance</option>
@@ -214,7 +213,7 @@
                     <label for="cType">Type <span class="required">*</span></label>
                     <div class="input">
                         <i class="fa-solid fa-tag"></i>
-                        <select id="cType" name="type" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                        <select id="cType" name="type" class="select-bare" required>
                             <option value="">Sélectionner…</option>
                             <option value="Stage">Stage</option>
                             <option value="Alternance">Alternance</option>
@@ -225,7 +224,7 @@
                     <label for="cLevel">Niveau <span class="required">*</span></label>
                     <div class="input">
                         <i class="fa-solid fa-signal"></i>
-                        <select id="cLevel" name="level" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                        <select id="cLevel" name="level" class="select-bare" required>
                             <option value="">Sélectionner…</option>
                             <option value="Bac+2/3">Bac+2/3</option>
                             <option value="Bac+3">Bac+3</option>
@@ -257,7 +256,7 @@
                 <label for="cCompany">Entreprise <span class="required">*</span></label>
                 <div class="input">
                     <i class="fa-solid fa-building"></i>
-                    <select id="cCompany" name="id_company" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                    <select id="cCompany" name="id_company" class="select-bare" required>
                         <option value="">Sélectionner…</option>
                         {% for company in companies %}
                             <option value="{{ company.ID }}">{{ company.name }}</option>
@@ -301,7 +300,7 @@
                     <label for="eType">Type <span class="required">*</span></label>
                     <div class="input">
                         <i class="fa-solid fa-tag"></i>
-                        <select id="eType" name="type" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                        <select id="eType" name="type" class="select-bare" required>
                             <option value="Stage">Stage</option>
                             <option value="Alternance">Alternance</option>
                         </select>
@@ -311,7 +310,7 @@
                     <label for="eLevel">Niveau <span class="required">*</span></label>
                     <div class="input">
                         <i class="fa-solid fa-signal"></i>
-                        <select id="eLevel" name="level" style="border:none;outline:none;width:100%;background:transparent;font-weight:800" required>
+                        <select id="eLevel" name="level" class="select-bare" required>
                             <option value="Bac+2/3">Bac+2/3</option>
                             <option value="Bac+3">Bac+3</option>
                             <option value="Bac+4/5">Bac+4/5</option>
@@ -387,12 +386,10 @@
         });
     });
 
-    // ===== CRÉER =====
     document.getElementById('btnCreateOffre').onclick       = () => openDialog('dialogCreateOffre');
     document.getElementById('btnCloseCreateOffre').onclick  = () => closeDialog('dialogCreateOffre');
     document.getElementById('btnCancelCreateOffre').onclick = () => closeDialog('dialogCreateOffre');
 
-    // ===== VOIR =====
     document.querySelectorAll('.btn-view-offre').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('viewOffreTitre').textContent      = btn.dataset.titre;
@@ -410,7 +407,6 @@
     document.getElementById('btnCloseViewOffre').onclick  = () => closeDialog('dialogViewOffre');
     document.getElementById('btnCloseViewOffre2').onclick = () => closeDialog('dialogViewOffre');
 
-    // ===== MODIFIER =====
     document.querySelectorAll('.btn-edit-offre').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('editOffreSubtitle').textContent = btn.dataset.titre;
@@ -421,20 +417,16 @@
             document.getElementById('eRemu').value     = btn.dataset.remu   || '';
             document.getElementById('eCity').value     = btn.dataset.lieu   || '';
             document.getElementById('eDesc').value     = btn.dataset.desc   || '';
-
             const eType = document.getElementById('eType');
             for (let o of eType.options) o.selected = o.value === btn.dataset.type;
-
             const eLevel = document.getElementById('eLevel');
             for (let o of eLevel.options) o.selected = o.value === btn.dataset.niveau;
-
             openDialog('dialogEditOffre');
         };
     });
     document.getElementById('btnCloseEditOffre').onclick  = () => closeDialog('dialogEditOffre');
     document.getElementById('btnCancelEditOffre').onclick = () => closeDialog('dialogEditOffre');
 
-    // ===== SUPPRIMER =====
     document.querySelectorAll('.btn-delete-offre').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('deleteOffreTitre').textContent = btn.dataset.titre;

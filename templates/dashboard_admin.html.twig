@@ -21,7 +21,7 @@
         <div class="page-meta">
             <div class="meta-card">
                 <span class="meta-label">Rôle</span>
-                <span class="meta-value" style="font-size:15px">Administrateur</span>
+                <span class="meta-value meta-value--md">Administrateur</span>
             </div>
         </div>
     </div>
@@ -50,84 +50,84 @@
         </article>
     </div>
 
-        {# ===== TABLEAUX ===== #}
-        <section class="admin-main">
+    {# ===== TABLEAUX ===== #}
+    <section class="admin-main">
 
-            {# Tableau offres #}
-            <div class="section-head-row">
-                <h2 class="section-title-dash">Vue d'ensemble des offres</h2>
-                <a href="/index.php?page=offer_admin" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+        {# Tableau offres #}
+        <div class="section-head-row">
+            <h2 class="section-title-dash">Vue d'ensemble des offres</h2>
+            <a href="/index.php?page=offer_admin" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
 
-            <div class="table-wrap">
-                <table class="dash-table">
-                    <thead>
-                        <tr>
-                            <th>Titre</th>
-                            <th>Entreprise</th>
-                            <th>Type</th>
-                            <th>Niveau</th>
-                            <th>Lieu</th>
-                            <th>Rémun.</th>
-                            <th>Candidatures</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for offer in latestOffers %}
-                        <tr>
-                            <td><strong>{{ offer.title }}</strong></td>
-                            <td>{{ offer.entreprise }}</td>
-                            <td>
-                                {% if offer.type == 'Stage' %}
-                                    <span class="tag-pill tag-stage">Stage</span>
-                                {% else %}
-                                    <span class="tag-pill tag-alt">Alternance</span>
-                                {% endif %}
-                            </td>
-                            <td><span class="tag-pill tag-bac">{{ offer.level }}</span></td>
-                            <td><span class="tag-pill tag-lieu">{{ offer.lieu }}</span></td>
-                            <td>{{ offer.remuneration }} €</td>
-                            <td>{{ offer.candidatures ?? 0 }}</td>
-                        </tr>
-                        {% else %}
-                            <tr><td colspan="7">Aucune offre disponible.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-wrap">
+            <table class="dash-table">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Entreprise</th>
+                        <th>Type</th>
+                        <th>Niveau</th>
+                        <th>Lieu</th>
+                        <th>Rémun.</th>
+                        <th>Candidatures</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in latestOffers %}
+                    <tr>
+                        <td><strong>{{ offer.title }}</strong></td>
+                        <td>{{ offer.entreprise }}</td>
+                        <td>
+                            {% if offer.type == 'Stage' %}
+                                <span class="tag-pill tag-stage">Stage</span>
+                            {% else %}
+                                <span class="tag-pill tag-alt">Alternance</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="tag-pill tag-bac">{{ offer.level }}</span></td>
+                        <td><span class="tag-pill tag-lieu">{{ offer.lieu }}</span></td>
+                        <td>{{ offer.remuneration }} €</td>
+                        <td>{{ offer.candidatures ?? 0 }}</td>
+                    </tr>
+                    {% else %}
+                        <tr><td colspan="7">Aucune offre disponible.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-            {# Tableau pilotes #}
-            <div class="section-head-row" style="margin-top:22px">
-                <h2 class="section-title-dash">Pilotes enregistrés</h2>
-                <a href="/index.php?page=pilot_admin" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+        {# Tableau pilotes #}
+        <div class="section-head-row section-head-row--mt">
+            <h2 class="section-title-dash">Pilotes enregistrés</h2>
+            <a href="/index.php?page=pilot_admin" class="link-see-all">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
 
-            <div class="table-wrap">
-                <table class="dash-table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Promotion</th>
-                            <th>Étudiants</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pilot in pilots %}
-                        <tr>
-                            <td><strong>{{ pilot.name }}</strong></td>
-                            <td>{{ pilot.surname }}</td>
-                            <td>{{ pilot.promotion ?? '—' }}</td>
-                            <td>{{ pilot.nb_etudiants ?? 0 }}</td>
-                        </tr>
-                        {% else %}
-                            <tr><td colspan="4">Aucun pilote enregistré.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-wrap">
+            <table class="dash-table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Promotion</th>
+                        <th>Étudiants</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pilot in pilots %}
+                    <tr>
+                        <td><strong>{{ pilot.name }}</strong></td>
+                        <td>{{ pilot.surname }}</td>
+                        <td>{{ pilot.promotion ?? '—' }}</td>
+                        <td>{{ pilot.nb_etudiants ?? 0 }}</td>
+                    </tr>
+                    {% else %}
+                        <tr><td colspan="4">Aucun pilote enregistré.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-        </section>
+    </section>
 
 </main>
 {% endblock %}
