@@ -30,7 +30,7 @@ class HomeController
             $wishlistIds = $this->wishlistModel->getWishlistIds($profileId);
         }
 
-        echo $this->twig->render('home.html.twig', [
+        echo $this->twig->render('pages/home.html.twig', [
             'current_page' => 'accueil',
             'latestOffers' => $latestOffers,
             'wishlistIds' => $wishlistIds,

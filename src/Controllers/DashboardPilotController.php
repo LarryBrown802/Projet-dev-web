@@ -45,7 +45,7 @@ class DashboardPilotController
         // 5 dernières offres
         $latestOffers = $this->offerModel->getAllOffers(null, null, 5);
 
-        echo $this->twig->render('dashboard_pilot.html.twig', [
+        echo $this->twig->render('admin/dashboard_pilot.html.twig', [
             'current_page' => 'dashboard_pilot',
             'pilot' => $pilot,
             'profile' => $profile,

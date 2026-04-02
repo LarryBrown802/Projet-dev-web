@@ -23,7 +23,7 @@ class ApplyController
             header('Location: /index.php?page=connexion');
             exit;
         }
-        
+
         // Récupère l'offre via ID ou via nom
         $offerId = $_POST['offer_id'] ?? (isset($_GET['offer_id']) ? (int)$_GET['offer_id'] : null);
         $poste = $_GET['poste'] ?? 'Candidature spontanée';
@@ -79,7 +79,7 @@ class ApplyController
             }
         }
 
-        echo $this->twig->render('apply.html.twig', [
+        echo $this->twig->render('pages/apply.html.twig', [
             'current_page' => 'apply',
             'offer_id' => $offerId,
             'poste' => $poste,
