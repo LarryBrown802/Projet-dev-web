@@ -524,3 +524,75 @@ details[open] summary .plus::before { content: "−"; }
   color: #444;
   line-height: 1.5;
 }
+
+@media (max-width: 900px) {
+
+  .offers-grid {
+    grid-template-columns: 1fr;
+    padding: 0 15px;
+  }
+
+  .list {
+    height: auto;
+    min-height: auto;
+  }
+
+  .detail {
+    height: auto;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .mini-card {
+    grid-template-columns: 28px 1fr 20px;
+    padding: 12px;
+  }
+
+  .mini-title {
+    font-size: 13px;
+  }
+
+  .mini-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .detail-head {
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+  }
+
+  .tags {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tabs {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .list {
+    height: 70vh;
+  }
+
+  .detail {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .list-cards,
+  .detail-body {
+    overflow: visible;
+  }
+}

@@ -273,54 +273,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function openDialog(id) { document.getElementById(id).showModal(); }
-    function closeDialog(id) { document.getElementById(id).close(); }
-
-    ['dialogCreateEnt', 'dialogEditEnt', 'dialogRateEnt', 'dialogDeleteEnt'].forEach(id => {
-        const d = document.getElementById(id);
-        d.addEventListener('click', e => {
-            const r = d.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
-        });
-    });
-
-    document.getElementById('btnCreateEntreprise').onclick  = () => openDialog('dialogCreateEnt');
-    document.getElementById('btnCloseCreateEnt').onclick    = () => closeDialog('dialogCreateEnt');
-    document.getElementById('btnCancelCreateEnt').onclick   = () => closeDialog('dialogCreateEnt');
-
-    document.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('editEntName').textContent  = btn.dataset.name;
-            document.getElementById('eEId').value               = btn.dataset.id;
-            document.getElementById('eENom').value              = btn.dataset.name        || '';
-            document.getElementById('eEEmail').value            = btn.dataset.email       || '';
-            document.getElementById('eETel').value              = btn.dataset.number      || '';
-            document.getElementById('eEDesc').value             = btn.dataset.description || '';
-            openDialog('dialogEditEnt');
-        };
-    });
-    document.getElementById('btnCloseEditEnt').onclick  = () => closeDialog('dialogEditEnt');
-    document.getElementById('btnCancelEditEnt').onclick = () => closeDialog('dialogEditEnt');
-
-    document.querySelectorAll('.btn-rate').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('rateEntName').textContent = btn.dataset.name;
-            document.getElementById('rateEId').value           = btn.dataset.id;
-            openDialog('dialogRateEnt');
-        };
-    });
-    document.getElementById('btnCloseRateEnt').onclick  = () => closeDialog('dialogRateEnt');
-    document.getElementById('btnCancelRateEnt').onclick = () => closeDialog('dialogRateEnt');
-
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('deleteEntName').textContent = btn.dataset.name;
-            document.getElementById('dEId').value                = btn.dataset.id;
-            openDialog('dialogDeleteEnt');
-        };
-    });
-    document.getElementById('btnCloseDeleteEnt').onclick  = () => closeDialog('dialogDeleteEnt');
-    document.getElementById('btnCancelDeleteEnt').onclick = () => closeDialog('dialogDeleteEnt');
-</script>
+    {{ parent() }}
+    <script src="/assets/javascript/company_management.js"></script>
 {% endblock %}

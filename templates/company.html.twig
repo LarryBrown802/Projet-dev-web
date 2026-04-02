@@ -95,26 +95,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    document.addEventListener('click', function(e) {
-        const paginationLink = e.target.closest('.pagination a');
-        if (!paginationLink) return;
-
-        e.preventDefault();
-        const url = paginationLink.href;
-        const container = document.getElementById('company-list-container');
-
-        fetch(url)
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newContent = doc.getElementById('company-list-container').innerHTML;
-                container.innerHTML = newContent;
-                window.history.pushState({path: url}, '', url);
-                window.scrollTo({ top: container.offsetTop - 50, behavior: 'smooth' });
-            })
-            .catch(() => { window.location.href = url; });
-    });
-</script>
+    {{ parent() }}
+    <script src="/assets/javascript/company.js"></script>
 {% endblock %}

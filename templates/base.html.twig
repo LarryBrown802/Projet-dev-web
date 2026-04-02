@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="LEMS - Le portail de gestion des offres de stage et d'alternance pour les étudiants du CESI. Découvrez, postulez et gérez vos candidatures facilement.">
 
-    <link rel="stylesheet" href="../assets/main.css">
+    <link rel="stylesheet" href="/assets/main.css">
 
     {% block stylesheets %}{% endblock %}
 
@@ -15,73 +15,66 @@
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <a class="navbar-brand" href="/index.php?page=accueil">LEMS</a>
+    <nav class="navbar">
+        <a class="navbar-brand" href="/index.php?page=accueil">LEMS</a>
 
-            <div class="navbar-right">
+        {# 🔥 BOUTON BURGER #}
+        <div class="burger" id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-                {# ===== LIENS ADMIN ===== #}
-                {% if session.role == 'administrateur' %}
-                    <a href="/index.php?page=dashboard_admin"     class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
-                    <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
-                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
-                    <a href="/index.php?page=pilot_admin"   class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
-                    <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
+        <div class="navbar-right" id="navMenu">
 
-                {# ===== LIENS PILOTE ===== #}
-                {% elseif session.role == 'pilote' %}
-                    <a href="/index.php?page=dashboard_pilot"     class="{% if current_page == 'dashboard_pilot' %}active{% endif %}">Dashboard</a>
-                    <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
-                    <a href="/index.php?page=company_management"  class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
-                    <a href="/index.php?page=student_management"   class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
+            {# ===== LIENS ADMIN ===== #}
+            {% if session.role == 'administrateur' %}
+                <a href="/index.php?page=dashboard_admin" class="{% if current_page == 'dashboard_admin' %}active{% endif %}">Dashboard</a>
+                <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
+                <a href="/index.php?page=company_management" class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
+                <a href="/index.php?page=pilot_admin" class="{% if current_page == 'pilot_admin' %}active{% endif %}">Pilotes</a>
+                <a href="/index.php?page=student_management" class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
 
-                {# ===== LIENS ETUDIANT ===== #}
-                {% elseif session.role == 'etudiant' %}
-                    <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
-                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
-                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
-                    <a href="/index.php?page=wishlist"  class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
+            {% elseif session.role == 'pilote' %}
+                <a href="/index.php?page=dashboard_pilot" class="{% if current_page == 'dashboard_pilot' %}active{% endif %}">Dashboard</a>
+                <a href="/index.php?page=offer_management" class="{% if current_page == 'offer_management' %}active{% endif %}">Gérer offres</a>
+                <a href="/index.php?page=company_management" class="{% if current_page == 'company_management' %}active{% endif %}">Entreprises</a>
+                <a href="/index.php?page=student_management" class="{% if current_page == 'student_management' %}active{% endif %}">Étudiants</a>
 
-                {# ===== NON CONNECTÉ ===== #}
-                {% else %}
-                    <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
-                    <a href="/index.php?page=offers"  class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
-                    <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
-                {% endif %}
+            {% elseif session.role == 'etudiant' %}
+                <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
+                <a href="/index.php?page=offers" class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
+                <a href="/index.php?page=wishlist" class="{% if current_page == 'wishlist' %}active{% endif %}">Mes Favoris</a>
 
-                {# ===== BOUTON CONNEXION / PROFIL ===== #}
-                {% if session.role is not defined or session.role is empty %}
-                    <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
-                {% else %}
-                    <div class="profile">
-                        <a class="profile-btn" href="
-                            {%- if session.role == 'etudiant' -%}
-                                /index.php?page=profile
-                            {%- elseif session.role == 'pilote' -%}
-                                /index.php?page=dashboard_pilot
-                            {%- elseif session.role == 'administrateur' -%}
-                                /index.php?page=dashboard_admin
-                            {%- else -%}
-                                #
-                            {%- endif -%}
-                        " aria-label="Profil">
-                            <i class="fa-solid fa-user"></i>
-                        </a>
+            {% else %}
+                <a href="/index.php?page=accueil" class="{% if current_page == 'accueil' %}active{% endif %}">Accueil</a>
+                <a href="/index.php?page=offers" class="{% if current_page == 'offers' %}active{% endif %}">Offres</a>
+                <a href="/index.php?page=company" class="{% if current_page == 'company' %}active{% endif %}">Entreprises</a>
+            {% endif %}
 
-                        <div class="profile-menu" role="menu">
-                            {% if session.role == 'etudiant' %}
-                                <a href="/index.php?page=profile" role="menuitem">Mon profil</a>
-                                <hr>
-                            {% endif %}
-                            <a href="/index.php?page=logout" role="menuitem" class="deco">Déconnexion</a>
-                        </div>
+            {# ===== CONNEXION / PROFIL ===== #}
+            {% if session.role is not defined or session.role is empty %}
+                <a href="/index.php?page=connexion" class="btn-connexion">Connexion</a>
+            {% else %}
+                <div class="profile">
+                    <a class="profile-btn" href="#">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+
+                    <div class="profile-menu">
+                        {% if session.role == 'etudiant' %}
+                            <a href="/index.php?page=profile">Mon profil</a>
+                            <hr>
+                        {% endif %}
+                        <a href="/index.php?page=logout" class="deco">Déconnexion</a>
                     </div>
-                {% endif %}
+                </div>
+            {% endif %}
 
-            </div>
-        </nav>
-    </header>
-
+        </div>
+    </nav>
+</header>
     {% block content %}{% endblock %}
 
     <footer>
@@ -118,7 +111,7 @@
     </footer>
 
     {% block javascripts %}
-        <script src="/assets/script.js"></script>
     {% endblock %}
+    <script src="/assets/javascript/navbar.js"></script>
 </body>
 </html>

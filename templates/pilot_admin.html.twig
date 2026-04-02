@@ -242,54 +242,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function openDialog(id) { document.getElementById(id).showModal(); }
-    function closeDialog(id) { document.getElementById(id).close(); }
-
-    ['dialogCreatePilote', 'dialogEditPilote', 'dialogDeletePilote'].forEach(id => {
-        const d = document.getElementById(id);
-        d.addEventListener('click', e => {
-            const r = d.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
-        });
-    });
-
-    // ===== CRÉER =====
-    document.getElementById('btnCreatePilote').onclick       = () => openDialog('dialogCreatePilote');
-    document.getElementById('btnCloseCreatePilote').onclick  = () => closeDialog('dialogCreatePilote');
-    document.getElementById('btnCancelCreatePilote').onclick = () => closeDialog('dialogCreatePilote');
-
-    // ===== MODIFIER =====
-    document.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('editPiloteSubtitle').textContent = btn.dataset.name + ' ' + btn.dataset.surname;
-            document.getElementById('eIdUser').value   = btn.dataset.id;
-            document.getElementById('eName').value     = btn.dataset.name    || '';
-            document.getElementById('eSurname').value  = btn.dataset.surname || '';
-            document.getElementById('eEmail').value    = btn.dataset.email   || '';
-
-            // Sélectionne la promotion actuelle du pilote dans le select
-            const select = document.getElementById('ePromotion');
-            const idPromo = btn.dataset.idPromotion || '';
-            for (let option of select.options) {
-                option.selected = option.value === idPromo;
-            }
-
-            openDialog('dialogEditPilote');
-        };
-    });
-    document.getElementById('btnCloseEditPilote').onclick  = () => closeDialog('dialogEditPilote');
-    document.getElementById('btnCancelEditPilote').onclick = () => closeDialog('dialogEditPilote');
-
-    // ===== SUPPRIMER =====
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('deletePiloteName').textContent = btn.dataset.name + ' ' + btn.dataset.surname;
-            document.getElementById('dIdUser').value = btn.dataset.id;
-            openDialog('dialogDeletePilote');
-        };
-    });
-    document.getElementById('btnCloseDeletePilote').onclick  = () => closeDialog('dialogDeletePilote');
-    document.getElementById('btnCancelDeletePilote').onclick = () => closeDialog('dialogDeletePilote');
-</script>
+    {{ parent() }}
+    <script src="/assets/javascript/pilot_admin.js"></script>
 {% endblock %}
