@@ -9,7 +9,7 @@
 {% block content %}
 <main class="container">
 
-    <div class="page-head" style="text-align: center; margin: 40px 0;">
+    <div class="page-head page-head--centered">
         <h1>Nos Entreprises Partenaires</h1>
         <p class="page-subtitle">Découvrez les entreprises qui recrutent actuellement.</p>
     </div>
@@ -19,10 +19,10 @@
 
             {% for company in companies %}
                 <article class="entreprise-card">
-                    <div style="padding: 20px;">
-                        <h2 style="margin-top: 0;">{{ company.name }}</h2>
+                    <div class="entreprise-card__body">
+                        <h2 class="entreprise-card__name">{{ company.name }}</h2>
 
-                        <div class="avis" style="color: #c8a000; margin-bottom: 15px;">
+                        <div class="avis">
                             {% set note = company.average_mark ?? 0 %}
                             {% for i in 1..5 %}
                                 {% if i <= note %}
@@ -33,40 +33,31 @@
                             {% endfor %}
                         </div>
 
-                        <div class="contact-info" style="font-size: 14px; margin-bottom: 15px;">
-                            <p style="margin: 5px 0;">
-                                <i class="fa-solid fa-phone" style="width: 20px;"></i>
-                                {{ company.number ?? '—' }}
-                            </p>
-                            <p style="margin: 5px 0;">
-                                <i class="fa-solid fa-envelope" style="width: 20px;"></i>
-                                {{ company.email ?? '—' }}
-                            </p>
+                        <div class="contact-info">
+                            <p><i class="fa-solid fa-phone"></i>{{ company.number ?? '—' }}</p>
+                            <p><i class="fa-solid fa-envelope"></i>{{ company.email ?? '—' }}</p>
                         </div>
 
-                        <p style="font-size: 14px; line-height: 1.5; color: var(--text); height: 65px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                        <p class="entreprise-card__description">
                             {{ company.description ?? 'Aucune description disponible.' }}
                         </p>
 
-                        <p style="font-size: 13px; font-weight: bold; color: var(--primary); margin-top: 10px;">
+                        <p class="entreprise-card__stagiaires">
                             {{ company.stagiaires ?? 0 }} stagiaires ayant postulé
                         </p>
 
-                        <a href="/index.php?page=company_detail&id={{ company.ID }}"
-                           class="btn-voir"
-                           style="display: block; text-align: center; text-decoration: none; margin-top: 15px;">
+                        <a href="/index.php?page=company_detail&id={{ company.ID }}" class="btn-voir">
                             Découvrir
                         </a>
                     </div>
                 </article>
             {% else %}
-                <p style="grid-column: 1 / -1; text-align: center;">Aucune entreprise trouvée.</p>
+                <p class="company-list-empty">Aucune entreprise trouvée.</p>
             {% endfor %}
 
         </div>
 
-        {# ===== PAGINATION ===== #}
-        <nav class="pagination" aria-label="Pagination des entreprises" style="margin-top: 40px; justify-content: center;">
+        <nav class="pagination" aria-label="Pagination des entreprises">
 
             {% if pageCourante > 1 %}
                 <a href="?page=company&p={{ pageCourante - 1 }}" class="page-arrow" aria-label="Page précédente">
