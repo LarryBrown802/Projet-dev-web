@@ -59,6 +59,31 @@
 }
 
 /* =========================
+   ALERTES
+========================= */
+.alert {
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-success {
+  background: #e6f8f3;
+  color: #1a7b5e;
+  border: 1px solid #c3eedd;
+}
+
+.alert-error {
+  background: #ffe6e6;
+  color: #d8000c;
+  border: 1px solid #f5c2c7;
+}
+
+/* =========================
    KPI GRID
 ========================= */
 .kpi-grid {
@@ -68,8 +93,8 @@
   margin-bottom: 24px;
 }
 
-@media (max-width: 900px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 500px)  { .kpi-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .kpi-grid { grid-template-columns: 1fr; } }
 
 .kpi-card {
   background: var(--card);
@@ -171,9 +196,7 @@
   gap: 10px;
   transition: box-shadow .14s ease;
 }
-.shortcut-card:hover {
-  box-shadow: var(--shadow);
-}
+.shortcut-card:hover { box-shadow: var(--shadow); }
 
 .shortcut-icon {
   width: 52px;
@@ -207,10 +230,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition:  filter .12s ease;
+  transition: filter .12s ease;
   white-space: nowrap;
 }
-.btn-add:hover {  filter: brightness(1.06); }
+.btn-add:hover { filter: brightness(1.06); }
 
 /* =========================
    BARRE DE RECHERCHE
@@ -278,8 +301,12 @@
 }
 
 .dash-table tbody tr:last-child td { border-bottom: none; }
-
 .dash-table tbody tr:hover { background: rgba(94,146,166,.05); }
+
+.table-empty {
+  text-align: center;
+  padding: 20px;
+}
 
 /* =========================
    BADGES
@@ -316,9 +343,9 @@
   place-items: center;
   font-size: 13px;
   color: var(--text);
-  transition:  filter .12s ease, background .12s ease;
+  transition: filter .12s ease, background .12s ease;
 }
-.btn-icon:hover {  filter: brightness(.97); }
+.btn-icon:hover { filter: brightness(.97); }
 
 .btn-icon.btn-edit,
 .btn-icon.btn-edit-offre,
@@ -338,7 +365,7 @@
 ========================= */
 .stars { display: inline-flex; align-items: center; gap: 2px; color: #d5a400; font-size: 13px; }
 
-
+.stars-value { margin-left: 4px; font-weight: 800; }
 
 /* =========================
    DIALOG (commun)
@@ -389,6 +416,12 @@
   color: rgb(255,59,48);
 }
 
+.dialog-logo--rate {
+  background: rgba(245,197,24,.15);
+  border-color: rgba(245,197,24,.3);
+  color: #c8a000;
+}
+
 .dialog-logo.kpi-blue {
   background: rgba(94,146,166,.18);
   border-color: rgba(94,146,166,.25);
@@ -412,7 +445,6 @@
 }
 .dialog-close:hover { background: rgba(255,59,48,.08); color: rgb(255,59,48); border-color: rgba(255,59,48,.25); }
 
-/* Grid 2 colonnes dans le dialog */
 .dialog-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -526,7 +558,7 @@ textarea:focus {
   padding: 11px 18px;
   font-weight: 900;
   cursor: pointer;
-  transition:  filter .12s ease;
+  transition: filter .12s ease;
 }
 .btn-voir:hover { filter: brightness(1.06); }
 
@@ -540,7 +572,6 @@ textarea:focus {
   color: var(--text);
   transition: filter .12s ease;
 }
-
 
 .btn-danger {
   background: linear-gradient(135deg, #ff4d4d, #c0392b);

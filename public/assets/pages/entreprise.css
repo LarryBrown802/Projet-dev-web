@@ -1,7 +1,7 @@
 /* ======================
     GRID ENTREPRISES
 ====================== */
-.entreprise-section{
+.entreprise-section {
   width: min(1200px, 92%);
   margin: 14px auto 30px;
   display: grid;
@@ -9,62 +9,112 @@
   gap: 18px;
 }
 
-
-.entreprise-card{
+.entreprise-card {
   background: var(--card);
   border: 1px solid rgba(0,0,0,.06);
   border-radius: var(--radius);
-  padding: 16px; /*Mettre a 16px si on veut pas coller l'image au bord de la card*/
   box-shadow: var(--shadow-soft);
-
   display: flex;
   flex-direction: column;
   gap: 12px;
-
   transition: box-shadow .14s ease;
 }
 
-.entreprise-card:hover{
+.entreprise-card:hover {
   box-shadow: var(--shadow);
 }
 
-.entreprise-logo{
-    width: auto;
-    height: 90px;
-    border-radius: 18px;
-    background: #6b6b6b;
-    display: grid;
-    place-items: center;
-    color: #fff;
+.entreprise-card__body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.entreprise-card h3{
-    margin: 0;
-    font-size: 16px;
-    font-weight: 900;
-    text-align: center;
+.entreprise-card__name {
+  margin-top: 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
 }
 
-.avis{
-    display: flex;
-    justify-content: center;
-    gap: 4px;
+.entreprise-card__description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  height: 65px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0;
 }
 
-.avis i{
-    font-size: 20px;
-    color: yellow;
+.entreprise-card__stagiaires {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--primary);
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.contact-info{
-    gap: 6px;
-    font-size: 14px;
-    font-weight: 700;
+.entreprise-logo {
+  width: auto;
+  height: 90px;
+  border-radius: 18px;
+  background: #6b6b6b;
+  display: grid;
+  place-items: center;
+  color: #fff;
 }
 
-.btn-voir{
+.entreprise-card h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.avis {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  color: #c8a000;
+  margin-bottom: 15px;
+}
+
+.avis i {
+  font-size: 20px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.contact-info p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-info i {
+  width: 20px;
+}
+
+.company-list-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.btn-voir {
   margin-top: auto;
-  background: var(--primary); 
+  background: var(--primary);
   color: var(--textnav);
   text-decoration: none;
   text-align: center;
@@ -73,23 +123,255 @@
   cursor: pointer;
   font-weight: 900;
   transition: filter .14s ease, transform .14s ease;
+  display: block;
 }
 
+.btn-voir:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
 
-/* Responsive */
-/*
-@media (max-width: 950px){
-  .entreprise-section{
+/* ======================
+    PAGE HEAD CENTRÉ
+====================== */
+.page-head--centered {
+  text-align: center;
+  margin: 40px 0;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ======================
+    COMPANY DETAIL — bannière
+====================== */
+.company-banner {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-banner__icon {
+  background: var(--card);
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: var(--primary);
+}
+
+/* ======================
+    COMPANY DETAIL — main
+====================== */
+.company-detail-main {
+  margin-top: -40px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ======================
+    COMPANY DETAIL — carte
+====================== */
+.company-detail-card {
+  background: var(--card);
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.company-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.company-detail-header h1 {
+  margin-top: 0;
+  font-size: 32px;
+}
+
+.company-detail-stars {
+  color: #c8a000;
+  margin-bottom: 20px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.company-detail-note {
+  font-size: 14px;
+  color: var(--text);
+  margin-left: 8px;
+}
+
+/* ======================
+    COMPANY DETAIL — contact
+====================== */
+.company-contact-box {
+  background: var(--bg);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  min-width: 220px;
+}
+
+.company-contact-box h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.company-contact-box p {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.company-contact-box i {
+  color: var(--primary);
+  width: 25px;
+}
+
+/* ======================
+    COMPANY DETAIL — séparateur
+====================== */
+.company-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 30px 0;
+}
+
+/* ======================
+    COMPANY DETAIL — description
+====================== */
+.company-description {
+  line-height: 1.8;
+  color: var(--text);
+  font-size: 16px;
+}
+
+/* ======================
+    COMPANY DETAIL — offres
+====================== */
+.company-offers-block {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.company-offers-block h3 {
+  margin-bottom: 20px;
+}
+
+.company-offers-count {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.company-offers-btn {
+  display: inline-block;
+  text-decoration: none;
+  padding: 15px 30px;
+  font-size: 16px;
+}
+
+/* ======================
+    COMPANY DETAIL — retour
+====================== */
+.company-back {
+  margin-top: 20px;
+}
+
+.company-back a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ======================
+    RESPONSIVE
+====================== */
+
+/* Tablette — 2 colonnes */
+@media (max-width: 900px) {
+  .entreprise-section {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
   }
-  .entreprise-hero{
-    flex-direction: column;
-    align-items: stretch;
+
+  .company-detail-card {
+    padding: 24px;
+  }
+
+  .company-detail-header h1 {
+    font-size: 26px;
+  }
+
+  .company-contact-box {
+    min-width: unset;
+    width: 100%;
   }
 }
 
-@media (max-width: 600px){
-  .entreprise-section{
+/* Mobile — 1 colonne */
+@media (max-width: 560px) {
+  .entreprise-section {
     grid-template-columns: 1fr;
+    width: 92%;
+    gap: 12px;
   }
-}*/
+
+  .entreprise-card__body {
+    padding: 16px;
+  }
+
+  .entreprise-card__name {
+    font-size: 16px;
+  }
+
+  .avis i {
+    font-size: 18px;
+  }
+
+  .page-head--centered {
+    margin: 24px 0;
+  }
+
+  .page-head--centered h1 {
+    font-size: 22px;
+  }
+
+  .company-detail-card {
+    padding: 16px;
+  }
+
+  .company-detail-header {
+    flex-direction: column;
+  }
+
+  .company-detail-header h1 {
+    font-size: 22px;
+  }
+
+  .company-banner {
+    height: 140px;
+  }
+
+  .company-banner__icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+}

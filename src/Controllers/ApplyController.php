@@ -18,6 +18,12 @@ class ApplyController
 
     public function index(): void
     {
+        // Redirige vers connexion si non connceté 
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /index.php?page=connexion');
+            exit;
+        }
+        
         // Récupère l'offre via ID ou via nom
         $offerId = $_POST['offer_id'] ?? (isset($_GET['offer_id']) ? (int)$_GET['offer_id'] : null);
         $poste = $_GET['poste'] ?? 'Candidature spontanée';

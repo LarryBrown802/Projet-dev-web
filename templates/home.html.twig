@@ -188,8 +188,13 @@
                 </div>
 
                 <div class="detail-footer">
+                {% if session.role == 'etudiant' %}
                     <button class="apply-btn js-apply-btn" type="button" data-id="{{ firstOffer.ID_offer }}">Postuler</button>
-                </div>
+                {% else %}
+                    <a href="/index.php?page=connexion" class="apply-btn" style="text-decoration:none;text-align:center;display:block">
+                        Se connecter pour postuler
+                    </a>
+                {% endif %}                </div>
             </article>
         {% endif %}
     </div>
@@ -292,7 +297,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== BOUTON POSTULER =====
     if (applyBtn) {
         applyBtn.addEventListener('click', () => {
-            window.location.href = `/index.php?page=apply&offer_id=${applyBtn.dataset.id}`;
+            {% if session.role is not defined or session.role is empty %}
+                window.location.href = '/index.php?page=connexion';
+            {% else %}
+                window.location.href = `/index.php?page=apply&offer_id=${applyBtn.dataset.id}`;
+            {% endif %}
         });
     }
 

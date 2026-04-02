@@ -3,8 +3,6 @@
 namespace App\Models;
 use App\Utils\PaginationController;
 
-use PDO;
-
 class OfferModel extends PaginationController
 {
     private \PDO $db;
@@ -68,7 +66,7 @@ class OfferModel extends PaginationController
     {
         $sql = '
             SELECT o.*, c.name AS entreprise, l.city AS lieu,
-                COUNT(DISTINCT a.ID_profile) AS candidatures
+                   COUNT(DISTINCT a.ID_profile) AS candidatures
             FROM Offer o
             LEFT JOIN Company c ON o.ID_company = c.ID
             LEFT JOIN Location l ON o.ID_location = l.ID_location
@@ -89,8 +87,38 @@ class OfferModel extends PaginationController
         $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
 
         if ($limit !== null) {
-            $sql .= ' LIMIT ' . (int) $limit; // ← cast en int directement dans la requête, pas de bind
+            $sql .= ' LIMIT ' . (int) $limit;
         }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    // ← Nouveau : offres filtrées par pilote
+    public function getOffersByPilot(int $pilotId, ?string $search = null, ?string $type = null): array
+    {
+        $sql = '
+            SELECT o.*, c.name AS entreprise, l.city AS lieu,
+                   COUNT(DISTINCT a.ID_profile) AS candidatures
+            FROM Offer o
+            JOIN Company c ON o.ID_company = c.ID
+            LEFT JOIN Location l ON o.ID_location = l.ID_location
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE c.ID_user = :pilot_id
+        ';
+        $params = [':pilot_id' => $pilotId];
+
+        if (!empty($search)) {
+            $sql .= ' AND (o.title LIKE :search OR c.name LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
+        }
+        if (!empty($type)) {
+            $sql .= ' AND o.type = :type';
+            $params[':type'] = $type;
+        }
+
+        $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -160,11 +188,9 @@ class OfferModel extends PaginationController
     {
         try {
             $this->db->beginTransaction();
-
             $this->db->prepare('DELETE FROM Apply WHERE ID_offer = :id')->execute([':id' => $id]);
             $this->db->prepare('DELETE FROM Save_wishlist WHERE ID_offer = :id')->execute([':id' => $id]);
             $this->db->prepare('DELETE FROM Offer WHERE ID_offer = :id')->execute([':id' => $id]);
-
             $this->db->commit();
             return true;
         } catch (\Exception $e) {
