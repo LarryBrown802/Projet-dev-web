@@ -219,7 +219,7 @@
                     <i class="fa-solid fa-lock"></i>
                     <input id="cPassword" name="password" type="password" placeholder="Mot de passe" required>
 
-                    <button type="button" class="toogle-password">
+                    <button type="button" class="toggle-password">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
@@ -332,95 +332,6 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function openDialog(id) { document.getElementById(id).showModal(); }
-    function closeDialog(id) { document.getElementById(id).close(); }
-
-    ['dialogViewEtu', 'dialogCreateEtu', 'dialogEditEtu', 'dialogDeleteEtu'].forEach(id => {
-        const d = document.getElementById(id);
-        d.addEventListener('click', e => {
-            const r = d.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
-                d.close();
-            }
-        });
-    });
-
-    const statusLabel = { ok: 'Stage trouvé', wait: 'En cours', no: 'Non trouvé' };
-    const statusClass = { ok: 'badge--ok', wait: 'badge--wait', no: 'badge--no' };
-
-    // ===== VOIR =====
-    document.querySelectorAll('.btn-view-etu').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('viewEtuTitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
-            document.getElementById('viewEtuInfo').textContent  = btn.dataset.email;
-            const tbody = document.getElementById('viewEtuTbody');
-            tbody.innerHTML = '';
-            try {
-                JSON.parse(btn.dataset.candidatures || '[]').forEach(c => {
-                    const tr = document.createElement('tr');
-                tr.innerHTML = `<td><strong>${c.offre}</strong></td><td>${c.entreprise}</td>`; 
-                    tbody.appendChild(tr);
-                });
-            } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="2">Aucune candidature.</td></tr>';
-            }
-            openDialog('dialogViewEtu');
-        };
-    });
-    document.getElementById('btnCloseViewEtu').onclick  = () => closeDialog('dialogViewEtu');
-    document.getElementById('btnCloseViewEtu2').onclick = () => closeDialog('dialogViewEtu');
-
-    // ===== CRÉER =====
-    document.getElementById('btnCreateEtu').onclick       = () => openDialog('dialogCreateEtu');
-    document.getElementById('btnCloseCreateEtu').onclick  = () => closeDialog('dialogCreateEtu');
-    document.getElementById('btnCancelCreateEtu').onclick = () => closeDialog('dialogCreateEtu');
-    document.querySelectorAll(".toogle-password").forEach(button => {
-        button.addEventListener("click", () => {
-            const input = button.parentElement.querySelector("input");
-            const icon = button.querySelector("i");
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            }
-        });
-    });
-
-    // ===== MODIFIER =====
-    document.querySelectorAll('.btn-edit-etu').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('editEtuSubtitle').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
-            document.getElementById('eIdProfile').value = btn.dataset.id     || '';
-            document.getElementById('eNom').value       = btn.dataset.nom    || '';
-            document.getElementById('ePrenom').value    = btn.dataset.prenom || '';
-            document.getElementById('eEmail').value     = btn.dataset.email  || '';
-            document.getElementById('ePromotion').value = '';
-
-            // Pré-sélectionne le status actuel
-            const eStatus = document.getElementById('eStatus');
-            for (let o of eStatus.options) o.selected = o.value === (btn.dataset.status || 'wait');
-
-            openDialog('dialogEditEtu');
-        };
-    });
-    document.getElementById('btnCloseEditEtu').onclick  = () => closeDialog('dialogEditEtu');
-    document.getElementById('btnCancelEditEtu').onclick = () => closeDialog('dialogEditEtu');
-
-    // ===== SUPPRIMER =====
-    document.querySelectorAll('.btn-delete-etu').forEach(btn => {
-        btn.onclick = () => {
-            document.getElementById('deleteEtuName').textContent = btn.dataset.prenom + ' ' + btn.dataset.nom;
-            document.getElementById('dIdProfile').value          = btn.dataset.id;
-            openDialog('dialogDeleteEtu');
-        };
-    });
-    document.getElementById('btnCloseDeleteEtu').onclick  = () => closeDialog('dialogDeleteEtu');
-    document.getElementById('btnCancelDeleteEtu').onclick = () => closeDialog('dialogDeleteEtu');
-</script>
+    {{ parent() }}
+    <script src="/assets/javascript/student_management.js"></script>
 {% endblock %}
