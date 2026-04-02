@@ -26,10 +26,16 @@
 
 .entreprise-card__body {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .entreprise-card__name {
   margin-top: 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .entreprise-card__description {
@@ -49,7 +55,7 @@
   font-weight: bold;
   color: var(--primary);
   margin-top: 10px;
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 .entreprise-logo {
@@ -82,6 +88,8 @@
 }
 
 .contact-info {
+  display: flex;
+  flex-direction: column;
   gap: 6px;
   font-size: 14px;
   font-weight: 700;
@@ -89,7 +97,7 @@
 }
 
 .contact-info p {
-  margin: 5px 0;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -116,6 +124,11 @@
   font-weight: 900;
   transition: filter .14s ease, transform .14s ease;
   display: block;
+}
+
+.btn-voir:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 /* ======================
@@ -285,4 +298,80 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+/* ======================
+    RESPONSIVE
+====================== */
+
+/* Tablette — 2 colonnes */
+@media (max-width: 900px) {
+  .entreprise-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .company-detail-card {
+    padding: 24px;
+  }
+
+  .company-detail-header h1 {
+    font-size: 26px;
+  }
+
+  .company-contact-box {
+    min-width: unset;
+    width: 100%;
+  }
+}
+
+/* Mobile — 1 colonne */
+@media (max-width: 560px) {
+  .entreprise-section {
+    grid-template-columns: 1fr;
+    width: 92%;
+    gap: 12px;
+  }
+
+  .entreprise-card__body {
+    padding: 16px;
+  }
+
+  .entreprise-card__name {
+    font-size: 16px;
+  }
+
+  .avis i {
+    font-size: 18px;
+  }
+
+  .page-head--centered {
+    margin: 24px 0;
+  }
+
+  .page-head--centered h1 {
+    font-size: 22px;
+  }
+
+  .company-detail-card {
+    padding: 16px;
+  }
+
+  .company-detail-header {
+    flex-direction: column;
+  }
+
+  .company-detail-header h1 {
+    font-size: 22px;
+  }
+
+  .company-banner {
+    height: 140px;
+  }
+
+  .company-banner__icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
 }
