@@ -2,148 +2,180 @@
 
 namespace App\Models;
 use App\Utils\PaginationController;
+use Exception;
 
 class StudentModel extends PaginationController
 {
-    private array $students;
-    protected int $parPage = 5;
+    private \PDO $db;
+    protected int $parPage = 10;
 
-    public function __construct()
+    public function __construct(\PDO $db)
     {
-        $this->students = [
-            [
-                'nom' => 'Boucetta',
-                'prenom' => 'Enzo',
-                'email' => 'enzo.boucetta@viacesi.fr',
-                'candidatures' => 3,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"20/02/2026","statut":"wait"},{"offre":"Data Analyst","entreprise":"Data Insights","date":"15/02/2026","statut":"ok"},{"offre":"DevOps","entreprise":"Cloud Solutions","date":"10/02/2026","statut":"wait"}]'
-            ],
-            [
-                'nom' => 'Battoktok',
-                'prenom' => 'Michel',
-                'email' => 'michel.battoktok@viacesi.fr',
-                'candidatures' => 5,
-                'statut' => 'ok',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Data Analyst","entreprise":"Data Insights","date":"19/02/2026","statut":"ok"},{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"10/02/2026","statut":"no"}]'
-            ],
-            [
-                'nom' => 'Chefdjou',
-                'prenom' => 'Larry Brown',
-                'email' => 'larry.chefdjou@viacesi.fr',
-                'candidatures' => 2,
-                'statut' => 'no',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Cybersécurité","entreprise":"SecureTech","date":"18/02/2026","statut":"no"}]'
-            ],
-            [
-                'nom' => 'Verel',
-                'prenom' => 'Samuel',
-                'email' => 'samuel.verel@viacesi.fr',
-                'candidatures' => 4,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"DevOps","entreprise":"Cloud Solutions","date":"17/02/2026","statut":"wait"},{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"12/02/2026","statut":"wait"}]'
-            ],
-            [
-                'nom' => 'Linard',
-                'prenom' => 'Raphael',
-                'email' => 'raphael.linard@viacesi.fr',
-                'candidatures' => 1,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Ingénieur IA","entreprise":"AI Labs","date":"16/02/2026","statut":"wait"}]'
-            ],
-            [
-                'nom' => 'Dupont',
-                'prenom' => 'Lucas',
-                'email' => 'lucas.dupont@viacesi.fr',
-                'candidatures' => 2,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Développeur Web","entreprise":"Tech Solutions","date":"20/02/2026","statut":"wait"},{"offre":"Data Analyst","entreprise":"Data Insights","date":"15/02/2026","statut":"ok"}]'
-            ],
-            [
-                'nom' => 'Martin',
-                'prenom' => 'Emma',
-                'email' => 'emma.martin@viacesi.fr',
-                'candidatures' => 1,
-                'statut' => 'ok',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[{"offre":"Data Analyst","entreprise":"Data Insights","date":"19/02/2026","statut":"ok"}]'
-            ],
-            [
-                'nom' => 'Kerdilès',
-                'prenom' => 'Yael',
-                'email' => 'yael.kerdiles@viacesi.fr',
-                'candidatures' => 2,
-                'statut' => 'wait',
-                'promotion' => 'BTP',
-                'pilote_id' => 4,
-                'candidatures_detail' => '[...]'
-            ],
-            [
-                'nom' => 'Gambu',
-                'prenom' => 'Auguste',
-                'email' => 'auguste.gambu@viacesi.fr',
-                'candidatures' => 10000000000000,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[...]'
-            ],
-            [
-                'nom' => 'Goutier',
-                'prenom' => 'Galaad',
-                'email' => 'galaad.goutier@viacesi.fr',
-                'candidatures' => 67,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[...]'
-            ],
-            [
-                'nom' => 'Colson',
-                'prenom' => 'Paul',
-                'email' => 'paul.colson@viacesi.fr',
-                'candidatures' => 0,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[...]'
-            ],
-            [
-                'nom' => 'Belleux',
-                'prenom' => 'Maxence',
-                'email' => 'maxence.belleux@viacesi.fr',
-                'candidatures' => -100,
-                'statut' => 'wait',
-                'promotion' => 'informatique',
-                'pilote_id' => 3,
-                'candidatures_detail' => '[...]'
-            ]
-        ];
+        $this->db = $db;
     }
 
     public function getAllStudents(): array
     {
-        return $this->students;
+        $sql = '
+            SELECT p.ID_profile, p.name AS nom, p.surname AS prenom, u.email,
+                   p.status, p.ID_promotion,
+                   pr.name AS promotion,
+                   (SELECT COUNT(*) FROM Apply a WHERE a.ID_profile = p.ID_profile) AS candidatures
+            FROM Profile p
+            JOIN User u ON p.ID_user = u.ID_user
+            JOIN Role r ON u.ID_role = r.ID_role
+            LEFT JOIN Promotion pr ON p.ID_promotion = pr.ID_promotion
+            WHERE r.name_role = "etudiant"
+            ORDER BY p.name ASC
+        ';
+        return $this->db->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getStudentsByPilote(int $piloteId): array
-{
-    return array_values(array_filter(
-        $this->students,
-        fn($s) => $s['pilote_id'] === $piloteId
-    ));
-}
+    public function getPromotions(): array
+    {
+        return $this->db->query('SELECT ID_promotion, name FROM Promotion ORDER BY name')
+                        ->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function createStudent(array $data): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $stmtRole = $this->db->query("SELECT ID_role FROM Role WHERE name_role = 'etudiant' LIMIT 1");
+            $roleId   = $stmtRole->fetchColumn();
+            if (!$roleId) throw new Exception("Le rôle 'etudiant' n'existe pas.");
+
+            $stmt = $this->db->prepare('
+                INSERT INTO User (email, password, ID_role) VALUES (:email, :password, :role)
+            ');
+            $stmt->execute([
+                ':email'    => $data['email'],
+                ':password' => password_hash($data['password'], PASSWORD_BCRYPT),
+                ':role'     => $roleId,
+            ]);
+            $userId = $this->db->lastInsertId();
+
+            $stmt = $this->db->prepare('
+                INSERT INTO Profile (name, surname, ID_user, ID_promotion)
+                VALUES (:name, :surname, :user_id, :promo)
+            ');
+            $stmt->execute([
+                ':name'    => $data['nom'],
+                ':surname' => $data['prenom'],
+                ':user_id' => $userId,
+                ':promo'   => !empty($data['id_promotion']) ? $data['id_promotion'] : null,
+            ]);
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function updateStudent(array $data): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Met à jour email et éventuellement le mot de passe
+            if (!empty($data['password'])) {
+                $stmt = $this->db->prepare('
+                    UPDATE User SET email = :email, password = :password
+                    WHERE ID_user = (SELECT ID_user FROM Profile WHERE ID_profile = :id_profile)
+                ');
+                $stmt->execute([
+                    ':email'      => $data['email'],
+                    ':password'   => password_hash($data['password'], PASSWORD_BCRYPT),
+                    ':id_profile' => $data['id_profile'],
+                ]);
+            } else {
+                $stmt = $this->db->prepare('
+                    UPDATE User SET email = :email
+                    WHERE ID_user = (SELECT ID_user FROM Profile WHERE ID_profile = :id_profile)
+                ');
+                $stmt->execute([
+                    ':email'      => $data['email'],
+                    ':id_profile' => $data['id_profile'],
+                ]);
+            }
+
+            // Met à jour le profil — garde la promotion existante si non fournie
+            $stmt = $this->db->prepare('
+                UPDATE Profile
+                SET name         = :nom,
+                    surname      = :prenom,
+                    ID_promotion = COALESCE(:id_promotion, ID_promotion),
+                    status       = :status
+                WHERE ID_profile = :id_profile
+            ');
+            $stmt->execute([
+                ':nom'          => $data['nom'],
+                ':prenom'       => $data['prenom'],
+                ':id_promotion' => !empty($data['id_promotion']) ? $data['id_promotion'] : null,
+                ':status'       => $data['status'] ?? 'wait',
+                ':id_profile'   => $data['id_profile'],
+            ]);
+
+            $this->db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function updateStatus(int $id_profile, string $status): bool
+    {
+        $stmt = $this->db->prepare('
+            UPDATE Profile SET status = :status WHERE ID_profile = :id_profile
+        ');
+        return $stmt->execute([
+            ':status'     => $status,
+            ':id_profile' => $id_profile,
+        ]);
+    }
+
+    public function deleteStudent(int $id_profile): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Récupère l'ID user depuis le profil
+            $stmt = $this->db->prepare('SELECT ID_user FROM Profile WHERE ID_profile = :id');
+            $stmt->execute([':id' => $id_profile]);
+            $userId = $stmt->fetchColumn();
+
+            if (!$userId) throw new Exception("Profil introuvable.");
+
+            // Supprime le profil (cascade supprime Apply et Save_wishlist)
+            $this->db->prepare('DELETE FROM Profile WHERE ID_profile = :id')
+                     ->execute([':id' => $id_profile]);
+
+            // Supprime l'utilisateur
+            $this->db->prepare('DELETE FROM User WHERE ID_user = :id')
+                     ->execute([':id' => $userId]);
+
+            $this->db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function getCandidaturesByProfile(int $id_profile): array
+    {
+        $stmt = $this->db->prepare('
+            SELECT o.title AS offre, c.name AS entreprise
+            FROM Apply a
+            JOIN Offer o ON a.ID_offer = o.ID_offer
+            LEFT JOIN Company c ON o.ID_company = c.ID
+            WHERE a.ID_profile = :id_profile
+        ');
+        $stmt->execute([':id_profile' => $id_profile]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

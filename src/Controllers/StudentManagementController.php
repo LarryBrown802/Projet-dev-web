@@ -2,18 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Models\StudentManagementModel;
+use App\Models\StudentModel;
 use Twig\Environment;
 
 class StudentManagementController
 {
     private Environment $twig;
-    private StudentManagementModel $studentModel;
+    private StudentModel $studentModel;
 
     public function __construct(Environment $twig, \PDO $bdd)
     {
         $this->twig         = $twig;
-        $this->studentModel = new StudentManagementModel($bdd);
+        $this->studentModel = new StudentModel($bdd);
     }
 
     public function index(): void
