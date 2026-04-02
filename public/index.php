@@ -1,11 +1,16 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// _____ CONFIGURATION DES ERREURS _____
 
-session_start();
+ini_set('display_errors', 1);  // ACTIVE L'AFFICHAGE DES ERREURS
+ini_set('display_startup_errors', 1);  // ACTIVE LES ERREURS LORS DU DÉMARRAGE
+error_reporting(E_ALL);  // RAPPORT COMPLÈT DE TOUTES LES ERREURS
 
-require_once __DIR__ . '/../vendor/autoload.php';
+session_start();  // DÉMARRE LA SESSION PHP
+
+require_once __DIR__ . '/../vendor/autoload.php';  // CHARGE AUTOLOAD DE COMPOSER
+
+
+// _____ UTILISE LES CONTROLLERS ET MODELS _____
 
 use App\Controllers\ConnexionController;
 use App\Controllers\HomeController;
@@ -24,33 +29,37 @@ use App\Models\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-$loader = new FilesystemLoader(__DIR__ . '/../templates');
+// _____ CONFIGURATION_TWIG _____
+
+$loader = new FilesystemLoader(__DIR__ . '/../templates'); // CHARGE LE REPERTOIRE TEMPLATES
 $twig   = new Environment($loader);
-$dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+
+$dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // CHARGE FICHIER .ENV
 $dotnev->load();
 
-$bdd = Database::connect();
+$bdd = Database::connect();  // CONNEXION A LA BASE DE DONNEES
 
-// Rend la session disponible dans tous les templates Twig
+// REND LA SESSION DISPONIBLE DANS TWIG
 $twig->addGlobal('session', $_SESSION);
 
 // Fonction de protection des routes par rôle
 function requireRole(string ...$roles): void
 {
-    global $twig; // Permet d'utiliser l'affichage Twig à l'intérieur de la fonction
+    global $twig; // PERMET L'UTILISATION TWIG DANS LA FONCTION
     
     if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $roles)) {
-        http_response_code(403);
-        echo $twig->render('403.html.twig');
+        http_response_code(403);  // ERREUR_403 SI ROLE NON AUTORISE
+        echo $twig->render('403.html.twig'); // AFFICHE PAGE 403
         exit;
     }
 }
 
-$page = $_GET['page'] ?? 'accueil';
+$page = $_GET['page'] ?? 'accueil'; // RECUPERE PAGE DE L'URL OU DEFAULT
 
 switch ($page) {
 
-    // ===== ACCESSIBLE À TOUS =====
+     //_______________________________________
+    // __________ ACCESSIBLE À TOUS __________
     case 'accueil':
         $controller = new HomeController($twig, $bdd);
         $controller->index();
@@ -76,7 +85,8 @@ switch ($page) {
         $controller->detail();
         break;
 
-     // ===== ETUDIANT SEULEMENT =====
+      //_______________________________________
+     // __________ ETUDIANT SEULEMENT __________
     case 'wishlist':
         requireRole('etudiant');
         $controller = new WishlistController($twig, $bdd);
@@ -101,8 +111,8 @@ switch ($page) {
         $controller->index();
         break;
 
-
-    // ===== PILOTE SEULEMENT =====
+     //_______________________________________
+    // __________ PILOTE SEULEMENT __________
     case 'dashboard_pilot':
         requireRole('pilote');
         $controller = new DashboardPilotController($twig, $bdd);
@@ -115,7 +125,8 @@ switch ($page) {
         $controller->index();
         break;
 
-    // ===== ADMIN SEULEMENT =====
+     //_____________________________________
+    // __________ ADMIN SEULEMENT __________
     case 'dashboard_admin':
         requireRole('administrateur');
         $controller = new DashboardAdminController($twig, $bdd);
@@ -141,8 +152,9 @@ switch ($page) {
     case 'conditions-utilisation':
         echo $twig->render('conditions-utilisation.html.twig');
         break; 
-        
-    // ===== PILOTE & ADMIN =====
+    
+     //_____________________________________
+    // __________ PILOTE & ADMIN __________
     case 'offer_management':
         requireRole('administrateur', 'pilote');
         $controller = new OfferManagementController($twig, $bdd);
@@ -154,15 +166,15 @@ switch ($page) {
         $controller = new CompanyManagementController($twig, $bdd);
         $controller->index();
         break;
-
-    // ===== DECONNEXION =====
+     //__________________________________
+    // __________ DECONNEXION __________
     case 'logout':
         session_destroy();
         header('Location: /index.php?page=accueil');
         exit;
 
     default:
-        http_response_code(404);
+        http_response_code(404);  // ERREUR_404 PAGE NON TROUVEE
         echo $twig->render('404.html.twig');
         break;
 }
