@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class UserModel extends PaginationModel
+use App\Utils\PaginationController;
+
+class UserModel extends PaginationController
 {
     private \PDO $db;
     protected int $perPage = 5;

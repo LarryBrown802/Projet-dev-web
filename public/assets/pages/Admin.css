@@ -204,7 +204,17 @@
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-weight: 900; font-size: 13px; color: var(--text); }
 .required { color: rgb(255,59,48); }
-.input { display: flex; align-items: center; gap: 10px; background: rgba(15,23,42,.04); border: 1px solid rgba(15,23,42,.08); border-radius: 14px; padding: 11px 14px; transition: border-color .15s, box-shadow .15s; }
+.input { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    background: rgba(15,23,42,.04); 
+    border: 1px solid rgba(15,23,42,.08); 
+    border-radius: 14px; 
+    padding: 11px 14px; 
+    transition: border-color .15s, box-shadow .15s; 
+    position: relative;
+}
 .input:focus-within { border-color: rgba(94,146,166,.55); box-shadow: 0 0 0 4px rgba(94,146,166,.12); }
 .input i { color: var(--muted); flex-shrink: 0; }
 .input input { border: none; outline: none; width: 100%; background: transparent; font-weight: 800; color: var(--text); font-size: 14px; }
@@ -223,3 +233,39 @@ textarea:focus { border-color: rgba(94,146,166,.55); box-shadow: 0 0 0 4px rgba(
 .star-picker input { display: none; }
 .star-picker label { font-size: 28px; color: #ccc; cursor: pointer; transition: color .15s; }
 .star-picker label:hover, .star-picker label:hover ~ label, .star-picker input:checked ~ label { color: #f5c518; }
+
+/* ===== ALERTES ===== */
+.alert {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background: #e6f8f3;
+    color: #1a7b5e;
+}
+
+.alert-error {
+    background: #ffe6e6;
+    color: #d8000c;
+}
+
+/* ===== MOT DE PASSE_____ */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: #000;
+}

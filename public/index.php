@@ -19,6 +19,7 @@ use App\Controllers\StudentManagementController;
 use App\Controllers\DashboardAdminController;
 use App\Controllers\PilotAdminController;
 use App\Controllers\ApplyController;
+use App\Controllers\ProfileController;
 use App\Models\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -89,6 +90,12 @@ switch ($page) {
     case 'apply':
         requireRole('etudiant'); 
         $controller = new ApplyController($twig, $bdd);
+        $controller->index();
+        break;
+
+    case 'profile':
+        requireRole('etudiant');
+        $controller = new ProfileController($twig, $bdd);
         $controller->index();
         break;
 

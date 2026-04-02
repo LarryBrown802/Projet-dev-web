@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - LEMS{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../assets/pages/profile.css">
+    <link rel="stylesheet" href="../assets/pages/Admin.css">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <div class="page-head">
+        <div>
+            <h1>Mon Profil</h1>
+            <p class="page-subtitle">Retrouvez vos informations personnelles et vos candidatures.</p>
+        </div>
+    </div>
+
+    {# ===== INFOS PERSONNELLES ===== #}
+    <section class="profile-grid">
+
+        <div class="profile-card">
+            <div class="profile-avatar">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div class="profile-info">
+                <h2 class="profile-name">{{ profile.prenom }} {{ profile.nom }}</h2>
+                <p class="profile-email"><i class="fa-solid fa-envelope"></i> {{ profile.email }}</p>
+                <p class="profile-promo"><i class="fa-solid fa-graduation-cap"></i> {{ profile.promotion ?? 'Aucune promotion' }}</p>
+                <div class="profile-status">
+                    {% if profile.status == 'ok' %}
+                        <span class="badge badge--ok"><i class="fa-solid fa-circle-check"></i> Stage trouvé</span>
+                    {% elseif profile.status == 'no' %}
+                        <span class="badge badge--no"><i class="fa-solid fa-circle-xmark"></i> Non trouvé</span>
+                    {% else %}
+                        <span class="badge badge--wait"><i class="fa-solid fa-clock"></i> Recherche en cours</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-box">
+                <span class="stat-value">{{ applications|length }}</span>
+                <span class="stat-label">Candidature{{ applications|length > 1 ? 's' : '' }}</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">{{ wishlistCount }}</span>
+                <span class="stat-label">Favori{{ wishlistCount > 1 ? 's' : '' }}</span>
+            </div>
+        </div>
+
+    </section>
+
+    {# ===== MES CANDIDATURES ===== #}
+    <section class="profile-section">
+        <h2 class="section-title-dash">Mes candidatures</h2>
+
+        {% if applications is empty %}
+            <div class="empty-state">
+                <i class="fa-regular fa-folder-open"></i>
+                <p>Vous n'avez pas encore postulé à une offre.</p>
+                <a href="/index.php?page=offers" class="btn-voir" style="text-decoration:none;display:inline-block;margin-top:10px">Voir les offres</a>
+            </div>
+        {% else %}
+            <div class="table-wrap">
+                <table class="dash-table">
+                    <thead>
+                        <tr>
+                            <th>Poste</th>
+                            <th>Entreprise</th>
+                            <th>Lieu</th>
+                            <th>Type</th>
+                            <th>Niveau</th>
+                            <th>Durée</th>
+                            <th>Rémunération</th>
+                            <th>CV envoyé</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td><strong>{{ app.title }}</strong></td>
+                            <td>{{ app.entreprise }}</td>
+                            <td><span class="tag-pill tag-lieu">{{ app.lieu }}</span></td>
+                            <td>
+                                {% if app.type == 'Stage' %}
+                                    <span class="tag-pill tag-stage">Stage</span>
+                                {% else %}
+                                    <span class="tag-pill tag-alt">Alternance</span>
+                                {% endif %}
+                            </td>
+                            <td><span class="tag-pill tag-bac">{{ app.level }}</span></td>
+                            <td>{{ app.duration }}</td>
+                            <td>{{ app.remuneration }} €/mois</td>
+                            <td>
+                                {% if app.cv %}
+                                    <a href="/uploads/{{ app.cv }}" target="_blank" class="btn-icon btn-view-offre" title="Voir le CV">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </a>
+                                {% else %}
+                                    <span style="color:var(--muted)">—</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+
+</main>
+{% endblock %}

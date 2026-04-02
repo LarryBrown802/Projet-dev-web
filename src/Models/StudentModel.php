@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models;
+use App\Utils\PaginationController;
 
-class StudentModel extends PaginationModel
+class StudentModel extends PaginationController
 {
     private array $students;
     protected int $parPage = 5;
