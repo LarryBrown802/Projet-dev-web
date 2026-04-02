@@ -31,7 +31,6 @@
 
     <form class="apply-form" action="/index.php?page=apply" method="POST" enctype="multipart/form-data">
 
-        {# ← Champs hidden pour conserver les infos entre GET et POST #}
         <input type="hidden" name="offer_id"   value="{{ offer_id ?? '' }}">
         <input type="hidden" name="poste"      value="{{ poste }}">
         <input type="hidden" name="entreprise" value="{{ entreprise }}">
@@ -93,10 +92,8 @@
 </main>
 {% endblock %}
 
-
 {% block javascripts %}
     <script>
-        // Script pour afficher les messages de succès ou d'erreur
         document.addEventListener('DOMContentLoaded', function() {
             const messageBox = document.querySelector('.message-box');
             if (messageBox) {

@@ -23,19 +23,17 @@
         </button>
     </div>
 
-    {# ===== MESSAGES ===== #}
     {% if message %}
-        <div style="background: #e6f8f3; color: #1a7b5e; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <div class="alert alert-success">
             <i class="fa-solid fa-check"></i> {{ message }}
         </div>
     {% endif %}
     {% if error %}
-        <div style="background: #ffe6e6; color: #d8000c; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <div class="alert alert-error">
             <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
         </div>
     {% endif %}
 
-    {# ===== BARRE DE RECHERCHE ===== #}
     <form method="get" action="/index.php" class="search-bar-wrap">
         <input type="hidden" name="page" value="company_management">
         <input type="hidden" name="p" value="1">
@@ -46,7 +44,6 @@
         </div>
     </form>
 
-    {# ===== TABLEAU ===== #}
     <div class="table-wrap">
         <table class="dash-table">
             <thead>
@@ -77,7 +74,7 @@
                                     <i class="fa-regular fa-star"></i>
                                 {% endif %}
                             {% endfor %}
-                            <span style="margin-left:4px;font-weight:800">{{ note }}/5</span>
+                            <span class="stars-value">{{ note }}/5</span>
                         </span>
                     </td>
                     <td class="actions-cell">
@@ -102,13 +99,12 @@
                     </td>
                 </tr>
                 {% else %}
-                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Aucune entreprise trouvée.</td></tr>
+                    <tr><td colspan="6" class="table-empty">Aucune entreprise trouvée.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    {# ===== PAGINATION ===== #}
     <nav class="pagination" aria-label="Pagination des entreprises">
 
         <form method="get" action="/index.php">
@@ -227,7 +223,7 @@
 <dialog class="dialog dialog--sm" id="dialogRateEnt">
     <div class="dialog-inner">
         <header class="dialog-header">
-            <div class="dialog-logo" style="background:rgba(245,197,24,.15);border-color:rgba(245,197,24,.3);color:#c8a000"><i class="fa-solid fa-star"></i></div>
+            <div class="dialog-logo dialog-logo--rate"><i class="fa-solid fa-star"></i></div>
             <div><h2>Évaluer l'entreprise</h2><p class="dialog-company" id="rateEntName">—</p></div>
             <button class="dialog-close" id="btnCloseRateEnt" type="button">✕</button>
         </header>
@@ -289,12 +285,10 @@
         });
     });
 
-    // ===== CRÉER =====
     document.getElementById('btnCreateEntreprise').onclick  = () => openDialog('dialogCreateEnt');
     document.getElementById('btnCloseCreateEnt').onclick    = () => closeDialog('dialogCreateEnt');
     document.getElementById('btnCancelCreateEnt').onclick   = () => closeDialog('dialogCreateEnt');
 
-    // ===== MODIFIER =====
     document.querySelectorAll('.btn-edit').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('editEntName').textContent  = btn.dataset.name;
@@ -309,7 +303,6 @@
     document.getElementById('btnCloseEditEnt').onclick  = () => closeDialog('dialogEditEnt');
     document.getElementById('btnCancelEditEnt').onclick = () => closeDialog('dialogEditEnt');
 
-    // ===== ÉVALUER =====
     document.querySelectorAll('.btn-rate').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('rateEntName').textContent = btn.dataset.name;
@@ -320,7 +313,6 @@
     document.getElementById('btnCloseRateEnt').onclick  = () => closeDialog('dialogRateEnt');
     document.getElementById('btnCancelRateEnt').onclick = () => closeDialog('dialogRateEnt');
 
-    // ===== SUPPRIMER =====
     document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.onclick = () => {
             document.getElementById('deleteEntName').textContent = btn.dataset.name;
