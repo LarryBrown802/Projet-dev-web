@@ -79,7 +79,7 @@ class ApplyController
             }
         }
 
-        echo $this->twig->render('apply.html.twig', [
+        echo $this->twig->render('pages/apply.html.twig', [
             'current_page' => 'apply',
             'offer_id' => $offerId,
             'poste' => $poste,

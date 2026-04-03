@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\Controllers\Utils;
 
 class PaginationController
 {

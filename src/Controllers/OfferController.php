@@ -40,7 +40,7 @@ class OfferController
             $wishlistIds = $this->wishlistModel->getWishlistIds($profileId);
         }
 
-        echo $this->twig->render('offer.html.twig', [
+        echo $this->twig->render('pages/offer.html.twig', [
             'current_page' => 'offers',
             'offers' => $offers,
             'totalOffers' => count($allOffers),

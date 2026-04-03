@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);  // ACTIVE L'AFFICHAGE DES ERREURS
+ini_set('display_startup_errors', 1);  // ACTIVE LES ERREURS LORS DU DÉMARRAGE
+error_reporting(E_ALL);  // RAPPORT COMPLÈT DE TOUTES LES ERREURS
 session_start();  // DÉMARRE LA SESSION PHP
 
 require_once __DIR__ . '/../vendor/autoload.php';  // CHARGE AUTOLOAD DE COMPOSER
@@ -25,7 +28,7 @@ use Twig\Loader\FilesystemLoader;
 
 // _____ CONFIGURATION_TWIG _____
 
-$loader = new FilesystemLoader(__DIR__ . '/../templates'); // CHARGE LE REPERTOIRE TEMPLATES
+$loader = new FilesystemLoader(__DIR__ . '/../src/views'); // CHARGE LE REPERTOIRE VIEWS
 $twig   = new Environment($loader);
 
 $dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // CHARGE FICHIER .ENV
@@ -43,7 +46,7 @@ function requireRole(string ...$roles): void
     
     if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $roles)) {
         http_response_code(403);  // ERREUR_403 SI ROLE NON AUTORISE
-        echo $twig->render('403.html.twig'); // AFFICHE PAGE 403
+        echo $twig->render('error/403.html.twig'); // AFFICHE PAGE 403
         exit;
     }
 }
@@ -134,11 +137,11 @@ switch ($page) {
         break;
 
     case 'mentions-legales':
-        echo $twig->render('mentions-legales.html.twig');
+        echo $twig->render('pages/mentions-legales.html.twig');
         break;
 
     case 'conditions-utilisation':
-        echo $twig->render('conditions-utilisation.html.twig');
+        echo $twig->render('pages/conditions-utilisation.html.twig');
         break; 
     
      //_____________________________________
@@ -163,6 +166,6 @@ switch ($page) {
 
     default:
         http_response_code(404);  // ERREUR_404 PAGE NON TROUVEE
-        echo $twig->render('404.html.twig');
+        echo $twig->render('error/404.html.twig');
         break;
 }

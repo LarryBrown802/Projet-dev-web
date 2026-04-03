@@ -23,7 +23,7 @@ class CompanyController
         $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
         $companies = $this->companyModel->getPage($allCompanies, $pageCourante);
 
-        echo $this->twig->render('company.html.twig', [
+        echo $this->twig->render('pages/company.html.twig', [
             'current_page' => 'company',
             'companies' => $companies,
             'pageCourante' => $pageCourante,
@@ -42,7 +42,7 @@ class CompanyController
             return;
         }
 
-        echo $this->twig->render('company_detail.html.twig', [
+        echo $this->twig->render('pages/company_detail.html.twig', [
             'current_page' => 'company',
             'company' => $company,
         ]);

@@ -22,7 +22,7 @@ class WishlistController
         $profileId   = $this->wishlistModel->getOrCreateProfile($userId);
         $savedOffers = $this->wishlistModel->getSavedOffers($profileId);
 
-        echo $this->twig->render('wishlist.html.twig', [
+        echo $this->twig->render('pages/wishlist.html.twig', [
             'current_page' => 'wishlist',
             'offers'       => $savedOffers,
         ]);

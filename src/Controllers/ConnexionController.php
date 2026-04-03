@@ -73,7 +73,7 @@ class ConnexionController
             $error = 'Email ou mot de passe incorrect.';
         }
 
-        echo $this->twig->render('connexion.html.twig', [
+        echo $this->twig->render('auth/connexion.html.twig', [
             'current_page' => 'connexion',
             'error'        => $error,
         ]);

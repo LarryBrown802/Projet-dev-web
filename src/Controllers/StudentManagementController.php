@@ -89,7 +89,7 @@ class StudentManagementController
         $students     = $this->studentModel->getPage($allStudents, $pageCourante);
         $pages        = $this->studentModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
-        echo $this->twig->render('student_management.html.twig', [
+        echo $this->twig->render('admin/student_management.html.twig', [
             'current_page' => 'student_management',
             'students'     => $students,
             'promotions'   => $promotions,

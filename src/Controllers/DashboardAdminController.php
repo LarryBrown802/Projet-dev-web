@@ -36,7 +36,7 @@ class DashboardAdminController
         $pilots       = $this->userModel->getAllByRole('pilote');
         $pilots       = array_slice($pilots, 0, 3); // 3 premiers pilotes
 
-        echo $this->twig->render('dashboard_admin.html.twig', [
+        echo $this->twig->render('admin/dashboard_admin.html.twig', [
             'current_page'   => 'dashboard_admin',
             'nbPilotes'      => $nbPilotes,
             'nbEtudiants'    => $nbEtudiants,
