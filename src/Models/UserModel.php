@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Utils\PaginationController;
+use App\Controllers\Utils\PaginationController;
 
 class UserModel extends PaginationController
 {

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-use App\Utils\PaginationController;
+use App\Controllers\Utils\PaginationController;
 
 class OfferModel extends PaginationController
 {

@@ -25,7 +25,7 @@ use Twig\Loader\FilesystemLoader;
 
 // _____ CONFIGURATION_TWIG _____
 
-$loader = new FilesystemLoader(__DIR__ . '/../templates'); // CHARGE LE REPERTOIRE TEMPLATES
+$loader = new FilesystemLoader(__DIR__ . '/../src/views'); // CHARGE LE REPERTOIRE VIEWS
 $twig   = new Environment($loader);
 
 $dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // CHARGE FICHIER .ENV
