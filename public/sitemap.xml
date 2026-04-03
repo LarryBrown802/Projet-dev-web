@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+ 
+    <url>
+        <loc>http://lems.fr/index.php?page=accueil</loc>
+    </url>
+ 
+    <url>
+        <loc>http://lems.fr/index.php?page=offers</loc>
+    </url>
+ 
+    <url>
+        <loc>http://lems.fr/index.php?page=company</loc>
+    </url>
+ 
+    <url>
+        <loc>http://lems.fr/index.php?page=connexion</loc>
+    </url>
+</urlset>
