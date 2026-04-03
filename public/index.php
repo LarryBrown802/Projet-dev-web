@@ -1,10 +1,4 @@
 <?php
-// _____ CONFIGURATION DES ERREURS _____
-
-ini_set('display_errors', 1);  // ACTIVE L'AFFICHAGE DES ERREURS
-ini_set('display_startup_errors', 1);  // ACTIVE LES ERREURS LORS DU DÉMARRAGE
-error_reporting(E_ALL);  // RAPPORT COMPLÈT DE TOUTES LES ERREURS
-
 session_start();  // DÉMARRE LA SESSION PHP
 
 require_once __DIR__ . '/../vendor/autoload.php';  // CHARGE AUTOLOAD DE COMPOSER
@@ -138,12 +132,6 @@ switch ($page) {
         $controller = new PilotAdminController($twig, $bdd);
         $controller->index();
         break;
-
-    /*case 'student_admin':
-        requireRole('administrateur');
-        $controller = new StudentAdminController($twig, $bdd);
-        $controller->index();
-        break;*/
 
     case 'mentions-legales':
         echo $twig->render('mentions-legales.html.twig');
