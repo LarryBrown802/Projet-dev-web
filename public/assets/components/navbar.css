@@ -102,8 +102,6 @@ __________ */
 
 }
 
-/* =========================
-   BURGER
 .burger {
   display: none;
   flex-direction: column;
@@ -118,8 +116,6 @@ __________ */
   border-radius: 2px;
 }
 
-/* =========================
-   MOBILE
 @media (max-width: 768px) {
 
   .burger {
