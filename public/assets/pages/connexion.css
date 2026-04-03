@@ -109,21 +109,7 @@ label{
   box-shadow: 0 0 0 4px rgba(94,146,166,.15);
 }
 
-/* Checkbox */
-.check{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  user-select: none;
-  color: var(--text);
-}
 
-.check input{
-  width: 16px;
-  height: 16px;
-  accent-color: var(--primary);
-}
 
 /* Boutons */
 .btn-primary{
@@ -140,22 +126,4 @@ label{
 .btn-primary:hover{
   transform: translateY(-1px);
   filter: brightness(1.06);
-}
-
-/* ===== MOT DE PASSE ===== */
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    font-size: 16px;
-}
-
-.toggle-password:hover {
-    color: #000;
 }
