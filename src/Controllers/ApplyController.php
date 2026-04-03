@@ -62,7 +62,7 @@ class ApplyController
                 $originalName = basename($_FILES['cv']['name']);
                 $cleanName    = preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalName);
                 $cvFilename   = time() . '_' . $cleanName;
-                $uploadDir  = __DIR__ . '/../../public/uploads/';
+                $uploadDir  = __DIR__ . '/../../../uploads/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0777, true);
                     }
