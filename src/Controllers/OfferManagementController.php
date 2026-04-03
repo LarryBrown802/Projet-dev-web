@@ -76,7 +76,7 @@ class OfferManagementController
         $offers = $this->offerModel->getPage($allOffers, $pageCourante);
         $pages = $this->offerModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
-        echo $this->twig->render('offer_management.html.twig', [
+        echo $this->twig->render('admin/offer_management.html.twig', [
             'current_page' => 'offer_management',
             'offers' => $offers,
             'companies' => $companies,

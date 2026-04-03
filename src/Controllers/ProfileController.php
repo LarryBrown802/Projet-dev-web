@@ -29,7 +29,7 @@ class ProfileController
             $wishlistCount = $this->profileModel->getWishlistCount($profile['ID_profile']);
         }
 
-        echo $this->twig->render('profile.html.twig', [
+        echo $this->twig->render('auth/profile.html.twig', [
             'current_page'  => 'profile',
             'profile'       => $profile,
             'applications'  => $applications,

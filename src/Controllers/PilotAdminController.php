@@ -89,7 +89,7 @@ class PilotAdminController
         $pilots      = $this->userModel->getPage($allUsers, $pageCourante);
         $pages       = $this->userModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
-        echo $this->twig->render('pilot_admin.html.twig', [
+        echo $this->twig->render('admin/pilot_admin.html.twig', [
             'current_page' => 'pilot_admin',
             'pilots'       => $pilots,
             'promotions'   => $promotions,

@@ -67,7 +67,7 @@ class CompanyManagementController
         $companies = $this->companyModel->getPage($allCompanies, $pageCourante);
         $pages = $this->companyModel->getPageNumbers($pageCourante, $totalPages ?: 1);
 
-        echo $this->twig->render('company_management.html.twig', [
+        echo $this->twig->render('admin/company_management.html.twig', [
             'current_page' => 'company_management',
             'companies' => $companies,
             'pageCourante' => $pageCourante,
