@@ -42,139 +42,68 @@ $bdd = Database::connect();  // CONNEXION A LA BASE DE DONNEES
 // REND LA SESSION DISPONIBLE DANS TWIG
 $twig->addGlobal('session', $_SESSION);
 
-// Fonction de protection des routes par rôle
-function requireRole(string ...$roles): void
-{
-    global $twig; // PERMET L'UTILISATION TWIG DANS LA FONCTION
+// _____ TABLE DE ROUTAGE _____
+// On définit toutes nos routes, le contrôleur associé, la méthode, et les rôles autorisés (vide = public)
+$routes = [
+    'accueil'                => ['controller' => HomeController::class, 'method' => 'index', 'roles' => []],
+    'connexion'              => ['controller' => ConnexionController::class, 'method' => 'index', 'roles' => []],
+    'offers'                 => ['controller' => OfferController::class, 'method' => 'index', 'roles' => []],
+    'company'                => ['controller' => CompanyController::class, 'method' => 'index', 'roles' => []],
+    'company_detail'         => ['controller' => CompanyController::class, 'method' => 'detail', 'roles' => []],
     
-    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $roles)) {
-        http_response_code(403);  // ERREUR_403 SI ROLE NON AUTORISE
-        echo $twig->render('403.html.twig'); // AFFICHE PAGE 403
+    'wishlist'               => ['controller' => WishlistController::class, 'method' => 'index', 'roles' => ['etudiant']],
+    'toggle_wishlist'        => ['controller' => WishlistController::class, 'method' => 'toggleAjax', 'roles' => ['etudiant']],
+    'apply'                  => ['controller' => ApplyController::class, 'method' => 'index', 'roles' => ['etudiant']],
+    'profile'                => ['controller' => ProfileController::class, 'method' => 'index', 'roles' => ['etudiant']],
+    
+    'dashboard_pilot'        => ['controller' => DashboardPilotController::class, 'method' => 'index', 'roles' => ['pilote']],
+    'student_management'     => ['controller' => StudentManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
+    
+    'dashboard_admin'        => ['controller' => DashboardAdminController::class, 'method' => 'index', 'roles' => ['administrateur']],
+    'pilot_admin'            => ['controller' => PilotAdminController::class, 'method' => 'index', 'roles' => ['administrateur']],
+    
+    'offer_management'       => ['controller' => OfferManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
+    'company_management'     => ['controller' => CompanyManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
+];
+
+// _____ LOGIQUE DE DISPATCH (L'Aiguilleur) _____
+
+$page = $_GET['page'] ?? 'accueil';
+
+// 1. GESTION DES PAGES SIMPLES ET DECONNEXION (Exceptions)
+if ($page === 'logout') {
+    session_destroy();
+    header('Location: /index.php?page=accueil');
+    exit;
+}
+if ($page === 'mentions-legales' || $page === 'conditions-utilisation') {
+    echo $twig->render($page . '.html.twig');
+    exit;
+}
+
+// 2. VÉRIFICATION DE L'EXISTENCE DE LA ROUTE (Erreur 404)
+if (!array_key_exists($page, $routes)) {
+    http_response_code(404);
+    echo $twig->render('404.html.twig');
+    exit;
+}
+
+// 3. VÉRIFICATION DES PERMISSIONS (Erreur 403)
+$routeConfig = $routes[$page];
+$requiredRoles = $routeConfig['roles'];
+
+if (!empty($requiredRoles)) { // Si la route demande un rôle spécifique
+    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $requiredRoles)) {
+        http_response_code(403);
+        echo $twig->render('403.html.twig');
         exit;
     }
 }
 
-$page = $_GET['page'] ?? 'accueil'; // RECUPERE PAGE DE L'URL OU DEFAULT
+// 4. APPEL DYNAMIQUE DU CONTRÔLEUR
+$controllerName = $routeConfig['controller'];
+$methodName = $routeConfig['method'];
 
-switch ($page) {
-
-     //_______________________________________
-    // __________ ACCESSIBLE À TOUS __________
-    case 'accueil':
-        $controller = new HomeController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'connexion':
-        $controller = new ConnexionController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'offers':
-        $controller = new OfferController($twig, $bdd);
-        $controller->index();
-        break;
-        
-    case 'company':
-        $controller = new CompanyController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'company_detail':
-        $controller = new CompanyController($twig, $bdd);
-        $controller->detail();
-        break;
-
-      //_______________________________________
-     // __________ ETUDIANT SEULEMENT __________
-    case 'wishlist':
-        requireRole('etudiant');
-        $controller = new WishlistController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'toggle_wishlist':
-        requireRole('etudiant');
-        $controller = new WishlistController($twig, $bdd);
-        $controller->toggleAjax();
-        break;
-
-    case 'apply':
-        requireRole('etudiant'); 
-        $controller = new ApplyController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'profile':
-        requireRole('etudiant');
-        $controller = new ProfileController($twig, $bdd);
-        $controller->index();
-        break;
-
-     //_______________________________________
-    // __________ PILOTE SEULEMENT __________
-    case 'dashboard_pilot':
-        requireRole('pilote');
-        $controller = new DashboardPilotController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'student_management':
-        requireRole('administrateur', 'pilote'); // Admin peut aussi voir tous les étudiants
-        $controller = new StudentManagementController($twig, $bdd);
-        $controller->index();
-        break;
-
-     //_____________________________________
-    // __________ ADMIN SEULEMENT __________
-    case 'dashboard_admin':
-        requireRole('administrateur');
-        $controller = new DashboardAdminController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'pilot_admin':
-        requireRole('administrateur');
-        $controller = new PilotAdminController($twig, $bdd);
-        $controller->index();
-        break;
-
-    /*case 'student_admin':
-        requireRole('administrateur');
-        $controller = new StudentAdminController($twig, $bdd);
-        $controller->index();
-        break;*/
-
-    case 'mentions-legales':
-        echo $twig->render('mentions-legales.html.twig');
-        break;
-
-    case 'conditions-utilisation':
-        echo $twig->render('conditions-utilisation.html.twig');
-        break; 
-    
-     //_____________________________________
-    // __________ PILOTE & ADMIN __________
-    case 'offer_management':
-        requireRole('administrateur', 'pilote');
-        $controller = new OfferManagementController($twig, $bdd);
-        $controller->index();
-        break;
-
-    case 'company_management':
-        requireRole('administrateur','pilote');
-        $controller = new CompanyManagementController($twig, $bdd);
-        $controller->index();
-        break;
-     //__________________________________
-    // __________ DECONNEXION __________
-    case 'logout':
-        session_destroy();
-        header('Location: /index.php?page=accueil');
-        exit;
-
-    default:
-        http_response_code(404);  // ERREUR_404 PAGE NON TROUVEE
-        echo $twig->render('404.html.twig');
-        break;
-}
+// On instancie le bon contrôleur en lui passant Twig et la base de données
+$controllerInstance = new $controllerName($twig, $bdd);
+$controllerInstance->$methodName();
