@@ -1,7 +1,29 @@
 User-agent: *
- 
- 
-Allow: /
- 
- 
-Sitemap: http://lems.fr/sitemap.xml
+
+#PAGES PUBLIQUES AUTORISE
+
+Allow: /$
+Allow: /index.php?page=accueil
+Allow: /index.php?page=offers
+Allow: /index.php?page=company
+Allow: /index.php?page=company_detail
+Allow: /index.php?page=mentions-legales
+Allow: /index.php?page=conditions-utilisation
+
+#PAGES PRIVEE NON INDEXE
+
+Disallow: /index.php?page=dashboard_admin
+Disallow: /index.php?page=dashboard_pilot
+Disallow: /index.php?page=pilot_admin
+Disallow: /index.php?page=student_management
+Disallow: /index.php?page=offer_management
+Disallow: /index.php?page=company_management
+Disallow: /index.php?page=wishlist
+Disallow: /index.php?page=apply
+Disallow: /index.php?page=profile
+Disallow: /index.php?page=connexion
+Disallow: /index.php?page=logout
+
+Disallow: /index.php?page=toggle_wishlist
+
+Sitemap: https://lems.fr/sitemap.xml
