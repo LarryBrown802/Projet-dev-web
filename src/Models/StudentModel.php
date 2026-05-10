@@ -7,7 +7,7 @@ use Exception;
 class StudentModel extends PaginationController
 {
     private \PDO $db;
-    protected int $parPage = 10;
+    protected int $perPage = 10;
 
     public function __construct(\PDO $db)
     {
