@@ -6,7 +6,7 @@ use App\Controllers\Utils\PaginationController;
 class OfferModel extends PaginationController
 {
     private \PDO $db;
-    protected int $parPage = 6;
+    protected int $perPage = 6;
 
     public function __construct(\PDO $db)
     {

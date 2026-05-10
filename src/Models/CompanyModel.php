@@ -6,7 +6,7 @@ use App\Controllers\Utils\PaginationController;
 class CompanyModel extends PaginationController
 {
     private \PDO $db;
-    protected int $parPage = 6;
+    protected int $perPage = 6;
 
     public function __construct(\PDO $db)
     {
