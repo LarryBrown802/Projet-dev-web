@@ -3,9 +3,7 @@
 {% block title %}Ma Wishlist - LEMS{% endblock %}
 
 {% block stylesheets %}
-    {# On réutilise le CSS des offres car on affiche exactement les mêmes cartes ! #}
     <link rel="stylesheet" href="/assets/pages/offre.css">
-    {# Si tu avais un CSS spécifique, tu peux le laisser #}
     <link rel="stylesheet" href="/assets/pages/wishlist.css">
 {% endblock %}
 
@@ -16,7 +14,6 @@
         <p class="page-subtitle">Retrouvez ici toutes les offres que vous avez sauvegardées pour postuler plus tard.</p>
     </div>
 
-    {# La grille qui contient toutes les cartes #}
     <section class="offres" aria-label="Liste de mes favoris">
         
         {% for offer in offers %}
@@ -31,7 +28,6 @@
                         <p class="offre-entreprise">{{ offer.entreprise }}</p>
                     </div>
 
-                    {# Le bouton favori (qui sera TOUJOURS "coché" par défaut sur cette page puisqu'on est dans la wishlist !) #}
                     <label class="ui-bookmark" title="Retirer des favoris">
                         <input type="checkbox" aria-label="Retirer des favoris" data-offer-id="{{ offer.id }}" class="bookmark-checkbox" checked>
                         <span class="bookmark" aria-hidden="true">
