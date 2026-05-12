@@ -18,7 +18,8 @@ class OfferModel extends PaginationController
         ?string $location = null,
         array $types = [],
         array $levels = [],
-        array $categories = []
+        array $categories = [],
+        ?string $sort = null
     ): array {
         $sql = '
             SELECT o.*, c.name AS entreprise, c.description AS entrepriseDesc,
@@ -55,7 +56,13 @@ class OfferModel extends PaginationController
             foreach ($categories as $i => $cat) $params[":cat$i"] = $cat;
         }
 
-        $sql .= ' GROUP BY o.ID_offer ORDER BY o.publication_date DESC';
+        $orderBy = match ($sort) {
+            'recent' => 'o.publication_date DESC',
+            'remu'   => 'o.remuneration DESC',
+            'az'     => 'o.title ASC',
+            default  => 'o.publication_date DESC',
+        };
+        $sql .= ' GROUP BY o.ID_offer ORDER BY ' . $orderBy;
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);

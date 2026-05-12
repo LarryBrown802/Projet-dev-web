@@ -26,8 +26,9 @@ class OfferController
         $types = is_array($_GET['types'] ?? null) ? array_map('trim', $_GET['types']) : [];
         $levels = is_array($_GET['levels'] ?? null) ? array_map('trim', $_GET['levels']) : [];
         $categories = is_array($_GET['categories'] ?? null) ? array_map('trim', $_GET['categories']) : [];
+        $sort = in_array($_GET['sort'] ?? '', ['recent', 'remu', 'az']) ? $_GET['sort'] : 'recent';
 
-        $allOffers = $this->offerModel->searchOffers($search, $location, $types, $levels, $categories);
+        $allOffers = $this->offerModel->searchOffers($search, $location, $types, $levels, $categories, $sort);
         $totalPages = $this->offerModel->totalPages($allOffers);
         $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
         $offers = $this->offerModel->getPage($allOffers, $pageCourante);
@@ -52,7 +53,8 @@ class OfferController
             'types' => $types,
             'levels' => $levels,
             'categories' => $categories,
-            'wishlistIds' => $wishlistIds, // ← tableau des IDs en favori
+            'sort' => $sort,
+            'wishlistIds' => $wishlistIds,
         ]);
     }
 }

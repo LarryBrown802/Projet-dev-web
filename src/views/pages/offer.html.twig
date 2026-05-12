@@ -170,11 +170,11 @@
                 <div class="results-sort">
                     <label class="sr-only" for="sort">Trier</label>
                     <i class="fa-solid fa-arrow-up-wide-short"></i>
-                    <select id="sort">
-                        <option value="pertinence">Pertinence</option>
-                        <option value="recent">Plus récent</option>
-                        <option value="remu">Rémunération</option>
-                        <option value="az">A → Z</option>
+                    <select id="sort" name="sort" onchange="applySortFilter(this.value)">
+                        <option value="pertinence" {% if sort is not defined or sort == 'pertinence' %}selected{% endif %}>Pertinence</option>
+                        <option value="recent"     {% if sort is defined and sort == 'recent' %}selected{% endif %}>Plus récent</option>
+                        <option value="remu"       {% if sort is defined and sort == 'remu' %}selected{% endif %}>Rémunération</option>
+                        <option value="az"         {% if sort is defined and sort == 'az' %}selected{% endif %}>A → Z</option>
                     </select>
                 </div>
             </div>
