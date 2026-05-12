@@ -1,16 +1,10 @@
 <?php
-// _____ CONFIGURATION DES ERREURS _____
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
 
-ini_set('display_errors', 1);  // ACTIVE L'AFFICHAGE DES ERREURS
-ini_set('display_startup_errors', 1);  // ACTIVE LES ERREURS LORS DU DÉMARRAGE
-error_reporting(E_ALL);  // RAPPORT COMPLÈT DE TOUTES LES ERREURS
-
-session_start();  // DÉMARRE LA SESSION PHP
-
-require_once __DIR__ . '/../vendor/autoload.php';  // CHARGE AUTOLOAD DE COMPOSER
-require_once __DIR__ . '/../src/Utils/Pagination.php';
-
-// _____ UTILISE LES CONTROLLERS ET MODELS _____
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\ConnexionController;
 use App\Controllers\HomeController;
@@ -26,84 +20,103 @@ use App\Controllers\PilotAdminController;
 use App\Controllers\ApplyController;
 use App\Controllers\ProfileController;
 use App\Models\Database;
+use App\Models\UserModel;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-// _____ CONFIGURATION_TWIG _____
-
+// _____ CONFIGURATION TWIG ET BDD _____
 $loader = new FilesystemLoader(__DIR__ . '/../templates'); // CHARGE LE REPERTOIRE TEMPLATES
 $twig   = new Environment($loader);
 
-$dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // CHARGE FICHIER .ENV
-$dotnev->load();
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
-$bdd = Database::connect();  // CONNEXION A LA BASE DE DONNEES
+$bdd = Database::connect();
 
-// REND LA SESSION DISPONIBLE DANS TWIG
+// _____ GESTION DES COOKIES "REMEMBER ME" (Code du collègue) _____
+function autoLoginFromRememberCookie(\PDO $bdd): void {
+    if (isset($_SESSION['user_id']) || empty($_COOKIE['remember_token'])) {
+        return;
+    }
+
+    $userModel = new UserModel($bdd);
+    $user = $userModel->findByRememberToken($_COOKIE['remember_token']);
+
+    if (!$user) {
+        setcookie('remember_token', '', ['expires' => time() - 3600, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
+        return;
+    }
+
+    $_SESSION['user_id'] = $user['ID_user'];
+    $_SESSION['email']   = $user['email'];
+    $_SESSION['role']    = $user['name_role'];
+}
+
+autoLoginFromRememberCookie($bdd);
 $twig->addGlobal('session', $_SESSION);
 
-// _____ TABLE DE ROUTAGE _____
-// On définit toutes nos routes, le contrôleur associé, la méthode, et les rôles autorisés (vide = public)
-$routes = [
-    'accueil'                => ['controller' => HomeController::class, 'method' => 'index', 'roles' => []],
-    'connexion'              => ['controller' => ConnexionController::class, 'method' => 'index', 'roles' => []],
-    'offers'                 => ['controller' => OfferController::class, 'method' => 'index', 'roles' => []],
-    'company'                => ['controller' => CompanyController::class, 'method' => 'index', 'roles' => []],
-    'company_detail'         => ['controller' => CompanyController::class, 'method' => 'detail', 'roles' => []],
-    
-    'wishlist'               => ['controller' => WishlistController::class, 'method' => 'index', 'roles' => ['etudiant']],
-    'toggle_wishlist'        => ['controller' => WishlistController::class, 'method' => 'toggleAjax', 'roles' => ['etudiant']],
-    'apply'                  => ['controller' => ApplyController::class, 'method' => 'index', 'roles' => ['etudiant']],
-    'profile'                => ['controller' => ProfileController::class, 'method' => 'index', 'roles' => ['etudiant']],
-    
-    'dashboard_pilot'        => ['controller' => DashboardPilotController::class, 'method' => 'index', 'roles' => ['pilote']],
-    'student_management'     => ['controller' => StudentManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
-    
-    'dashboard_admin'        => ['controller' => DashboardAdminController::class, 'method' => 'index', 'roles' => ['administrateur']],
-    'pilot_admin'            => ['controller' => PilotAdminController::class, 'method' => 'index', 'roles' => ['administrateur']],
-    
-    'offer_management'       => ['controller' => OfferManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
-    'company_management'     => ['controller' => CompanyManagementController::class, 'method' => 'index', 'roles' => ['administrateur', 'pilote']],
-];
-
-// _____ LOGIQUE DE DISPATCH (L'Aiguilleur) _____
-
+// _____ LE NOUVEAU ROUTEUR MVC _____
 $page = $_GET['page'] ?? 'accueil';
 
-// 1. GESTION DES PAGES SIMPLES ET DECONNEXION (Exceptions)
+// 1. Pages statiques et Déconnexion
+if ($page === 'mentions-legales') { echo $twig->render('pages/mentions-legales.html.twig'); exit; }
+if ($page === 'conditions-utilisation') { echo $twig->render('pages/conditions-utilisation.html.twig'); exit; }
+
 if ($page === 'logout') {
+    if (isset($_SESSION['user_id'])) {
+        $userModel = new UserModel($bdd);
+        $userModel->clearRememberToken($_SESSION['user_id']);
+    }
+    setcookie('remember_token', '', ['expires' => time() - 3600, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
     session_destroy();
     header('Location: /index.php?page=accueil');
     exit;
 }
-if ($page === 'mentions-legales' || $page === 'conditions-utilisation') {
-    echo $twig->render($page . '.html.twig');
-    exit;
-}
 
-// 2. VÉRIFICATION DE L'EXISTENCE DE LA ROUTE (Erreur 404)
-if (!array_key_exists($page, $routes)) {
-    http_response_code(404);
-    echo $twig->render('404.html.twig');
-    exit;
-}
+// 2. Tableau de routage : 'url' => [Contrôleur, 'méthode', ['rôles_autorisés']]
+$routes = [
+    // --- Public ---
+    'accueil'            => [HomeController::class, 'index', []],
+    'connexion'          => [ConnexionController::class, 'index', []],
+    'offers'             => [OfferController::class, 'index', []],
+    'company'            => [CompanyController::class, 'index', []],
+    'company_detail'     => [CompanyController::class, 'detail', []], // Appel de detail()
+    // --- Étudiants ---
+    'wishlist'           => [WishlistController::class, 'index', ['etudiant']],
+    'toggle_wishlist'    => [WishlistController::class, 'toggleAjax', ['etudiant']], // Appel AJAX
+    'apply'              => [ApplyController::class, 'index', ['etudiant']],
+    'profile'            => [ProfileController::class, 'index', ['etudiant']],
+    // --- Pilotes ---
+    'dashboard_pilot'    => [DashboardPilotController::class, 'index', ['pilote']],
+    // --- Admins ---
+    'dashboard_admin'    => [DashboardAdminController::class, 'index', ['administrateur']],
+    'pilot_admin'        => [PilotAdminController::class, 'index', ['administrateur']],
+    // --- Mixte (Admin & Pilote) ---
+    'student_management' => [StudentManagementController::class, 'index', ['administrateur', 'pilote']],
+    'offer_management'   => [OfferManagementController::class, 'index', ['administrateur', 'pilote']],
+    'company_management' => [CompanyManagementController::class, 'index', ['administrateur', 'pilote']],
+];
 
-// 3. VÉRIFICATION DES PERMISSIONS (Erreur 403)
-$routeConfig = $routes[$page];
-$requiredRoles = $routeConfig['roles'];
+// 3. Exécution de la route
+if (array_key_exists($page, $routes)) {
+    $controllerClass = $routes[$page][0];
+    $methodName      = $routes[$page][1];
+    $requiredRoles   = $routes[$page][2];
 
-if (!empty($requiredRoles)) { // Si la route demande un rôle spécifique
-    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $requiredRoles)) {
-        http_response_code(403);
-        echo $twig->render('403.html.twig');
-        exit;
+    // Vérification de la sécurité (rôles)
+    if (!empty($requiredRoles)) {
+        if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $requiredRoles)) {
+            http_response_code(403);
+            echo $twig->render('error/403.html.twig');
+            exit;
+        }
     }
+
+    // Lancement du contrôleur
+    $controller = new $controllerClass($twig, $bdd);
+    $controller->$methodName();
+} else {
+    // Page 404
+    http_response_code(404);
+    echo $twig->render('error/404.html.twig');
 }
-
-// 4. APPEL DYNAMIQUE DU CONTRÔLEUR
-$controllerName = $routeConfig['controller'];
-$methodName = $routeConfig['method'];
-
-// On instancie le bon contrôleur en lui passant Twig et la base de données
-$controllerInstance = new $controllerName($twig, $bdd);
-$controllerInstance->$methodName();

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion -LEMS{% endblock %}
+{% block title %}Connexion - LEMS{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/assets/pages/connexion.css">
@@ -34,23 +34,29 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="field">
                     <div class="label-row">
                         <label for="password">Mot de passe</label>
                     </div>
                     <div class="input">
                         <i class="fa-solid fa-lock"></i>
                         <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
-
                     </div>
                 </div>
 
+                <div class="field" style="display: flex; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 20px;">
+                    <input type="checkbox" name="remember" id="rememberMe" style="width: auto; cursor: pointer;">
+                    <label for="rememberMe" style="font-weight: normal; cursor: pointer; font-size: 0.9rem; margin: 0;">
+                        Se souvenir de moi
+                    </label>
+                </div>
 
                 <button class="btn-primary" type="submit">Se connecter</button>
             </form>
         </section>
     </main>
 {% endblock %}
+
 {% block javascripts %}
     <script src="/assets/pages/connexion.js"></script>
 {% endblock %}

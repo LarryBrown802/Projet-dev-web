@@ -4,13 +4,14 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use Twig\Environment;
+use PDO;
 
 class ConnexionController
 {
     private Environment $twig;
     private UserModel $userModel;
 
-    public function __construct(Environment $twig, \PDO $bdd)
+    public function __construct(Environment $twig, PDO $bdd)
     {
         $this->twig      = $twig;
         $this->userModel = new UserModel($bdd);
@@ -27,6 +28,10 @@ class ConnexionController
             $user = $this->userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
+                
+                // ✅ SÉCURITÉ : Empêche le vol de session (Fixation de session)
+                session_regenerate_id(true);
+
                 $_SESSION['user_id'] = $user['ID_user'];
                 $_SESSION['email']   = $user['email'];
                 $_SESSION['role']    = $user['name_role'];
@@ -43,7 +48,6 @@ class ConnexionController
                         'samesite' => 'Lax',
                     ]);
                 } else {
-                    // Case non cochée : supprime l'ancien cookie et le token en DB
                     $this->userModel->clearRememberToken($user['ID_user']);
                     setcookie('remember_token', '', [
                         'expires'  => time() - 3600,
@@ -73,9 +77,11 @@ class ConnexionController
             $error = 'Email ou mot de passe incorrect.';
         }
 
-        echo $this->twig->render('connexion.html.twig', [
-            'current_page' => 'connexion',
-            'error'        => $error,
+        // Fait appel au bon chemin Twig
+        // ✅ LA CORRECTION
+            echo $this->twig->render('connexion.html.twig', [
+                'current_page' => 'connexion',
+                'error'        => $error,
         ]);
     }
 }
