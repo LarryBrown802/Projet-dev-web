@@ -148,7 +148,7 @@
                 <label for="cPromotionExist">Promotion existante</label>
                 <div class="input">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <select id="cPromotionExist" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <select id="cPromotionExist" name="id_promotion" class="select-admin">
                         <option value="">Aucune</option>
                         {% for promo in promotions %}
                             <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
@@ -201,7 +201,7 @@
                 <label for="ePromotion">Promotion</label>
                 <div class="input">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <select id="ePromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <select id="ePromotion" name="id_promotion" class="select-admin">
                         <option value="">Aucune</option>
                         {% for promo in promotions %}
                             <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>

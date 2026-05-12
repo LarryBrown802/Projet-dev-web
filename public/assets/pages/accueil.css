@@ -454,6 +454,9 @@ h2{
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0,0,0,.1);
+  text-decoration: none;
+  text-align: center;
+  display: block;
 }
 
 .apply-btn:hover{
@@ -465,6 +468,11 @@ h2{
 .apply-btn:active{
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(94,146,166,.3);
+}
+
+/* Rotated paperclip */
+.rotated-paperclip{
+  --fa-rotate-angle: -45deg;
 }
 
 /* ===================== FAQ ===================== */

@@ -460,6 +460,9 @@
   font-weight: 900;
   cursor: pointer;
   transition: transform .12s ease, filter .12s ease;
+  text-decoration: none;
+  text-align: center;
+  display: block;
 }
 .btn-voir:hover{
   transform: translateY(-1px);

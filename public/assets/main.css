@@ -88,3 +88,58 @@ body{
   place-items: center;
 }
 .page-arrow:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* =========================
+   ERROR PAGES
+========================= */
+.error-main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  text-align: center;
+}
+
+.error-icon{
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.error-title{
+  font-size: 64px;
+  margin: 0 0 10px 0;
+}
+
+.error-subtitle{
+  margin: 0 0 20px 0;
+}
+
+.error-text{
+  color: var(--muted, #666);
+  max-width: 500px;
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.error-link{
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--primary, #5E92A6);
+}
+
+/* 404 specific */
+.error-404 .error-icon{
+  color: var(--primary, #5E92A6);
+}
+
+.error-404 .error-title,
+.error-404 .error-subtitle{
+  color: #cc1515;
+}

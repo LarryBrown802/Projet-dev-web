@@ -252,6 +252,46 @@ textarea:focus { border-color: rgba(94,146,166,.55); box-shadow: 0 0 0 4px rgba(
     color: #d8000c;
 }
 
+/* ===== ADMIN SPECIFIC ===== */
+.meta-value-admin{
+  font-size: 15px;
+}
+
+.section-head-row-admin{
+  margin-top: 22px;
+}
+
+/* ===== SELECT ADMIN ===== */
+.select-admin{
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ===== SEARCH BAR ADMIN ===== */
+.search-bar-wrap-admin{
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 12px;
+}
+
+/* ===== CANDIDATURES ===== */
+.candidatures-section{
+  margin-top: 14px;
+}
+
+.candidatures-title{
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.dialog-actions-admin{
+  margin-top: 14px;
+}
+
 /* ===== MOT DE PASSE_____ */
 .toggle-password {
     position: absolute;

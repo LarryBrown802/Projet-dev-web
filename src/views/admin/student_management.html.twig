@@ -169,8 +169,8 @@
             </div>
             <button class="dialog-close" id="btnCloseViewEtu" type="button">✕</button>
         </header>
-        <div style="margin-top:14px">
-            <h3 style="margin:0 0 10px;font-size:15px">Candidatures envoyées</h3>
+        <div class="candidatures-section">
+            <h3 class="candidatures-title">Candidatures envoyées</h3>
             <div class="table-wrap">
                 <table class="dash-table">
                     <thead>
@@ -180,7 +180,7 @@
                 </table>
             </div>
         </div>
-        <div class="dialog-actions" style="margin-top:14px">
+        <div class="dialog-actions dialog-actions-admin">
             <button class="btn-secondary" id="btnCloseViewEtu2">Fermer</button>
         </div>
     </div>
@@ -228,7 +228,7 @@
                 <label for="cPromotion">Promotion</label>
                 <div class="input">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <select id="cPromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <select id="cPromotion" name="id_promotion" class="select-admin">
                         <option value="">Sélectionner…</option>
                         {% for promo in promotions %}
                             <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
@@ -280,7 +280,7 @@
                 <label for="ePromotion">Promotion</label>
                 <div class="input">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <select id="ePromotion" name="id_promotion" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <select id="ePromotion" name="id_promotion" class="select-admin">
                         <option value="">Aucune</option>
                         {% for promo in promotions %}
                             <option value="{{ promo.ID_promotion }}">{{ promo.name }}</option>
@@ -292,7 +292,7 @@
                 <label for="eStatus">Statut de recherche</label>
                 <div class="input">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <select id="eStatus" name="status" style="border:none;outline:none;width:100%;background:transparent;font-weight:800">
+                    <select id="eStatus" name="status" class="select-admin">
                         <option value="wait">En cours</option>
                         <option value="ok">Stage trouvé</option>
                         <option value="no">Non trouvé</option>

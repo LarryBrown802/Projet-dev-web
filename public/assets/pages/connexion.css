@@ -127,3 +127,32 @@ label{
   transform: translateY(-1px);
   filter: brightness(1.06);
 }
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+.error-message{
+  background-color: #ffe6e6;
+  color: #d8000c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #f5c2c7;
+}
+
+/* =========================
+   REMEMBER ME
+========================= */
+.remember-container{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.remember-label{
+  margin: 0;
+  cursor: pointer;
+}

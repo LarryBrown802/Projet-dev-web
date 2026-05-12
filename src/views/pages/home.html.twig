@@ -82,7 +82,7 @@
                                 {{ offer.title }}
                             </h3>
                             <p class="mini-info">
-                                <span><i class="fa-solid fa-paperclip fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>{{ offer.type }}</span>
+                                <span><i class="fa-solid fa-paperclip fa-rotate-by rotated-paperclip"></i>{{ offer.type }}</span>
                                 <span><i class="fa-solid fa-location-dot"></i>{{ offer.lieu }}</span>
                                 <span><i class="fa-solid fa-ranking-star"></i>{{ offer.level }}</span>
                             </p>
@@ -191,7 +191,7 @@
                 {% if session.role == 'etudiant' %}
                     <button class="apply-btn js-apply-btn" type="button" data-id="{{ firstOffer.ID_offer }}">Postuler</button>
                 {% else %}
-                    <a href="/index.php?page=connexion" class="apply-btn" style="text-decoration:none;text-align:center;display:block">
+                    <a href="/index.php?page=connexion" class="apply-btn">
                         Se connecter pour postuler
                     </a>
                 {% endif %}                
