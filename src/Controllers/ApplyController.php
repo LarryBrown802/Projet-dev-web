@@ -59,14 +59,25 @@ class ApplyController
 
                 $cvFilename = 'cv_non_fourni.pdf';
                 if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
-                $originalName = basename($_FILES['cv']['name']);
-                $cleanName    = preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalName);
-                $cvFilename   = time() . '_' . $cleanName;
-                $uploadDir  = __DIR__ . '/../../../uploads/';
+                    $originalName = basename($_FILES['cv']['name']);
+                    $cleanName    = preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalName);
+                    $cvFilename   = time() . '_' . $cleanName;
+                    $uploadDir    = __DIR__ . '/../../uploads/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0777, true);
                     }
-                    move_uploaded_file($_FILES['cv']['tmp_name'], $uploadDir . $cvFilename);
+                    if (!move_uploaded_file($_FILES['cv']['tmp_name'], $uploadDir . $cvFilename)) {
+                        $error = "Erreur lors de l'upload du CV. Vérifiez les permissions du dossier uploads/.";
+                        echo $this->twig->render('pages/apply.html.twig', [
+                            'current_page' => 'apply',
+                            'offer_id'     => $offerId,
+                            'poste'        => $poste,
+                            'entreprise'   => $entreprise,
+                            'message'      => null,
+                            'error'        => $error,
+                        ]);
+                        return;
+                    }
                 }
 
                 $success = $this->applyModel->saveApplication($offerId, $profileId, $cvFilename, $lettre);
