@@ -181,6 +181,7 @@
 .company-detail-card {
   background: var(--card);
   padding: 40px;
+  margin : 0 4rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
