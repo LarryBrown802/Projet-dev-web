@@ -130,12 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+});
 
-    function applySortFilter(value) {
+function applySortFilter(value) {
             const url = new URL(window.location.href);
             url.searchParams.set('sort', value);
             url.searchParams.set('p', '1');
             window.location.href = url.toString();
         }
-
-});
