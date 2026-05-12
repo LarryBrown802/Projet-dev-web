@@ -23,6 +23,7 @@ use App\Controllers\PilotAdminController;
 use App\Controllers\ApplyController;
 use App\Controllers\ProfileController;
 use App\Models\Database;
+use App\Models\UserModel;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -35,6 +36,32 @@ $dotnev = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // CHARGE FICHIER .E
 $dotnev->load();
 
 $bdd = Database::connect();  // CONNEXION A LA BASE DE DONNEES
+
+// Auto-login depuis le cookie "remember me"
+function autoLoginFromRememberCookie(\PDO $bdd): void {
+    if (isset($_SESSION['user_id']) || empty($_COOKIE['remember_token'])) {
+        return;
+    }
+
+    $userModel = new UserModel($bdd);
+    $user = $userModel->findByRememberToken($_COOKIE['remember_token']);
+
+    if (!$user) {
+        setcookie('remember_token', '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+        return;
+    }
+
+    $_SESSION['user_id'] = $user['ID_user'];
+    $_SESSION['email']   = $user['email'];
+    $_SESSION['role']    = $user['name_role'];
+}
+
+autoLoginFromRememberCookie($bdd);
 
 // REND LA SESSION DISPONIBLE DANS TWIG
 $twig->addGlobal('session', $_SESSION);
@@ -160,6 +187,18 @@ switch ($page) {
      //__________________________________
     // __________ DECONNEXION __________
     case 'logout':
+        if (isset($_SESSION['user_id'])) {
+            $userModel = new UserModel($bdd);
+            $userModel->clearRememberToken($_SESSION['user_id']);
+        }
+
+        setcookie('remember_token', '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
         session_destroy();
         header('Location: /index.php?page=accueil');
         exit;
