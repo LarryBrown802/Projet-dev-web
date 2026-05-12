@@ -8,7 +8,7 @@ error_reporting(E_ALL);  // RAPPORT COMPLÈT DE TOUTES LES ERREURS
 session_start();  // DÉMARRE LA SESSION PHP
 
 require_once __DIR__ . '/../vendor/autoload.php';  // CHARGE AUTOLOAD DE COMPOSER
-
+require_once __DIR__ . '/../src/Utils/Pagination.php';
 
 // _____ UTILISE LES CONTROLLERS ET MODELS _____
 

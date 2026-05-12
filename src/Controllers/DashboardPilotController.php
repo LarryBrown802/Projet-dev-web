@@ -7,6 +7,7 @@ use App\Models\CompanyModel;
 use App\Models\OfferModel;
 use App\Models\ProfileModel;
 use Twig\Environment;
+use PDO; // ✅ Import propre
 
 class DashboardPilotController
 {
@@ -16,44 +17,50 @@ class DashboardPilotController
     private OfferModel $offerModel;
     private ProfileModel $profileModel;
 
-    public function __construct(Environment $twig, \PDO $bdd)
+    public function __construct(Environment $twig, PDO $bdd)
     {
-        $this->twig = $twig;
-        $this->userModel = new UserModel($bdd);
+        $this->twig         = $twig;
+        $this->userModel    = new UserModel($bdd);
         $this->companyModel = new CompanyModel($bdd);
-        $this->offerModel = new OfferModel($bdd);
+        $this->offerModel   = new OfferModel($bdd);
         $this->profileModel = new ProfileModel($bdd);
     }
 
     public function index(): void
     {
-        $id_user = $_SESSION['user_id'];
+        // 1. Sécurité : Vérifier si l'utilisateur est bien connecté
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /index.php?page=connexion');
+            exit;
+        }
 
-        // Infos du pilote connecté
+        $id_user = (int) $_SESSION['user_id'];
+
+        // ===== INFOS DU PILOTE CONNECTÉ =====
         $pilot   = $this->userModel->findById($id_user);
-        // Récupère le pilote connecté avec sa promotion
-        $pilots = $this->userModel->getAllByRole('pilote');
-        $profile = array_filter($pilots, fn($p) => $p['ID_user'] === $id_user);
-        $profile = reset($profile); // Premier élément du tableau filtré
         
-        // KPIs
-        $nbEtudiants = count($this->userModel->getAllByRole('etudiant'));
-        $nbEntreprises = count($this->companyModel->getAll());
-        $nbOffres = count($this->offerModel->getAllOffers());
+        // ✅ CORRECTION : On demande directement le profil à la DB au lieu de filtrer tout l'annuaire !
+        $profile = $this->profileModel->getProfileWithDetails($id_user);
+        
+        // ===== KPIs (Optimisés avec SQL COUNT) =====
+        $nbEtudiants    = $this->userModel->countAllByRole('etudiant');
+        $nbEntreprises  = $this->companyModel->countAll();
+        $nbOffres       = $this->offerModel->countAllOffers();
         $nbCandidatures = $this->offerModel->countAllApplications();
 
-        // 5 dernières offres
-        $latestOffers = $this->offerModel->getAllOffers(null, null, 5);
+        // ===== TABLEAUX =====
+        // ✅ Utilisation de la méthode optimisée pour les dernières offres
+        $latestOffers = $this->offerModel->getLatestOffers(5);
 
         echo $this->twig->render('dashboard_pilot.html.twig', [
-            'current_page' => 'dashboard_pilot',
-            'pilot' => $pilot,
-            'profile' => $profile,
-            'nbEtudiants' => $nbEtudiants,
-            'nbEntreprises' => $nbEntreprises,
-            'nbOffres' => $nbOffres,
+            'current_page'   => 'dashboard_pilot',
+            'pilot'          => $pilot,
+            'profile'        => $profile,
+            'nbEtudiants'    => $nbEtudiants,
+            'nbEntreprises'  => $nbEntreprises,
+            'nbOffres'       => $nbOffres,
             'nbCandidatures' => $nbCandidatures,
-            'latestOffers' => $latestOffers,
+            'latestOffers'   => $latestOffers,
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\OfferModel;
 use App\Models\WishlistModel;
 use Twig\Environment;
+use PDO; // ✅ Import de PDO pour la cohérence
 
 class HomeController
 {
@@ -12,15 +13,16 @@ class HomeController
     private OfferModel $offerModel;
     private WishlistModel $wishlistModel;
 
-    public function __construct(Environment $twig, \PDO $bdd)
+    public function __construct(Environment $twig, PDO $bdd)
     {
-        $this->twig = $twig;
-        $this->offerModel = new OfferModel($bdd);
+        $this->twig          = $twig;
+        $this->offerModel    = new OfferModel($bdd);
         $this->wishlistModel = new WishlistModel($bdd);
     }
 
     public function index(): void
     {
+        // Récupère uniquement les 4 dernières offres via SQL
         $latestOffers = $this->offerModel->getLatestOffers(4);
 
         // Récupère les IDs en wishlist si étudiant connecté
@@ -33,7 +35,7 @@ class HomeController
         echo $this->twig->render('home.html.twig', [
             'current_page' => 'accueil',
             'latestOffers' => $latestOffers,
-            'wishlistIds' => $wishlistIds,
+            'wishlistIds'  => $wishlistIds,
         ]);
     }
 }

@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Models;
-use App\Utils\PaginationController;
+
 use Exception;
+use PDO;
 
-class StudentManagementModel extends PaginationController
+// ❌ Retrait de l'héritage "extends PaginationController"
+class StudentManagementModel
 {
-    private \PDO $db;
-    protected int $parPage = 10;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function getAllStudents(): array
+    // ✅ Ajout des paramètres de pagination pour soulager la base de données
+    public function getAllStudents(int $limit = 100, int $offset = 0): array
     {
         $sql = '
             SELECT p.ID_profile, p.name AS nom, p.surname AS prenom, u.email,
@@ -27,14 +29,34 @@ class StudentManagementModel extends PaginationController
             LEFT JOIN Promotion pr ON p.ID_promotion = pr.ID_promotion
             WHERE r.name_role = "etudiant"
             ORDER BY p.name ASC
+            LIMIT :limit OFFSET :offset
         ';
-        return $this->db->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ Fonction indispensable pour que le Contrôleur puisse générer les numéros de page
+    public function countAllStudents(): int
+    {
+        $sql = '
+            SELECT COUNT(p.ID_profile) 
+            FROM Profile p
+            JOIN User u ON p.ID_user = u.ID_user
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE r.name_role = "etudiant"
+        ';
+        return (int) $this->db->query($sql)->fetchColumn();
     }
 
     public function getPromotions(): array
     {
         return $this->db->query('SELECT ID_promotion, name FROM Promotion ORDER BY name')
-                        ->fetchAll(\PDO::FETCH_ASSOC);
+                        ->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function createStudent(array $data): bool
@@ -80,7 +102,6 @@ class StudentManagementModel extends PaginationController
         try {
             $this->db->beginTransaction();
 
-            // Met à jour email et éventuellement le mot de passe
             if (!empty($data['password'])) {
                 $stmt = $this->db->prepare('
                     UPDATE User SET email = :email, password = :password
@@ -102,7 +123,6 @@ class StudentManagementModel extends PaginationController
                 ]);
             }
 
-            // Met à jour le profil — garde la promotion existante si non fournie
             $stmt = $this->db->prepare('
                 UPDATE Profile
                 SET name         = :nom,
@@ -121,7 +141,7 @@ class StudentManagementModel extends PaginationController
 
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollBack();
             return false;
         }
@@ -143,24 +163,21 @@ class StudentManagementModel extends PaginationController
         try {
             $this->db->beginTransaction();
 
-            // Récupère l'ID user depuis le profil
             $stmt = $this->db->prepare('SELECT ID_user FROM Profile WHERE ID_profile = :id');
             $stmt->execute([':id' => $id_profile]);
             $userId = $stmt->fetchColumn();
 
             if (!$userId) throw new Exception("Profil introuvable.");
 
-            // Supprime le profil (cascade supprime Apply et Save_wishlist)
             $this->db->prepare('DELETE FROM Profile WHERE ID_profile = :id')
                      ->execute([':id' => $id_profile]);
 
-            // Supprime l'utilisateur
             $this->db->prepare('DELETE FROM User WHERE ID_user = :id')
                      ->execute([':id' => $userId]);
 
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollBack();
             return false;
         }
@@ -176,6 +193,6 @@ class StudentManagementModel extends PaginationController
             WHERE a.ID_profile = :id_profile
         ');
         $stmt->execute([':id_profile' => $id_profile]);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

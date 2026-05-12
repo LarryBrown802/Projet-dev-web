@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Utils\PaginationController;
+use PDO;
 
-class UserModel extends PaginationController
+// ❌ L'erreur venait d'ici : il ne faut plus aucun "use PaginationController" ou "extends" !
+class UserModel
 {
-    private \PDO $db;
-    protected int $perPage = 5;
-
-    public function __construct(\PDO $db)
+    private PDO $db;
+    
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
@@ -22,10 +22,10 @@ class UserModel extends PaginationController
             SELECT u.*, r.name_role
             FROM User u
             JOIN Role r ON u.ID_role = r.ID_role
-            WHERE u.ID_user = :id
+            WHERE u.ID_user  = :id
         ');
         $stmt->execute([':id' => $id]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function findByEmail(string $email): array|false
@@ -37,22 +37,33 @@ class UserModel extends PaginationController
             WHERE u.email = :email
         ');
         $stmt->execute([':email' => $email]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAll(): array
+    public function getAll(int $limit = 100, int $offset = 0): array
     {
-        $stmt = $this->db->query('
+        $stmt = $this->db->prepare('
             SELECT u.*, r.name_role
             FROM User u
             JOIN Role r ON u.ID_role = r.ID_role
             ORDER BY u.ID_user ASC
+            LIMIT :limit OFFSET :offset
         ');
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll(): int
+    {
+        $stmt = $this->db->query('SELECT COUNT(ID_user) as total FROM User');
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int) $result['total'];
     }
 
     // ===== CREATE =====
-
     public function create(string $email, string $password, int $id_role): bool
     {
         $stmt = $this->db->prepare('
@@ -60,95 +71,63 @@ class UserModel extends PaginationController
             VALUES (:email, :password, :id_role)
         ');
         return $stmt->execute([
-            ':email'   => $email,
-            ':password' => password_hash($password, PASSWORD_BCRYPT),
-            ':id_role' => $id_role,
-        ]);
-    }
-
-    // ===== UPDATE =====
-
-    public function updateEmail(int $id, string $email): bool
-    {
-        $stmt = $this->db->prepare('
-            UPDATE User SET email = :email WHERE ID_user = :id
-        ');
-        return $stmt->execute([':email' => $email, ':id' => $id]);
-    }
-
-    public function updatePassword(int $id, string $password): bool
-    {
-        $stmt = $this->db->prepare('
-            UPDATE User SET password = :password WHERE ID_user = :id
-        ');
-        return $stmt->execute([
-            ':password' => password_hash($password, PASSWORD_BCRYPT),
-            ':id' => $id,
-        ]);
-    }
-
-    // ===== DELETE =====
-
-    public function delete(int $id): bool
-    {
-        $stmt = $this->db->prepare('DELETE FROM User WHERE ID_user = :id');
-        return $stmt->execute([':id' => $id]);
-    }
-
-    // ===== REMEMBER ME (COOKIES) =====
-
-    public function setRememberToken(int $id, string $token): bool
-    {
-        $hash   = hash('sha256', $token);
-        $expiry = date('Y-m-d H:i:s', strtotime('+30 days'));
-        $stmt   = $this->db->prepare('
-            UPDATE User
-            SET remember_token = :token, remember_token_expiry = :expiry
-            WHERE ID_user = :id
-        ');
-        return $stmt->execute([':token' => $hash, ':expiry' => $expiry, ':id' => $id]);
-    }
-
-    public function findByRememberToken(string $token): array|false
-    {
-        $hash = hash('sha256', $token);
-        $stmt = $this->db->prepare('
-            SELECT u.*, r.name_role
-            FROM User u
-            JOIN Role r ON u.ID_role = r.ID_role
-            WHERE u.remember_token = :token
-              AND u.remember_token_expiry > NOW()
-        ');
-        $stmt->execute([':token' => $hash]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    public function clearRememberToken(int $id): bool
-    {
-        $stmt = $this->db->prepare('
-            UPDATE User
-            SET remember_token = NULL, remember_token_expiry = NULL
-            WHERE ID_user = :id
-        ');
-        return $stmt->execute([':id' => $id]);
-    }
-
-
-    public function createWithRole(string $email, string $password, string $role): int|false
-    {
-        $stmt = $this->db->prepare('
-            INSERT INTO User (email, password, ID_role)
-            VALUES (:email, :password, (SELECT ID_role FROM Role WHERE name_role = :role))
-        ');
-        $result = $stmt->execute([
             ':email'    => $email,
             ':password' => password_hash($password, PASSWORD_BCRYPT),
-            ':role'     => $role,
+            ':id_role'  => $id_role,
         ]);
-        return $result ? (int) $this->db->lastInsertId() : false;
     }
 
-    public function getAllByRole(string $role, ?string $search = null): array
+    public function createWithRole(string $email, string $password, string $roleName): int|false
+    {
+        // 1. Trouver l'ID du rôle
+        $stmtRole = $this->db->prepare('SELECT ID_role FROM Role WHERE name_role = :role');
+        $stmtRole->execute([':role' => $roleName]);
+        $id_role = $stmtRole->fetchColumn();
+
+        if (!$id_role) return false;
+
+        // 2. Créer l'utilisateur
+        $stmt = $this->db->prepare('
+            INSERT INTO User (email, password, ID_role)
+            VALUES (:email, :password, :id_role)
+        ');
+        $success = $stmt->execute([
+            ':email'    => $email,
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':id_role'  => $id_role,
+        ]);
+
+        return $success ? (int) $this->db->lastInsertId() : false;
+    }
+
+    // ===== UPDATE & DELETE =====
+    public function updateEmail(int $id_user, string $email): bool
+    {
+        $stmt = $this->db->prepare('UPDATE User SET email = :email WHERE ID_user = :id');
+        return $stmt->execute([':email' => $email, ':id' => $id_user]);
+    }
+
+    public function delete(int $id_user): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM User WHERE ID_user = :id');
+        return $stmt->execute([':id' => $id_user]);
+    }
+
+    // ===== REMEMBER ME =====
+    public function setRememberToken(int $id_user, string $token): bool
+    {
+        $stmt = $this->db->prepare('UPDATE User SET remember_token = :token WHERE ID_user = :id');
+        return $stmt->execute([':token' => $token, ':id' => $id_user]);
+    }
+
+    public function clearRememberToken(int $id_user): bool
+    {
+        $stmt = $this->db->prepare('UPDATE User SET remember_token = NULL WHERE ID_user = :id');
+        return $stmt->execute([':id' => $id_user]);
+    }
+
+    // ===== SPÉCIFIQUE ROLES ET PAGINATION =====
+    public function getAllByRole(string $role, ?string $search = null, int $limit = 50, int $offset = 0): array
     {
         $sql = '
             SELECT u.ID_user, u.email, p.name, p.surname,
@@ -166,6 +145,7 @@ class UserModel extends PaginationController
             JOIN Role r ON u.ID_role = r.ID_role
             WHERE r.name_role = :role
         ';
+        
         $params = [':role' => $role];
 
         if (!empty($search)) {
@@ -174,10 +154,37 @@ class UserModel extends PaginationController
         }
 
         $sql .= ' GROUP BY u.ID_user, u.email, p.name, p.surname, pr.name, pr.ID_promotion
-                ORDER BY p.name ASC';
+                  ORDER BY p.name ASC
+                  LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->db->prepare($sql);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ La fonction de comptage indispensable pour tes tableaux de bord !
+    public function countAllByRole(string $role, ?string $search = null): int
+    {
+        $sql = 'SELECT COUNT(DISTINCT u.ID_user) FROM User u
+                JOIN Role r ON u.ID_role = r.ID_role
+                LEFT JOIN Profile p ON u.ID_user = p.ID_user
+                WHERE r.name_role = :role';
+        $params = [':role' => $role];
+
+        if (!empty($search)) {
+            $sql .= ' AND (p.name LIKE :search OR p.surname LIKE :search OR u.email LIKE :search)';
+            $params[':search'] = '%' . $search . '%';
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return (int) $stmt->fetchColumn();
     }
 }

@@ -6,6 +6,7 @@ use App\Models\UserModel;
 use App\Models\CompanyModel;
 use App\Models\OfferModel;
 use Twig\Environment;
+use PDO; // ✅ Import de PDO
 
 class DashboardAdminController
 {
@@ -14,7 +15,7 @@ class DashboardAdminController
     private CompanyModel $companyModel;
     private OfferModel $offerModel;
 
-    public function __construct(Environment $twig, \PDO $bdd)
+    public function __construct(Environment $twig, PDO $bdd)
     {
         $this->twig         = $twig;
         $this->userModel    = new UserModel($bdd);
@@ -24,17 +25,22 @@ class DashboardAdminController
 
     public function index(): void
     {
-        // ===== KPIs =====
-        $nbPilotes      = count($this->userModel->getAllByRole('pilote'));
-        $nbEtudiants    = count($this->userModel->getAllByRole('etudiant'));
-        $nbEntreprises  = count($this->companyModel->getAll());
-        $nbOffres       = count($this->offerModel->getAllOffers());
+        // ===== KPIs (Optimisés avec des requêtes SQL natives COUNT) =====
+        // La base de données ne renvoie qu'un seul chiffre (ex: "42"), c'est instantané.
+        $nbPilotes      = $this->userModel->countAllByRole('pilote'); 
+        $nbEtudiants    = $this->userModel->countAllByRole('etudiant');
+        $nbEntreprises  = $this->companyModel->countAll(); // ✅ Utilisation de notre nouvelle fonction
+        $nbOffres       = $this->offerModel->countAllOffers(); // ✅ Idem
         $nbCandidatures = $this->offerModel->countAllApplications();
 
-        // ===== TABLEAUX =====
-        $latestOffers = $this->offerModel->getAllOffers(null, null, 5);
-        $pilots       = $this->userModel->getAllByRole('pilote');
-        $pilots       = array_slice($pilots, 0, 3); // 3 premiers pilotes
+        // ===== TABLEAUX (Optimisés avec LIMIT) =====
+        
+        // ✅ On utilise la fonction getLatestOffers qu'on a vue dans OfferModel
+        $latestOffers = $this->offerModel->getLatestOffers(5);
+        
+        // ✅ On utilise les paramètres de getAllByRole ($role, $search, $limit, $offset)
+        // On demande "pilote", pas de recherche (null), limite de 3, en commençant à 0.
+        $pilots = $this->userModel->getAllByRole('pilote', null, 3, 0);
 
         echo $this->twig->render('dashboard_admin.html.twig', [
             'current_page'   => 'dashboard_admin',

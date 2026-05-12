@@ -5,7 +5,9 @@ namespace App\Controllers;
 use App\Models\OfferModel;
 use App\Models\CompanyModel;
 use App\Models\LocationModel;
+use App\Utils\Pagination; // ✅ IMPORTATION DE L'UTILITAIRE
 use Twig\Environment;
+use PDO;
 
 class OfferManagementController
 {
@@ -14,29 +16,33 @@ class OfferManagementController
     private CompanyModel $companyModel;
     private LocationModel $locationModel;
 
-    public function __construct(Environment $twig, \PDO $bdd)
+    public function __construct(Environment $twig, PDO $bdd)
     {
-        $this->twig = $twig;
-        $this->offerModel = new OfferModel($bdd);
-        $this->companyModel = new CompanyModel($bdd);
+        $this->twig          = $twig;
+        $this->offerModel    = new OfferModel($bdd);
+        $this->companyModel  = new CompanyModel($bdd);
         $this->locationModel = new LocationModel($bdd);
     }
 
     public function index(): void
     {
+        // ===== SÉCURITÉ : Récupération du rôle et de l'ID =====
+        $role   = $_SESSION['role'] ?? '';
+        $userId = $_SESSION['user_id'] ?? 0;
+
         // ===== CRÉER =====
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'create') {
-            $id_location = $this->locationModel->findOrCreate($_POST['city'] ?? '');
+            $id_location = $this->locationModel->findOrCreate(trim($_POST['city'] ?? ''));
 
             $this->offerModel->create(
-                $_POST['title'] ?? '',
-                $_POST['description'] ?? '',
-                $_POST['duration'] ?? '',
+                trim($_POST['title'] ?? ''),
+                trim($_POST['description'] ?? ''),
+                trim($_POST['duration'] ?? ''),
                 (float) ($_POST['remuneration'] ?? 0),
-                $_POST['type'] ?? '',
-                $_POST['level'] ?? '',
-                $_POST['domain'] ?? '',
-                $_POST['publication_date'] ?? date('Y-m-d'),
+                trim($_POST['type'] ?? ''),
+                trim($_POST['level'] ?? ''),
+                trim($_POST['domain'] ?? ''),
+                trim($_POST['publication_date'] ?? date('Y-m-d')),
                 (int) ($_POST['id_company'] ?? 0),
                 $id_location
             );
@@ -48,13 +54,13 @@ class OfferManagementController
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update') {
             $this->offerModel->update(
                 (int) $_POST['id'],
-                $_POST['title'] ?? '',
-                $_POST['description'] ?? '',
-                $_POST['duration'] ?? '',
+                trim($_POST['title'] ?? ''),
+                trim($_POST['description'] ?? ''),
+                trim($_POST['duration'] ?? ''),
                 (float) ($_POST['remuneration'] ?? 0),
-                $_POST['type'] ?? '',
-                $_POST['level'] ?? '',
-                $_POST['domain'] ?? ''
+                trim($_POST['type'] ?? ''),
+                trim($_POST['level'] ?? ''),
+                trim($_POST['domain'] ?? '')
             );
             header('Location: /index.php?page=offer_management');
             exit;
@@ -67,25 +73,50 @@ class OfferManagementController
             exit;
         }
 
-        $search = trim($_GET['search'] ?? '');
-        $type = trim($_GET['type'] ?? '');
-        $allOffers = $this->offerModel->getAllOffers($search, $type);
-        $companies = $this->companyModel->getAll();
-        $totalPages = $this->offerModel->totalPages($allOffers);
-        $pageCourante = max(1, min((int) ($_GET['p'] ?? 1), $totalPages ?: 1));
-        $offers = $this->offerModel->getPage($allOffers, $pageCourante);
-        $pages = $this->offerModel->getPageNumbers($pageCourante, $totalPages ?: 1);
+        // ===== AFFICHAGE ET PAGINATION =====
+        $search       = trim($_GET['search'] ?? '');
+        $type         = trim($_GET['type'] ?? '');
+        $pageDemandee = isset($_GET['p']) ? (int) $_GET['p'] : 1;
+        $perPage      = 10; // 10 offres par page pour l'administration
 
+        // 1. Comptage intelligent selon le rôle
+        if ($role === 'administrateur') {
+            $totalOffers = $this->offerModel->countAllOffers($search, $type);
+        } else {
+            $totalOffers = $this->offerModel->countOffersByPilot($userId, $search, $type);
+        }
+
+        // 2. Calculs de pagination
+        $paginationData = Pagination::getPaginationData($totalOffers, $pageDemandee, $perPage);
+        $pageCourante   = $paginationData['pageCourante'];
+        $offset         = Pagination::getOffset($pageCourante, $perPage);
+
+        // 3. Récupération des offres paginées selon le rôle
+        if ($role === 'administrateur') {
+            $offers = $this->offerModel->getAllOffers($search, $type, $perPage, $offset);
+        } else {
+            $offers = $this->offerModel->getOffersByPilot($userId, $search, $type, $perPage, $offset);
+        }
+
+        // 4. Récupération des entreprises pour le menu déroulant (formulaire de création)
+        // On demande une limite très haute (ex: 1000) pour être sûr d'avoir toutes les entreprises dans le <select>
+        $companies = $this->companyModel->getAll(null, 1000);
+
+        // 5. Envoi à Twig
         echo $this->twig->render('offer_management.html.twig', [
             'current_page' => 'offer_management',
-            'offers' => $offers,
-            'companies' => $companies,
-            'totalOffers' => count($allOffers),
+            'offers'       => $offers,
+            'companies'    => $companies,
+            'totalOffers'  => $totalOffers,
+            
+            // Pagination
             'pageCourante' => $pageCourante,
-            'totalPages' => $totalPages,
-            'pages' => $pages,
-            'search' => $search,
-            'type' => $type,
+            'totalPages'   => $paginationData['totalPages'],
+            'pages'        => $paginationData['pages'],
+            
+            // Filtres
+            'search'       => $search,
+            'type'         => $type,
         ]);
     }
 }

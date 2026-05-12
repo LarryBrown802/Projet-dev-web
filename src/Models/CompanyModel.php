@@ -1,19 +1,22 @@
 <?php
 
 namespace App\Models;
-use App\Utils\PaginationController;
 
-class CompanyModel extends PaginationController
+use PDO;
+use Exception;
+
+// ❌ Suppression de l'héritage du contrôleur
+class CompanyModel
 {
-    private \PDO $db;
-    protected int $parPage = 6;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function getAll(?string $search = null): array
+    // ✅ Ajout de $limit et $offset
+    public function getAll(?string $search = null, int $limit = 50, int $offset = 0): array
     {
         $sql = '
             SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
@@ -31,10 +34,39 @@ class CompanyModel extends PaginationController
         }
 
         $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+        
+        // Application de la pagination SQL
+        $sql .= ' LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->db->prepare($sql);
+        
+        // On bind les paramètres de recherche
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        
+        // On bind STRICTEMENT en entier pour LIMIT et OFFSET
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ NOUVEAU : Compter le nombre total d'entreprises (utile pour la pagination)
+    public function countAll(?string $search = null): int
+    {
+        $sql = 'SELECT COUNT(ID) FROM Company WHERE 1=1';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return (int) $stmt->fetchColumn();
     }
 
     public function getById(int $id): array|false
@@ -47,7 +79,7 @@ class CompanyModel extends PaginationController
             GROUP BY c.ID
         ');
         $stmt->execute([':id' => $id]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create(string $name, string $email, string $number, string $description): bool
@@ -146,7 +178,7 @@ class CompanyModel extends PaginationController
             $this->db->commit();
             return true;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollBack();
             return false;
         }

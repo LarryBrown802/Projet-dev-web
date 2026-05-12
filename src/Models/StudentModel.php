@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Models;
-use App\Utils\PaginationController;
+
 use Exception;
+use PDO;
 
-class StudentModel extends PaginationController
+// ❌ On enlève "extends PaginationController"
+class StudentModel
 {
-    private \PDO $db;
-    protected int $parPage = 10;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function getAllStudents(): array
+    // ✅ NOUVEAU : Pagination propre via SQL
+    public function getAllStudents(int $limit = 100, int $offset = 0): array
     {
         $sql = '
             SELECT p.ID_profile, p.name AS nom, p.surname AS prenom, u.email,
@@ -27,14 +29,35 @@ class StudentModel extends PaginationController
             LEFT JOIN Promotion pr ON p.ID_promotion = pr.ID_promotion
             WHERE r.name_role = "etudiant"
             ORDER BY p.name ASC
+            LIMIT :limit OFFSET :offset
         ';
-        return $this->db->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        
+        $stmt = $this->db->prepare($sql);
+        // PARAM_INT est obligatoire pour que le LIMIT soit bien compris comme un chiffre par MySQL
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ NOUVEAU : Fonction requise par le Contrôleur pour calculer le nombre de pages
+    public function countAllStudents(): int
+    {
+        $sql = '
+            SELECT COUNT(p.ID_profile) 
+            FROM Profile p
+            JOIN User u ON p.ID_user = u.ID_user
+            JOIN Role r ON u.ID_role = r.ID_role
+            WHERE r.name_role = "etudiant"
+        ';
+        return (int) $this->db->query($sql)->fetchColumn();
     }
 
     public function getPromotions(): array
     {
         return $this->db->query('SELECT ID_promotion, name FROM Promotion ORDER BY name')
-                        ->fetchAll(\PDO::FETCH_ASSOC);
+                        ->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function createStudent(array $data): bool
@@ -121,7 +144,7 @@ class StudentModel extends PaginationController
 
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollBack();
             return false;
         }
@@ -143,24 +166,21 @@ class StudentModel extends PaginationController
         try {
             $this->db->beginTransaction();
 
-            // Récupère l'ID user depuis le profil
             $stmt = $this->db->prepare('SELECT ID_user FROM Profile WHERE ID_profile = :id');
             $stmt->execute([':id' => $id_profile]);
             $userId = $stmt->fetchColumn();
 
             if (!$userId) throw new Exception("Profil introuvable.");
 
-            // Supprime le profil (cascade supprime Apply et Save_wishlist)
             $this->db->prepare('DELETE FROM Profile WHERE ID_profile = :id')
                      ->execute([':id' => $id_profile]);
 
-            // Supprime l'utilisateur
             $this->db->prepare('DELETE FROM User WHERE ID_user = :id')
                      ->execute([':id' => $userId]);
 
             $this->db->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollBack();
             return false;
         }
@@ -176,6 +196,6 @@ class StudentModel extends PaginationController
             WHERE a.ID_profile = :id_profile
         ');
         $stmt->execute([':id_profile' => $id_profile]);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -3,127 +3,141 @@
 namespace App\Models;
 
 use PDO;
+use Exception;
 
-class OfferManagementModel
+// ❌ Suppression de "extends PaginationController"
+class CompanyManagementModel
 {
-    private int $parPage = 6;
+    private PDO $db;
 
-    /**
-     * Récupère TOUTES les offres (Pour l'Admin)
-     */
-    public function getAllOffers(): array
+    public function __construct(PDO $db)
     {
-        $pdo = Database::getConnection();
-        $sql = "
-            SELECT o.*, c.name as entreprise, l.city as lieu
-            FROM Offer o
-            LEFT JOIN Company c ON o.ID_company = c.ID
-            LEFT JOIN Location l ON o.ID_location = l.ID_location
-            ORDER BY o.publication_date DESC
-        ";
-        return $pdo->query($sql)->fetchAll();
+        $this->db = $db;
     }
 
-    /**
-     * Récupère UNIQUEMENT les offres des entreprises gérées par ce pilote
-     */
-    public function getOffersByPilot(int $pilotId): array
+    // ✅ Ajout de la pagination (LIMIT et OFFSET)
+    public function getAll(?string $search = null, int $limit = 50, int $offset = 0): array
     {
-        $pdo = Database::getConnection();
-        
-        // On cherche les offres (o) dont l'entreprise (c) appartient au pilote (ID_user)
-        $sql = "
-            SELECT o.*, c.name as entreprise, l.city as lieu
-            FROM Offer o
-            JOIN Company c ON o.ID_company = c.ID
-            LEFT JOIN Location l ON o.ID_location = l.ID_location
-            WHERE c.ID_user = :pilot_id
-            ORDER BY o.publication_date DESC
-        ";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['pilot_id' => $pilotId]);
-        return $stmt->fetchAll();
-    }
+        $sql = '
+            SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
+                   COUNT(DISTINCT a.ID_profile) AS stagiaires
+            FROM Company c
+            LEFT JOIN Offer o ON o.ID_company = c.ID
+            LEFT JOIN Apply a ON a.ID_offer = o.ID_offer
+            WHERE 1=1
+        ';
+        $params = [];
 
-    /**
-     * Récupère la liste des villes pour le formulaire
-     */
-    public function getLocations(): array
-    {
-        $pdo = Database::getConnection();
-        return $pdo->query("SELECT ID_location, city FROM Location ORDER BY city")->fetchAll();
-    }
-
-    /**
-     * Récupère TOUTES les entreprises (Pour l'Admin)
-     */
-    public function getAllCompanies(): array
-    {
-        $pdo = Database::getConnection();
-        return $pdo->query("SELECT ID, name FROM Company ORDER BY name")->fetchAll();
-    }
-
-    /**
-     * Récupère UNIQUEMENT les entreprises du Pilote connecté
-     */
-    public function getCompaniesByPilot(int $pilotId): array
-    {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT ID, name FROM Company WHERE ID_user = :pid ORDER BY name");
-        $stmt->execute(['pid' => $pilotId]);
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * Insère une nouvelle offre dans la base de données
-     */
-    public function createOffer(array $data): bool
-    {
-        $pdo = Database::getConnection();
-        // CURDATE() met automatiquement la date du jour MySQL
-        $sql = "INSERT INTO Offer (title, description, duration, remuneration, type, level, domain, publication_date, ID_location, ID_company) 
-                VALUES (:title, :description, :duration, :remuneration, :type, :level, :domain, CURDATE(), :id_location, :id_company)";
-        
-        try {
-            $stmt = $pdo->prepare($sql);
-            return $stmt->execute([
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'duration' => $data['duration'],
-                'remuneration' => (float)$data['remuneration'],
-                'type' => $data['type'],
-                'level' => $data['level'],
-                'domain' => $data['domain'],
-                'id_location' => (int)$data['location'],
-                'id_company' => (int)$data['company']
-            ]);
-        } catch (\PDOException $e) {
-            // Au lieu de retourner "false" en silence, on bloque l'écran pour lire l'erreur exacte de MySQL !
-            die("🚨 ERREUR SQL LORS DE LA CRÉATION : " . $e->getMessage());
+        if (!empty($search)) {
+            $sql .= ' AND c.name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
         }
+
+        $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+        
+        // Application de la limite
+        $sql .= ' LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->db->prepare($sql);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Utilitaires de pagination (Identiques à ceux d'OfferModel)
-     */
-    public function getPage(array $offers, int $page): array
+    // ✅ NOUVEAU : Le compteur pour la pagination
+    public function countAll(?string $search = null): int
     {
-        $offset = ($page - 1) * $this->parPage;
-        return array_slice($offers, $offset, $this->parPage);
+        $sql = 'SELECT COUNT(ID) FROM Company WHERE 1=1';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
     }
 
-    public function totalPages(array $offers): int
+    public function create(string $name, string $email, string $number, string $description): bool
     {
-        return (int) ceil(count($offers) / $this->parPage);
+        $stmt = $this->db->prepare('
+            INSERT INTO Company (name, email, number, description)
+            VALUES (:name, :email, :number, :description)
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+        ]);
     }
 
-    public function getPageNumbers(int $currentPage, int $totalPages): array
+    public function update(int $id, string $name, string $email, string $number, string $description): bool
     {
-        if ($totalPages <= 1) return [1];
-        if ($totalPages <= 5) return range(1, $totalPages);
-        if ($currentPage <= 3) return [1, 2, 3, 4, '...', $totalPages];
-        if ($currentPage >= $totalPages - 2) return [1, '...', $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
-        return [1, '...', $currentPage - 1, $currentPage, $currentPage + 1, '...', $totalPages];
+        $stmt = $this->db->prepare('
+            UPDATE Company SET name = :name, email = :email, number = :number, description = :description
+            WHERE ID = :id
+        ');
+        return $stmt->execute([
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
+            ':description' => $description,
+            ':id'          => $id,
+        ]);
+    }
+
+    public function updateMark(int $id, float $mark): bool
+    {
+        $stmt = $this->db->prepare('UPDATE Company SET average_mark = :mark WHERE ID = :id');
+        return $stmt->execute([':mark' => $mark, ':id' => $id]);
+    }
+
+    // ✅ CORRECTION : Utilisation de la suppression en cascade sécurisée
+    public function delete(int $id): bool
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $this->db->prepare('
+                DELETE FROM Apply WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Save_wishlist WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Offer WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Note WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Company WHERE ID = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
 }

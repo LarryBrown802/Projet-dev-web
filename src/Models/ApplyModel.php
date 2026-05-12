@@ -2,20 +2,39 @@
 
 namespace App\Models;
 
+use PDO;
+use PDOException;
+
 class ApplyModel
 {
-    private \PDO $db;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
+    }
+
+    // ✅ NOUVEAU : Vérifier si l'étudiant a déjà postulé à cette offre !
+    public function hasAlreadyApplied(int $profileId, int $offerId): bool
+    {
+        $stmt = $this->db->prepare('
+            SELECT COUNT(*) FROM Apply 
+            WHERE ID_profile = :profile_id AND ID_offer = :offer_id
+        ');
+        $stmt->execute([
+            ':profile_id' => $profileId,
+            ':offer_id'   => $offerId
+        ]);
+        
+        // Si le résultat est supérieur à 0, c'est qu'il a déjà postulé
+        return (int) $stmt->fetchColumn() > 0;
     }
 
     public function getOfferByName(string $title): ?int
     {
         $stmt = $this->db->prepare('SELECT ID_offer FROM Offer WHERE title = :title LIMIT 1');
         $stmt->execute([':title' => $title]);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? (int) $result['ID_offer'] : null;
     }
 
@@ -28,7 +47,7 @@ class ApplyModel
             WHERE o.ID_offer = :id LIMIT 1
         ');
         $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
 
@@ -36,7 +55,7 @@ class ApplyModel
     {
         $stmt = $this->db->prepare('SELECT ID_profile FROM Profile WHERE ID_user = :user_id LIMIT 1');
         $stmt->execute([':user_id' => $userId]);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? (int) $result['ID_profile'] : null;
     }
 
@@ -64,7 +83,7 @@ class ApplyModel
                 ':cv'         => $cvPath,
                 ':motivation' => $motivation,
             ]);
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             return false;
         }
     }

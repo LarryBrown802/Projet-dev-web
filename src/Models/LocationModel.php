@@ -2,19 +2,33 @@
 
 namespace App\Models;
 
+use PDO;
+
 class LocationModel
 {
-    private \PDO $db;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function getAll(): array
+    // ✅ NOUVEAU : Standardisation avec la pagination
+    public function getAll(int $limit = 500, int $offset = 0): array
     {
-        $stmt = $this->db->query('SELECT * FROM Location ORDER BY city ASC');
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt = $this->db->prepare('SELECT * FROM Location ORDER BY city ASC LIMIT :limit OFFSET :offset');
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ NOUVEAU : Compteur total
+    public function countAll(): int
+    {
+        $stmt = $this->db->query('SELECT COUNT(ID_location) FROM Location');
+        return (int) $stmt->fetchColumn();
     }
 
     public function findByCity(string $city): array|false
@@ -23,7 +37,7 @@ class LocationModel
             SELECT * FROM Location WHERE city = :city LIMIT 1
         ');
         $stmt->execute([':city' => $city]);
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function findOrCreate(string $city): int

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use PDO;
+
 class WishlistModel
 {
-    private \PDO $db;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
@@ -15,7 +17,7 @@ class WishlistModel
     {
         $stmt = $this->db->prepare('SELECT ID_profile FROM Profile WHERE ID_user = :uid LIMIT 1');
         $stmt->execute([':uid' => $userId]);
-        $profile = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($profile) {
             return (int) $profile['ID_profile'];
@@ -42,7 +44,8 @@ class WishlistModel
         }
     }
 
-    public function getSavedOffers(int $profileId): array
+    // ✅ AJOUT : Pagination sur la récupération de la Wishlist
+    public function getSavedOffers(int $profileId, int $limit = 50, int $offset = 0): array
     {
         $stmt = $this->db->prepare('
             SELECT o.ID_offer AS id, o.title AS poste, c.name AS entreprise,
@@ -54,14 +57,28 @@ class WishlistModel
             LEFT JOIN Location l ON o.ID_location = l.ID_location
             WHERE w.ID_profile = :pid
             ORDER BY o.publication_date DESC
+            LIMIT :limit OFFSET :offset
         ');
-        $stmt->execute([':pid' => $profileId]);
-        $offers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        $stmt->bindValue(':pid', $profileId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($offers as &$offre) {
             $offre['icon'] = $this->getIconForDomain($offre['domain']);
         }
         return $offers;
+    }
+
+    // ✅ NOUVEAU : Compteur pour la pagination
+    public function countSavedOffers(int $profileId): int
+    {
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM Save_wishlist WHERE ID_profile = :pid');
+        $stmt->execute([':pid' => $profileId]);
+        return (int) $stmt->fetchColumn();
     }
 
     private function getIconForDomain(?string $domain): string
@@ -82,6 +99,6 @@ class WishlistModel
             SELECT ID_offer FROM Save_wishlist WHERE ID_profile = :pid
         ');
         $stmt->execute([':pid' => $profileId]);
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN); // Retourne [1, 3, 7, ...]
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 }

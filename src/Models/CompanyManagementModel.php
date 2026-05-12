@@ -1,19 +1,22 @@
 <?php
 
 namespace App\Models;
-use App\Utils\PaginationController;
 
-class CompanyManagementModel extends PaginationController
+use PDO;
+use Exception;
+
+// ❌ Suppression de "extends PaginationController"
+class CompanyManagementModel
 {
-    private \PDO $db;
-    protected int $parPage = 6;
+    private PDO $db;
 
-    public function __construct(\PDO $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    public function getAll(?string $search = null): array
+    // ✅ Ajout de la pagination (LIMIT et OFFSET)
+    public function getAll(?string $search = null, int $limit = 50, int $offset = 0): array
     {
         $sql = '
             SELECT c.ID, c.name, c.email, c.number, c.description, c.average_mark,
@@ -31,10 +34,37 @@ class CompanyManagementModel extends PaginationController
         }
 
         $sql .= ' GROUP BY c.ID ORDER BY c.name ASC';
+        
+        // Application de la limite
+        $sql .= ' LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->db->prepare($sql);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ✅ NOUVEAU : Le compteur pour la pagination
+    public function countAll(?string $search = null): int
+    {
+        $sql = 'SELECT COUNT(ID) FROM Company WHERE 1=1';
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= ' AND name LIKE :search';
+            $params[':search'] = '%' . $search . '%';
+        }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return (int) $stmt->fetchColumn();
     }
 
     public function create(string $name, string $email, string $number, string $description): bool
@@ -44,9 +74,9 @@ class CompanyManagementModel extends PaginationController
             VALUES (:name, :email, :number, :description)
         ');
         return $stmt->execute([
-            ':name' => $name,
-            ':email' => $email,
-            ':number' => $number,
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
             ':description' => $description,
         ]);
     }
@@ -58,11 +88,11 @@ class CompanyManagementModel extends PaginationController
             WHERE ID = :id
         ');
         return $stmt->execute([
-            ':name' => $name,
-            ':email' => $email,
-            ':number' => $number,
+            ':name'        => $name,
+            ':email'       => $email,
+            ':number'      => $number,
             ':description' => $description,
-            ':id' => $id,
+            ':id'          => $id,
         ]);
     }
 
@@ -72,9 +102,42 @@ class CompanyManagementModel extends PaginationController
         return $stmt->execute([':mark' => $mark, ':id' => $id]);
     }
 
+    // ✅ CORRECTION : Utilisation de la suppression en cascade sécurisée
     public function delete(int $id): bool
     {
-        $stmt = $this->db->prepare('DELETE FROM Company WHERE ID = :id');
-        return $stmt->execute([':id' => $id]);
+        try {
+            $this->db->beginTransaction();
+
+            $this->db->prepare('
+                DELETE FROM Apply WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Save_wishlist WHERE ID_offer IN (
+                    SELECT ID_offer FROM Offer WHERE ID_company = :id
+                )
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Offer WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Note WHERE ID_company = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->prepare('
+                DELETE FROM Company WHERE ID = :id
+            ')->execute([':id' => $id]);
+
+            $this->db->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
 }
