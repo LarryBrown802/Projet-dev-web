@@ -11,13 +11,13 @@
 
 {% block content %}
 <main class="container">
-    <div class="page-head" style="text-align: center; margin-bottom: 40px;">
-        <h1 style="font-size: 32px; color: var(--primary);">Ma Wishlist</h1>
+    <div class="page-head">
+        <h1>Ma Wishlist</h1>
         <p class="page-subtitle">Retrouvez ici toutes les offres que vous avez sauvegardées pour postuler plus tard.</p>
     </div>
 
     {# La grille qui contient toutes les cartes #}
-    <section class="offres" aria-label="Liste de mes favoris" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+    <section class="offres" aria-label="Liste de mes favoris">
         
         {% for offer in offers %}
             <article class="offre-card">
@@ -72,11 +72,11 @@
                 </button>
             </article>
         {% else %}
-            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; background: var(--card); border-radius: 14px; border: 1px dashed var(--border);">
-                <i class="fa-regular fa-bookmark" style="font-size: 48px; color: var(--muted); margin-bottom: 20px;"></i>
-                <h3 style="margin-bottom: 10px;">Votre wishlist est vide</h3>
-                <p style="color: var(--muted); margin-bottom: 20px;">Parcourez les offres et cliquez sur le marque-page pour les sauvegarder ici.</p>
-                <a href="/index.php?page=offers" class="btn-primary" style="text-decoration: none; display: inline-block;">Découvrir les offres</a>
+            <div class="empty-wishlist">
+                <i class="fa-regular fa-bookmark empty-icon"></i>
+                <h3 class="empty-title">Votre wishlist est vide</h3>
+                <p class="empty-text">Parcourez les offres et cliquez sur le marque-page pour les sauvegarder ici.</p>
+                <a href="/index.php?page=offers" class="btn-primary">Découvrir les offres</a>
             </div>
         {% endfor %}
     </section>

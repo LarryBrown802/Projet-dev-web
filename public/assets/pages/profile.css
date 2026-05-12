@@ -131,3 +131,15 @@
 .badge--ok   { background: rgba(31,139,59,.14);  color: rgb(31,139,59);  border: 1px solid rgba(31,139,59,.22); }
 .badge--wait { background: rgba(217,211,29,.22); color: #6b5b00;          border: 1px solid rgba(217,211,29,.35); }
 .badge--no   { background: rgba(255,59,48,.14);  color: rgb(255,59,48);   border: 1px solid rgba(255,59,48,.22); }
+
+/* ===== LINKS ===== */
+.profile-link{
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* ===== MUTED DASH ===== */
+.muted-dash{
+  color: var(--muted);
+}

@@ -20,7 +20,7 @@
             </header>
 
             {% if error %}
-                <div style="background-color: #ffe6e6; color: #d8000c; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; text-align: center; border: 1px solid #f5c2c7;">
+                <div class="error-message">
                     <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
                 </div>
             {% endif %}
@@ -45,9 +45,9 @@
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px;">
+                <div class="remember-container">
                     <input id="remember" name="remember" type="checkbox" value="1" />
-                    <label for="remember" style="margin: 0; cursor: pointer;">Se souvenir de moi</label>
+                    <label for="remember" class="remember-label">Se souvenir de moi</label>
                 </div>
 
                 <button class="btn-primary" type="submit">Se connecter</button>

@@ -11,12 +11,14 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .page-head h1{
   margin: 0 0 6px;
-  font-size: 28px;
+  font-size: 32px;
+  color: var(--primary);
 }
 
 .page-subtitle{
@@ -24,6 +26,15 @@
   color: var(--muted);
   font-weight: 800;
   font-size: 14px;
+}
+
+/* =========================
+   OFFRES GRID
+========================= */
+.offres{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .page-meta{
@@ -237,6 +248,33 @@
 @keyframes bookmark {
   50% { transform: scaleY(0.65); }
   100% { transform: scaleY(1); }
+}
+
+/* =========================
+   EMPTY WISHLIST
+========================= */
+.empty-wishlist{
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px dashed var(--border);
+}
+
+.empty-icon{
+  font-size: 48px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.empty-title{
+  margin-bottom: 10px;
+}
+
+.empty-text{
+  color: var(--muted);
+  margin-bottom: 20px;
 }
 
 
